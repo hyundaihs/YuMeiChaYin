@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Tea</string>
+    <string name="title_home">Home</string>
+    <string name="title_lotto">Lotto</string>
+    <string name="title_mine">Mine</string>
+    <string name="title_rule">Rule</string>
+    <string name="title_store">Store</string>
+    <string name="setting_alert_pwd">Alert Password</string>
+    <string name="setting_orders">Orders</string>
+    <string name="setting_cash">Get Cash</string>
+    <string name="setting_gold_coin">Gold Coin</string>
+    <string name="setting_recharge">Recharge</string>
+    <string name="setting_upgrade_orders">Upgrade Orders</string>
+    <string name="setting_voucher">Voucher</string>
+    <string name="register">Register</string>
+    <string name="register_already_registered">Already Registered</string>
+    <string name="register_confirm_password">confirm password</string>
+    <string name="register_get_security_code">get security code</string>
+    <string name="register_input_password">input password</string>
+    <string name="register_input_phone_num">input phone number</string>
+    <string name="register_input_security_code">input security code</string>
+    <string name="register_input_recommend_code">input recommend code</string>
+    <string name="login_lost_pwd">Lost password</string>
+    <string name="login">Login</string>
+    <string name="login_remember_pwd">Remember password</string>
+    <string name="main_wchat_login">Login by wchat</string>
+    <string name="upgrade_text">upgrade</string>
+    <string name="goods_details">Goods Details</string>
+</resources>

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp"
+    app:cardCornerRadius="0dp"
+    app:cardElevation="@null"
+    app:contentPadding="2dp">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.constraint.Guideline
+            android:id="@+id/fragment_lotto_list_item_guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.5" />
+
+        <ImageView
+            android:id="@+id/fragment_lotto_list_item_not_upgrade_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@null"
+            android:src="@mipmap/ic_launcher"
+            app:layout_constraintBottom_toTopOf="@+id/fragment_lotto_list_item_not_upgrade_name"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="@+id/fragment_lotto_list_item_guideline"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <TextView
+            android:id="@+id/fragment_lotto_list_item_not_upgrade_name"
+            style="@style/fragment_lotto_list_item_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="名称："
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@+id/fragment_lotto_list_item_not_upgrade_price"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="@+id/fragment_lotto_list_item_guideline"
+            app:layout_constraintTop_toBottomOf="@+id/fragment_lotto_list_item_not_upgrade_image" />
+
+        <TextView
+            android:id="@+id/fragment_lotto_list_item_not_upgrade_price"
+            style="@style/fragment_lotto_list_item_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="价格："
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="@+id/fragment_lotto_list_item_guideline"
+            app:layout_constraintTop_toBottomOf="@+id/fragment_lotto_list_item_not_upgrade_name" />
+
+        <ImageView
+            android:id="@+id/fragment_lotto_list_item_upgrade_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@null"
+            android:src="@mipmap/ic_launcher"
+            app:layout_constraintBottom_toTopOf="@+id/fragment_lotto_list_item_upgrade_name"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintLeft_toLeftOf="@+id/fragment_lotto_list_item_guideline"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <TextView
+            android:id="@+id/fragment_lotto_list_item_upgrade_name"
+            style="@style/fragment_lotto_list_item_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="名称："
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@+id/fragment_lotto_list_item_upgrade_price"
+            app:layout_constraintLeft_toLeftOf="@+id/fragment_lotto_list_item_guideline"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fragment_lotto_list_item_upgrade_image" />
+
+        <TextView
+            android:id="@+id/fragment_lotto_list_item_upgrade_price"
+            style="@style/fragment_lotto_list_item_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="价格："
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="@+id/fragment_lotto_list_item_guideline"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fragment_lotto_list_item_upgrade_name" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/ic_launcher_round"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/fragment_lotto_list_item_not_upgrade_image"
+            app:layout_constraintRight_toLeftOf="@+id/fragment_lotto_list_item_upgrade_image"
+            app:layout_constraintTop_toTopOf="parent" />
+    </android.support.constraint.ConstraintLayout>
+</android.support.v7.widget.CardView>
