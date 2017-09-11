@@ -1,56 +1,57 @@
 package com.sp.shangpin.entity;
 
-import java.util.Arrays;
+import java.util.List;
 
 /**
- * Created by Administrator on 2017/9/9/009.
+ * ChaYin
+ * Created by 蔡雨峰 on 2017/9/9/009.
  */
 
 public class HomeInfo {
-    private Banner[] banner;
-    private UpgradeGoodsType[] sjfl;
-    private UpgradeGoods[] sjcp;
+    private List<Banner> banner;
+    private List<UpgradeGoodsType> sjfl;
+    private List<UpgradeGoods> sjcp;
 
     public HomeInfo() {
         super();
     }
 
-    public HomeInfo(Banner[] banner, UpgradeGoodsType[] sjfl, UpgradeGoods[] sjcp) {
+    public HomeInfo(List<Banner> banner, List<UpgradeGoodsType> sjfl, List<UpgradeGoods> sjcp) {
         this.banner = banner;
         this.sjfl = sjfl;
         this.sjcp = sjcp;
     }
 
-    public Banner[] getBanner() {
+    public List<Banner> getBanner() {
         return banner;
     }
 
-    public void setBanner(Banner[] banner) {
+    public void setBanner(List<Banner> banner) {
         this.banner = banner;
     }
 
-    public UpgradeGoodsType[] getSjfl() {
+    public List<UpgradeGoodsType> getSjfl() {
         return sjfl;
     }
 
-    public void setSjfl(UpgradeGoodsType[] sjfl) {
+    public void setSjfl(List<UpgradeGoodsType> sjfl) {
         this.sjfl = sjfl;
     }
 
-    public UpgradeGoods[] getSjcp() {
+    public List<UpgradeGoods> getSjcp() {
         return sjcp;
     }
 
-    public void setSjcp(UpgradeGoods[] sjcp) {
+    public void setSjcp(List<UpgradeGoods> sjcp) {
         this.sjcp = sjcp;
     }
 
     @Override
     public String toString() {
         return "HomeInfo{" +
-                "banner=" + Arrays.toString(banner) +
-                ", sjfl=" + Arrays.toString(sjfl) +
-                ", sjcp=" + Arrays.toString(sjcp) +
+                "banner=" + banner +
+                ", sjfl=" + sjfl +
+                ", sjcp=" + sjcp +
                 '}';
     }
 }

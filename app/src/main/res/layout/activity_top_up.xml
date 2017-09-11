@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/top_up_toolbar"
+        android:layout_width="0dp"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/top_up_toolbar_title"
+            style="@style/app_title_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/top_up" />
+    </android.support.v7.widget.Toolbar>
+
+
+    <RadioButton
+        android:id="@+id/top_up_price1"
+        style="@style/top_up_text_bg"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:checked="true"
+        android:text="200"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/top_up_price2"
+        app:layout_constraintTop_toBottomOf="@+id/top_up_toolbar" />
+
+    <RadioButton
+        android:id="@+id/top_up_price2"
+        style="@style/top_up_text_bg"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="300"
+        app:layout_constraintLeft_toRightOf="@+id/top_up_price1"
+        app:layout_constraintRight_toLeftOf="@+id/top_up_price3"
+        app:layout_constraintTop_toTopOf="@+id/top_up_price1" />
+
+    <RadioButton
+        android:id="@+id/top_up_price3"
+        style="@style/top_up_text_bg"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="400"
+        app:layout_constraintLeft_toRightOf="@+id/top_up_price2"
+        app:layout_constraintRight_toLeftOf="@+id/top_up_price4"
+        app:layout_constraintTop_toTopOf="@+id/top_up_price1" />
+
+    <RadioButton
+        android:id="@+id/top_up_price4"
+        style="@style/top_up_text_bg"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="500"
+        app:layout_constraintLeft_toRightOf="@+id/top_up_price3"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/top_up_price1" />
+
+    <RadioButton
+        android:id="@+id/top_up_price5"
+        style="@style/top_up_text_bg"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="600"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/top_up_price6"
+        app:layout_constraintTop_toBottomOf="@+id/top_up_price1" />
+
+    <RadioButton
+        android:id="@+id/top_up_price6"
+        style="@style/top_up_text_bg"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="700"
+        app:layout_constraintLeft_toRightOf="@+id/top_up_price5"
+        app:layout_constraintRight_toLeftOf="@+id/top_up_price7"
+        app:layout_constraintTop_toTopOf="@+id/top_up_price5" />
+
+    <RadioButton
+        android:id="@+id/top_up_price7"
+        style="@style/top_up_text_bg"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="800"
+        app:layout_constraintLeft_toRightOf="@+id/top_up_price6"
+        app:layout_constraintRight_toLeftOf="@+id/top_up_price8"
+        app:layout_constraintTop_toTopOf="@+id/top_up_price5" />
+
+    <RadioButton
+        android:id="@+id/top_up_price8"
+        style="@style/top_up_text_bg"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="其它金额"
+        app:layout_constraintLeft_toRightOf="@+id/top_up_price7"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/top_up_price5" />
+
+    <ImageView
+        android:id="@+id/top_up_wchat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:contentDescription="@null"
+        android:src="@mipmap/ic_launcher"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/top_up_price5" />
+
+    <ImageView
+        android:id="@+id/top_up_alipay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:contentDescription="@null"
+        android:src="@mipmap/ic_launcher"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintLeft_toRightOf="@+id/top_up_wchat"
+        app:layout_constraintTop_toTopOf="@+id/top_up_wchat" />
+
+    <Button
+        android:id="@+id/top_up_top_up"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/black_bold"
+        android:text="@string/top_up"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/top_up_wchat" />
+
+</android.support.constraint.ConstraintLayout>

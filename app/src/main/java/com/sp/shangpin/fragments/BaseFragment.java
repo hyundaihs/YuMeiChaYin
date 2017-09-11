@@ -2,20 +2,19 @@ package com.sp.shangpin.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.app.Fragment;
-import android.view.LayoutInflater;
+import android.support.v4.app.Fragment;
 import android.view.View;
-import android.view.ViewGroup;
 
 /**
- * Created by kevin on 2017/9/4.
+ * ChaYin
+ * Created by 蔡雨峰 on 2017/9/4.
  */
 
 public class BaseFragment extends Fragment {
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         setHasOptionsMenu(true);
     }
 }

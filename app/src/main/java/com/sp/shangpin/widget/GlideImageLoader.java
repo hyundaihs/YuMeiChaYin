@@ -29,7 +29,6 @@ public class GlideImageLoader extends ImageLoader {
          */
         VolleyUtil volleyUtil = VolleyUtil.getInstance(context);
         volleyUtil.getImage(imageView, (String) path);
-        Log.d(TAG, MyApplication.systemInfo.getBase_href() + path);
     }
 
 //    //提供createImageView 方法，如果不用可以不重写这个方法，主要是方便自定义ImageView的创建

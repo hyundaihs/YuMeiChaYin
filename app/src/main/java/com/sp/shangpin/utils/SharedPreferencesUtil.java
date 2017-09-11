@@ -65,8 +65,8 @@ public class SharedPreferencesUtil {
             return sp.getFloat(key, (Float) defaultObject);
         } else if ("Long".equals(type)) {
             return sp.getLong(key, (Long) defaultObject);
+        } else {
+            return sp.getInt(key, (Integer) defaultObject);
         }
-
-        return null;
     }
 }

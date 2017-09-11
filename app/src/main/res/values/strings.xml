@@ -30,5 +30,10 @@
     <string name="upgrade_text">升级换礼</string>
     <!--商品详情-->
     <string name="goods_details">商品详情</string>
+    <!--充值-->
+    <string name="top_up">充值</string>
+    <!--活动抽奖-->
+    <string name="lottery">活动抽奖</string>
+    <!--规则-->
 
 </resources>

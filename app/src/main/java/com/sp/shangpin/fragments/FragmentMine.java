@@ -9,7 +9,8 @@ import android.view.ViewGroup;
 import com.sp.shangpin.R;
 
 /**
- * Created by kevin on 2017/9/4.
+ * ChaYin
+ * Created by 蔡雨峰 on 2017/9/4.
  */
 
 public class FragmentMine extends BaseFragment {

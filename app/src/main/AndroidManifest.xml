@@ -29,6 +29,12 @@
         <activity android:name=".ui.HomeActivity" />
 
         <activity android:name=".ui.GoodsDetailsActivity" />
+
+        <activity android:name=".ui.TopUpActivity" />
+
+        <activity android:name=".ui.LotteryActivity" />
+
+        <activity android:name=".ui.RuleActivity" />
     </application>
 
 </manifest>

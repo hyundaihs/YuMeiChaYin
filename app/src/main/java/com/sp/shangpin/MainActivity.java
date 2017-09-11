@@ -3,7 +3,6 @@ package com.sp.shangpin;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -13,7 +12,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.sp.shangpin.entity.InterResult;
-import com.sp.shangpin.entity.LoginInfo_Sup;
 import com.sp.shangpin.entity.SharedKey;
 import com.sp.shangpin.entity.SystemInfo_Sup;
 import com.sp.shangpin.ui.HomeActivity;
@@ -47,13 +45,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         MyApplication.addActivity(this);
         setContentView(R.layout.activity_main);
         getSystemInfo();
+        init();
     }
 
     private void isRemember() {
-        if ((Boolean) SharedPreferencesUtil.getParam(this, SharedKey.IS_REMEMBER, false)) {
+        if ((Boolean) SharedPreferencesUtil.getParam(thisContext, SharedKey.IS_REMEMBER, false)) {
+            Log.i(TAG,"自动登录验证");
             verfLogin((String) SharedPreferencesUtil.getParam(this, SharedKey.LOGIN_VERF, ""));
-        } else {
-            init();
         }
     }
 
@@ -68,18 +66,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     public void onResponse(JSONObject response) {
                         InterResult interResult = (InterResult) JsonUtil.stringToObject(response.toString(), InterResult.class);
                         if (interResult.isSuccessed()) {
+                            Log.i(TAG, "自动登录成功");
                             DialogUtil.showAskMessage(thisContext, "登录成功");
                             startActivity(new Intent(MainActivity.this, HomeActivity.class));
                             MyApplication.cleanAllActivitys();
                         } else {
+                            Log.e(TAG, "自动登录失败," + interResult.getRetErr());
                             SharedPreferencesUtil.setParam(MainActivity.this, SharedKey.IS_REMEMBER, false);
-                            DialogUtil.showErrorMessage(thisContext, interResult.getRetErr());
-                            init();
                         }
                     }
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        Log.e(TAG, error.toString());
                         DialogUtil.showErrorMessage(thisContext, error.toString(), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
@@ -93,7 +92,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void getSystemInfo() {
-        VolleyUtil volleyUtil = VolleyUtil.getInstance(this);
+        VolleyUtil volleyUtil = VolleyUtil.getInstance(thisContext);
         JsonObjectRequest request = RequestUtil.createPostJsonRequest(InternetUtil.sysinfo(),
                 JsonUtil.objectToString(new HashMap<String, String>()),
                 new Response.Listener<JSONObject>() {
@@ -101,9 +100,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     public void onResponse(JSONObject response) {
                         SystemInfo_Sup systemInfoSup = (SystemInfo_Sup) JsonUtil.stringToObject(response.toString(), SystemInfo_Sup.class);
                         if (systemInfoSup.isSuccessed()) {
+                            Log.i(TAG, "系统信息获取成功");
                             MyApplication.systemInfo = systemInfoSup.getRetRes();
                             isRemember();
                         } else {
+                            Log.e(TAG, "系统信息获取失败," + systemInfoSup.getRetErr());
                             DialogUtil.showErrorMessage(thisContext, systemInfoSup.getRetErr(), new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
@@ -115,6 +116,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        Log.e(TAG, error.toString());
                         DialogUtil.showErrorMessage(thisContext, error.toString(), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
@@ -136,10 +138,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.main_login:
-                startActivity(new Intent(this, LoginActivity.class));
+                startActivity(new Intent(thisContext, LoginActivity.class));
                 break;
             case R.id.main_register:
-                startActivity(new Intent(this, RegisterActivity.class));
+                startActivity(new Intent(thisContext, RegisterActivity.class));
                 break;
             case R.id.main_wchat_login_btn:
                 break;

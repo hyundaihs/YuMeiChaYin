@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/lottery_list_item_date"
+        style="@style/lottery_list_item_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="开奖时间"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/lottery_list_item_numbers"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/lottery_list_item_numbers"
+        style="@style/lottery_list_item_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="开奖期数"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/lottery_list_item_date"
+        app:layout_constraintRight_toLeftOf="@+id/lottery_list_item_codes"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/lottery_list_item_codes"
+        style="@style/lottery_list_item_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="开奖号码"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/lottery_list_item_numbers"
+        app:layout_constraintRight_toLeftOf="@+id/lottery_list_item_jiou"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/lottery_list_item_jiou"
+        style="@style/lottery_list_item_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="开奖结果"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/lottery_list_item_codes"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</android.support.constraint.ConstraintLayout>

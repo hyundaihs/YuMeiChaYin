@@ -18,23 +18,20 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.sp.shangpin.MyApplication;
 import com.sp.shangpin.R;
 import com.sp.shangpin.adapters.FragmentHomeAdapter;
 import com.sp.shangpin.adapters.FragmentLottoAdapter;
-import com.sp.shangpin.entity.HomeInfo_Sup;
-import com.sp.shangpin.entity.LoginInfo;
 import com.sp.shangpin.entity.LottoInfo;
 import com.sp.shangpin.entity.LottoInfo_Sup;
+import com.sp.shangpin.entity.UpgradeGoods;
 import com.sp.shangpin.ui.GoodsDetailsActivity;
+import com.sp.shangpin.ui.RuleActivity;
 import com.sp.shangpin.utils.DialogUtil;
 import com.sp.shangpin.utils.InternetUtil;
 import com.sp.shangpin.utils.JsonUtil;
@@ -45,25 +42,36 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
- * Created by kevin on 2017/9/4.
+ * ChaYin
+ * Created by 蔡雨峰 on 2017/9/4.
+ * 抽奖
  */
 
 public class FragmentLotto extends BaseFragment {
     private final String TAG = getClass().getSimpleName();
 
+    private Toolbar toolbar;
     private RecyclerView recyclerView;
     private RadioGroup radioGroup;
     private int currIndex = 1;
     private ImageView typeImage;
     private LottoInfo lottoInfo;
+    private FragmentLottoAdapter adapter;
+    private List<UpgradeGoods> data;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_lotto, container, false);
+        View view = inflater.inflate(R.layout.fragment_lotto, container, false);
+        toolbar = view.findViewById(R.id.fragment_lotto_toolbar);
+        radioGroup = view.findViewById(R.id.fragment_lotto_model_radioGroup);
+        typeImage = view.findViewById(R.id.fragment_lotto_type_image);
+        recyclerView = view.findViewById(R.id.fragment_lotto_recyclerView);
+        return view;
     }
 
     @Override
@@ -71,6 +79,7 @@ public class FragmentLotto extends BaseFragment {
         super.onActivityCreated(savedInstanceState);
         initActionBar();
         initViews();
+        initListView();
         if (MyApplication.lottoCurrIndex > 0 && MyApplication.lottoCurrIndex < 4) {
             radioGroup.check(MyApplication.lottoCurrIndex == 1 ? R.id.fragment_lotto_model_flag1 :
                     MyApplication.lottoCurrIndex == 2 ? R.id.fragment_lotto_model_flag2 : R.id.fragment_lotto_model_flag3);
@@ -91,6 +100,7 @@ public class FragmentLotto extends BaseFragment {
                     public void onResponse(JSONObject response) {
                         LottoInfo_Sup lottoInfo_sup = (LottoInfo_Sup) JsonUtil.stringToObject(response.toString(), LottoInfo_Sup.class);
                         if (lottoInfo_sup.isSuccessed()) {
+                            Log.i(TAG, "抽奖信息获取成功");
                             lottoInfo = lottoInfo_sup.getRetRes();
                             refresh();
                         } else {
@@ -107,9 +117,6 @@ public class FragmentLotto extends BaseFragment {
     }
 
     private void initViews() {
-        radioGroup = getView().findViewById(R.id.fragment_lotto_model_radioGroup);
-        typeImage = getView().findViewById(R.id.fragment_lotto_type_image);
-        recyclerView = getView().findViewById(R.id.fragment_lotto_recyclerView);
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, @IdRes int i) {
@@ -137,49 +144,53 @@ public class FragmentLotto extends BaseFragment {
                 VolleyUtil volleyUtil = VolleyUtil.getInstance(getActivity());
                 volleyUtil.getImage(typeImage, lottoInfo.getInfo().getBanner_file_url());
             }
-            initListView();
+            if (null != lottoInfo.getLists()) {
+                data.clear();
+                data.addAll(lottoInfo.getLists());
+                adapter.notifyDataSetChanged();
+            }
         }
     }
 
     private void initListView() {
-        if (null != lottoInfo.getLists()) {
-            LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-            recyclerView.setLayoutManager(layoutManager);
-            layoutManager.setOrientation(OrientationHelper.VERTICAL);
-            FragmentLottoAdapter adapter = new FragmentLottoAdapter(getActivity(), lottoInfo.getLists());
-            recyclerView.setAdapter(adapter);
+        data = new ArrayList<>();
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(layoutManager);
+        layoutManager.setOrientation(OrientationHelper.VERTICAL);
+        adapter = new FragmentLottoAdapter(getActivity(), data);
+        recyclerView.setAdapter(adapter);
 //        recyclerView.addItemDecoration(new DividerGridItemDecoration(getActivity()));
-            recyclerView.setItemAnimator(new DefaultItemAnimator());
-            adapter.setOnItemClickListener(new FragmentHomeAdapter.OnItemClickListener() {
-                @Override
-                public void onItemClick(View view, int position) {
-                    Intent intent = new Intent(getActivity(), GoodsDetailsActivity.class);
-                    intent.putExtra("id", lottoInfo.getLists()[position].getId());
-                    startActivity(intent);
-                }
-            });
-        }
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        adapter.setOnItemClickListener(new FragmentHomeAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                Intent intent = new Intent(getActivity(), GoodsDetailsActivity.class);
+                intent.putExtra("id", data.get(position).getId());
+                startActivity(intent);
+            }
+        });
     }
 
     public void initActionBar() {
-        Toolbar toolbar = getView().findViewById(R.id.fragment_lotto_toolbar);
-        toolbar.inflateMenu(R.menu.menu_home);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        toolbar.inflateMenu(R.menu.menu_lotto);
         toolbar.setTitle("");
     }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         menu.clear();
-        inflater.inflate(R.menu.menu_home, menu);
+        inflater.inflate(R.menu.menu_lotto, menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.menu_home_rule:
-                Toast.makeText(getActivity(), "规则", Toast.LENGTH_LONG).show();
-                break;
+            case R.id.menu_lotto_rule:
+                startActivity(new Intent(getActivity(), RuleActivity.class));
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-        return super.onOptionsItemSelected(item);
     }
 }

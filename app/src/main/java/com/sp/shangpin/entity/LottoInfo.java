@@ -1,20 +1,21 @@
 package com.sp.shangpin.entity;
 
-import java.util.Arrays;
+import java.util.List;
 
 /**
- * Created by Administrator on 2017/9/10/010.
+ * ChaYin
+ * Created by 蔡雨峰 on 2017/9/10/010.
  */
 
 public class LottoInfo {
     private Banner info; // 分类信息
-    private UpgradeGoods[] lists; // 产品列表
+    private List<UpgradeGoods> lists; // 产品列表
 
     public LottoInfo() {
         super();
     }
 
-    public LottoInfo(Banner info, UpgradeGoods[] lists) {
+    public LottoInfo(Banner info, List<UpgradeGoods> lists) {
         this.info = info;
         this.lists = lists;
     }
@@ -27,11 +28,11 @@ public class LottoInfo {
         this.info = info;
     }
 
-    public UpgradeGoods[] getLists() {
+    public List<UpgradeGoods> getLists() {
         return lists;
     }
 
-    public void setLists(UpgradeGoods[] lists) {
+    public void setLists(List<UpgradeGoods> lists) {
         this.lists = lists;
     }
 
@@ -39,7 +40,7 @@ public class LottoInfo {
     public String toString() {
         return "LottoInfo{" +
                 "info=" + info.toString() +
-                ", lists=" + Arrays.toString(lists) +
+                ", lists=" + lists.toString() +
                 '}';
     }
 }

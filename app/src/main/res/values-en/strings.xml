@@ -27,4 +27,6 @@
     <string name="main_wchat_login">Login by wchat</string>
     <string name="upgrade_text">upgrade</string>
     <string name="goods_details">Goods Details</string>
+    <string name="top_up">Top Up</string>
+    <string name="lottery">Lottery</string>
 </resources>

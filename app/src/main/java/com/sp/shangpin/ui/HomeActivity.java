@@ -1,29 +1,29 @@
 package com.sp.shangpin.ui;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.internal.BottomNavigationItemView;
 import android.support.design.internal.BottomNavigationMenuView;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 
 import com.sp.shangpin.R;
-import com.sp.shangpin.adapters.SectionsPagerAdapter;
 import com.sp.shangpin.fragments.FragmentHome;
 import com.sp.shangpin.fragments.FragmentLotto;
 import com.sp.shangpin.fragments.FragmentMine;
 import com.sp.shangpin.fragments.FragmentStore;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.List;
 
 public class HomeActivity extends AppCompatActivity {
+    private final String TAG = getClass().getSimpleName();
 
     private BottomNavigationView navigation;
     private Fragment fragmentHome;
@@ -38,25 +38,25 @@ public class HomeActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
-                    if(null == fragmentHome){
+                    if (null == fragmentHome) {
                         fragmentHome = new FragmentHome();
                     }
                     loadFragment(fragmentHome);
                     return true;
                 case R.id.navigation_lotto:
-                    if(null == fragmentLotto){
+                    if (null == fragmentLotto) {
                         fragmentLotto = new FragmentLotto();
                     }
                     loadFragment(fragmentLotto);
                     return true;
                 case R.id.navigation_store:
-                    if(null == fragmentStore){
+                    if (null == fragmentStore) {
                         fragmentStore = new FragmentStore();
                     }
                     loadFragment(fragmentStore);
                     return true;
                 case R.id.navigation_mine:
-                    if(null == fragmentMine){
+                    if (null == fragmentMine) {
                         fragmentMine = new FragmentMine();
                     }
                     loadFragment(fragmentMine);
@@ -65,6 +65,22 @@ public class HomeActivity extends AppCompatActivity {
             return false;
         }
 
+    };
+    private ViewPager.OnPageChangeListener onPageChangeListener = new ViewPager.OnPageChangeListener() {
+        @Override
+        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+        }
+
+        @Override
+        public void onPageSelected(int position) {
+            navigation.getMenu().getItem(position).setChecked(true);
+        }
+
+        @Override
+        public void onPageScrollStateChanged(int state) {
+
+        }
     };
 
     public void checkTab(int index) {
@@ -114,29 +130,13 @@ public class HomeActivity extends AppCompatActivity {
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         disableShiftMode(navigation);
         loadFragment(new FragmentHome());
+        setTitle("");
     }
 
     private void loadFragment(Fragment fragment) {
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.content, fragment);
         ft.commit();
     }
-
-    private ViewPager.OnPageChangeListener onPageChangeListener = new ViewPager.OnPageChangeListener() {
-        @Override
-        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-        }
-
-        @Override
-        public void onPageSelected(int position) {
-            navigation.getMenu().getItem(position).setChecked(true);
-        }
-
-        @Override
-        public void onPageScrollStateChanged(int state) {
-
-        }
-    };
 
 }
