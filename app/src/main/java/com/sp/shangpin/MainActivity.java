@@ -98,14 +98,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
+                        InterResult interResult =
+                                (InterResult) JsonUtil.stringToObject(response.toString(), InterResult.class);
+                        if (interResult.isSuccessed()) {
                         SystemInfo_Sup systemInfoSup = (SystemInfo_Sup) JsonUtil.stringToObject(response.toString(), SystemInfo_Sup.class);
-                        if (systemInfoSup.isSuccessed()) {
                             Log.i(TAG, "系统信息获取成功");
                             MyApplication.systemInfo = systemInfoSup.getRetRes();
                             isRemember();
                         } else {
-                            Log.e(TAG, "系统信息获取失败," + systemInfoSup.getRetErr());
-                            DialogUtil.showErrorMessage(thisContext, systemInfoSup.getRetErr(), new DialogInterface.OnClickListener() {
+                            Log.e(TAG, "系统信息获取失败," + interResult.getRetErr());
+                            DialogUtil.showErrorMessage(thisContext, interResult.getRetErr(), new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
                                     finish();

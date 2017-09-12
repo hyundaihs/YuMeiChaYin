@@ -27,6 +27,7 @@ import com.sp.shangpin.R;
 import com.sp.shangpin.adapters.FragmentHomeAdapter;
 import com.sp.shangpin.entity.HomeInfo;
 import com.sp.shangpin.entity.HomeInfo_Sup;
+import com.sp.shangpin.entity.InterResult;
 import com.sp.shangpin.entity.UpgradeGoods;
 import com.sp.shangpin.entity.UpgradeGoodsType;
 import com.sp.shangpin.ui.GoodsDetailsActivity;
@@ -65,6 +66,15 @@ public class FragmentHome extends BaseFragment implements View.OnClickListener {
     private List<UpgradeGoods> data;
     private FragmentHomeAdapter adapter;
 
+    private static BaseFragment baseFragment;
+
+    public static BaseFragment getInstance() {
+        if (null == baseFragment) {
+            baseFragment = new FragmentHome();
+        }
+        return baseFragment;
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -97,13 +107,15 @@ public class FragmentHome extends BaseFragment implements View.OnClickListener {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
+                        InterResult interResult =
+                                (InterResult) JsonUtil.stringToObject(response.toString(), InterResult.class);
+                        if (interResult.isSuccessed()) {
                         HomeInfo_Sup homeInfo_sup = (HomeInfo_Sup) JsonUtil.stringToObject(response.toString(), HomeInfo_Sup.class);
-                        if (homeInfo_sup.isSuccessed()) {
                             Log.i(TAG, "首页信息获取成功");
                             homeInfo = homeInfo_sup.getRetRes();
                             refresh();
                         } else {
-                            DialogUtil.showErrorMessage(getActivity(), homeInfo_sup.getRetErr());
+                            DialogUtil.showErrorMessage(getActivity(), interResult.getRetErr());
                         }
                     }
                 }, new Response.ErrorListener() {

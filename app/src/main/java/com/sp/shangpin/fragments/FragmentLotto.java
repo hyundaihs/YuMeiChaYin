@@ -27,6 +27,7 @@ import com.sp.shangpin.MyApplication;
 import com.sp.shangpin.R;
 import com.sp.shangpin.adapters.FragmentHomeAdapter;
 import com.sp.shangpin.adapters.FragmentLottoAdapter;
+import com.sp.shangpin.entity.InterResult;
 import com.sp.shangpin.entity.LottoInfo;
 import com.sp.shangpin.entity.LottoInfo_Sup;
 import com.sp.shangpin.entity.UpgradeGoods;
@@ -63,6 +64,15 @@ public class FragmentLotto extends BaseFragment {
     private FragmentLottoAdapter adapter;
     private List<UpgradeGoods> data;
 
+    private static BaseFragment baseFragment;
+
+    public static BaseFragment getInstance() {
+        if (null == baseFragment) {
+            baseFragment = new FragmentLotto();
+        }
+        return baseFragment;
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -98,13 +108,15 @@ public class FragmentLotto extends BaseFragment {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
+                        InterResult interResult =
+                                (InterResult) JsonUtil.stringToObject(response.toString(), InterResult.class);
+                        if (interResult.isSuccessed()) {
                         LottoInfo_Sup lottoInfo_sup = (LottoInfo_Sup) JsonUtil.stringToObject(response.toString(), LottoInfo_Sup.class);
-                        if (lottoInfo_sup.isSuccessed()) {
                             Log.i(TAG, "抽奖信息获取成功");
                             lottoInfo = lottoInfo_sup.getRetRes();
                             refresh();
                         } else {
-                            DialogUtil.showErrorMessage(getActivity(), lottoInfo_sup.getRetErr());
+                            DialogUtil.showErrorMessage(getActivity(), interResult.getRetErr());
                         }
                     }
                 }, new Response.ErrorListener() {

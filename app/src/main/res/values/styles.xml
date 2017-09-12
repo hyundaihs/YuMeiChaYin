@@ -82,4 +82,13 @@
         <item name="android:paddingBottom">5dp</item>
     </style>
 
+    <style name="orders_model_flag_text">
+        <item name="android:textSize">14sp</item>
+        <item name="android:background">@drawable/orders_model_bg</item>
+        <item name="android:textColor">@color/black_white</item>
+        <item name="android:gravity">center</item>
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:paddingBottom">5dp</item>
+    </style>
+
 </resources>

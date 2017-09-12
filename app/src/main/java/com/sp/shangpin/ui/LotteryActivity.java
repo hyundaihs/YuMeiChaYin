@@ -25,6 +25,7 @@ import com.sp.shangpin.R;
 import com.sp.shangpin.adapters.EndLessOnScrollListener;
 import com.sp.shangpin.adapters.LineDecoration;
 import com.sp.shangpin.adapters.LotteryAdapter;
+import com.sp.shangpin.entity.InterResult;
 import com.sp.shangpin.entity.LotteryInfo;
 import com.sp.shangpin.entity.LotteryInfo_Sup;
 import com.sp.shangpin.utils.DialogUtil;
@@ -117,11 +118,6 @@ public class LotteryActivity extends AppCompatActivity implements View.OnClickLi
         adapter.notifyDataSetChanged();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_home, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -141,15 +137,17 @@ public class LotteryActivity extends AppCompatActivity implements View.OnClickLi
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
+                        InterResult interResult =
+                                (InterResult) JsonUtil.stringToObject(response.toString(), InterResult.class);
+                        if (interResult.isSuccessed()) {
                         LotteryInfo_Sup lotteryInfo_sup = (LotteryInfo_Sup)
                                 JsonUtil.stringToObject(response.toString(), LotteryInfo_Sup.class);
-                        if (lotteryInfo_sup.isSuccessed()) {
                             data.clear();
                             data.addAll(lotteryInfo_sup.getRetRes());
                             refresh();
                             swipeRefreshLayout.setRefreshing(false);
                         } else {
-                            DialogUtil.showErrorMessage(thisContext, lotteryInfo_sup.getRetErr());
+                            DialogUtil.showErrorMessage(thisContext, interResult.getRetErr());
                             swipeRefreshLayout.setRefreshing(false);
                         }
                     }

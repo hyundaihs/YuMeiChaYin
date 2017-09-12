@@ -10,7 +10,7 @@ import android.view.View;
  * Created by 蔡雨峰 on 2017/9/4.
  */
 
-public class BaseFragment extends Fragment {
+public abstract class BaseFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {

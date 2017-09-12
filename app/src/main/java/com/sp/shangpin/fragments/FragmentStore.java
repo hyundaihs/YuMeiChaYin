@@ -23,6 +23,15 @@ import com.sp.shangpin.ui.RuleActivity;
 public class FragmentStore extends BaseFragment {
     private Toolbar toolbar;
 
+    private static BaseFragment baseFragment;
+
+    public static BaseFragment getInstance() {
+        if (null == baseFragment) {
+            baseFragment = new FragmentStore();
+        }
+        return baseFragment;
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

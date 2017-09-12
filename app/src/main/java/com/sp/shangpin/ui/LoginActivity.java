@@ -124,8 +124,10 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONObject response) {
                         showProgress(false);
+                        InterResult interResult =
+                                (InterResult) JsonUtil.stringToObject(response.toString(), InterResult.class);
+                        if (interResult.isSuccessed()) {
                         LoginInfo_Sup loginInfo_sup = (LoginInfo_Sup) JsonUtil.stringToObject(response.toString(), LoginInfo_Sup.class);
-                        if (loginInfo_sup.isSuccessed()) {
                             DialogUtil.showAskMessage(thisContext, "登录成功");
                             SharedPreferencesUtil.setParam(LoginActivity.this, SharedKey.IS_REMEMBER, true);
                             SharedPreferencesUtil.setParam(LoginActivity.this, SharedKey.LOGIN_VERF, loginInfo_sup.getRetRes().getLogin_verf());
@@ -133,7 +135,7 @@ public class LoginActivity extends AppCompatActivity {
                             MyApplication.cleanAllActivitys();
                         } else {
                             SharedPreferencesUtil.setParam(LoginActivity.this, SharedKey.IS_REMEMBER, false);
-                            DialogUtil.showErrorMessage(thisContext, loginInfo_sup.getRetErr());
+                            DialogUtil.showErrorMessage(thisContext, interResult.getRetErr());
                         }
                     }
                 }, new Response.ErrorListener() {

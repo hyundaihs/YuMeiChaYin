@@ -1,35 +1,45 @@
 package com.sp.shangpin.ui;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.internal.BottomNavigationItemView;
 import android.support.design.internal.BottomNavigationMenuView;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.sp.shangpin.MyApplication;
 import com.sp.shangpin.R;
+import com.sp.shangpin.entity.InterResult;
+import com.sp.shangpin.entity.UserInfo_Sup;
 import com.sp.shangpin.fragments.FragmentHome;
 import com.sp.shangpin.fragments.FragmentLotto;
 import com.sp.shangpin.fragments.FragmentMine;
 import com.sp.shangpin.fragments.FragmentStore;
+import com.sp.shangpin.utils.DialogUtil;
+import com.sp.shangpin.utils.InternetUtil;
+import com.sp.shangpin.utils.JsonUtil;
+import com.sp.shangpin.utils.RequestUtil;
+import com.sp.shangpin.utils.VolleyUtil;
+
+import org.json.JSONObject;
 
 import java.lang.reflect.Field;
+import java.util.HashMap;
+import java.util.Map;
 
 public class HomeActivity extends AppCompatActivity {
     private final String TAG = getClass().getSimpleName();
+    private final Context thisContext = this;
 
     private BottomNavigationView navigation;
-    private Fragment fragmentHome;
-    private Fragment fragmentLotto;
-    private Fragment fragmentStore;
-    private Fragment fragmentMine;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -38,49 +48,21 @@ public class HomeActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
-                    if (null == fragmentHome) {
-                        fragmentHome = new FragmentHome();
-                    }
-                    loadFragment(fragmentHome);
+                    loadFragment(FragmentHome.getInstance());
                     return true;
                 case R.id.navigation_lotto:
-                    if (null == fragmentLotto) {
-                        fragmentLotto = new FragmentLotto();
-                    }
-                    loadFragment(fragmentLotto);
+                    loadFragment(FragmentLotto.getInstance());
                     return true;
                 case R.id.navigation_store:
-                    if (null == fragmentStore) {
-                        fragmentStore = new FragmentStore();
-                    }
-                    loadFragment(fragmentStore);
+                    loadFragment(FragmentStore.getInstance());
                     return true;
                 case R.id.navigation_mine:
-                    if (null == fragmentMine) {
-                        fragmentMine = new FragmentMine();
-                    }
-                    loadFragment(fragmentMine);
+                    loadFragment(FragmentMine.getInstance());
                     return true;
             }
             return false;
         }
 
-    };
-    private ViewPager.OnPageChangeListener onPageChangeListener = new ViewPager.OnPageChangeListener() {
-        @Override
-        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-        }
-
-        @Override
-        public void onPageSelected(int position) {
-            navigation.getMenu().getItem(position).setChecked(true);
-        }
-
-        @Override
-        public void onPageScrollStateChanged(int state) {
-
-        }
     };
 
     public void checkTab(int index) {
@@ -88,16 +70,16 @@ public class HomeActivity extends AppCompatActivity {
             navigation.getMenu().getItem(index).setChecked(true);
             switch (index) {
                 case 0:
-                    loadFragment(new FragmentHome());
+                    loadFragment(FragmentHome.getInstance());
                     break;
                 case 1:
-                    loadFragment(new FragmentLotto());
+                    loadFragment(FragmentLotto.getInstance());
                     break;
                 case 2:
-                    loadFragment(new FragmentStore());
+                    loadFragment(FragmentStore.getInstance());
                     break;
                 case 3:
-                    loadFragment(new FragmentMine());
+                    loadFragment(FragmentMine.getInstance());
                     break;
             }
         }
@@ -129,8 +111,38 @@ public class HomeActivity extends AppCompatActivity {
         navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         disableShiftMode(navigation);
-        loadFragment(new FragmentHome());
         setTitle("");
+        getUserInfo();
+    }
+
+    private void getUserInfo() {
+        Map<String, String> map = new HashMap<>();
+        VolleyUtil volleyUtil = VolleyUtil.getInstance(this);
+        JsonObjectRequest request = RequestUtil.createPostJsonRequest(InternetUtil.userinfo(),
+                JsonUtil.objectToString(map),
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.e(TAG, response.toString());
+                        InterResult interResult =
+                                (InterResult) JsonUtil.stringToObject(response.toString(), InterResult.class);
+                        if (interResult.isSuccessed()) {
+                            UserInfo_Sup userInfo_sup =
+                                    (UserInfo_Sup) JsonUtil.stringToObject(response.toString(), UserInfo_Sup.class);
+                            MyApplication.userInfo = userInfo_sup.getRetRes();
+                            Log.i(TAG, userInfo_sup.toString());
+                            loadFragment(FragmentHome.getInstance());
+                        } else {
+                            DialogUtil.showErrorMessage(thisContext, interResult.getRetErr());
+                        }
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        DialogUtil.showErrorMessage(thisContext, error.toString());
+                    }
+                });
+        volleyUtil.addToRequestQueue(request, InternetUtil.reg());
     }
 
     private void loadFragment(Fragment fragment) {

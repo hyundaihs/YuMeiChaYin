@@ -7,6 +7,7 @@ import android.content.Context;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.sp.shangpin.entity.SystemInfo;
+import com.sp.shangpin.entity.UserInfo;
 import com.sp.shangpin.utils.DialogUtil;
 
 import java.util.ArrayList;
@@ -20,6 +21,7 @@ import java.util.List;
 public class MyApplication extends Application {
 
     public static SystemInfo systemInfo;//系统信息
+    public static UserInfo userInfo;//用户信息
     private static List<Activity> activityList = new ArrayList<>();
     public static int lottoCurrIndex = -1;
 

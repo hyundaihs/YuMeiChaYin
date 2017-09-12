@@ -20,6 +20,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.sp.shangpin.R;
 import com.sp.shangpin.entity.GoodsDetails_Sup;
+import com.sp.shangpin.entity.InterResult;
 import com.sp.shangpin.entity.UpgradeGoods;
 import com.sp.shangpin.utils.DialogUtil;
 import com.sp.shangpin.utils.InternetUtil;
@@ -112,12 +113,14 @@ public class GoodsDetailsActivity extends AppCompatActivity implements View.OnCl
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
+                        InterResult interResult =
+                                (InterResult) JsonUtil.stringToObject(response.toString(), InterResult.class);
+                        if (interResult.isSuccessed()) {
                         GoodsDetails_Sup goodsDetails_sup = (GoodsDetails_Sup) JsonUtil.stringToObject(response.toString(), GoodsDetails_Sup.class);
-                        if (goodsDetails_sup.isSuccessed()) {
                             upgradeGoods = goodsDetails_sup.getRetRes();
                             refresh();
                         } else {
-                            DialogUtil.showErrorMessage(thisContext, goodsDetails_sup.getRetErr());
+                            DialogUtil.showErrorMessage(thisContext, interResult.getRetErr());
                         }
                     }
                 }, new Response.ErrorListener() {
