@@ -6,6 +6,7 @@ package com.sp.shangpin.entity;
  */
 
 public class InterResult {
+    protected String Cookie;
     protected int retInt;
     protected String retErr;
 
@@ -18,8 +19,22 @@ public class InterResult {
         this.retErr = retErr;
     }
 
+    public InterResult(String cookie, int retInt, String retErr) {
+        Cookie = cookie;
+        this.retInt = retInt;
+        this.retErr = retErr;
+    }
+
     public boolean isSuccessed() {
         return retInt == 1;
+    }
+
+    public String getCookie() {
+        return Cookie;
+    }
+
+    public void setCookie(String cookie) {
+        Cookie = cookie;
     }
 
     public int getRetInt() {
@@ -41,8 +56,9 @@ public class InterResult {
     @Override
     public String toString() {
         return "InterResult{" +
-                "retInt=" + retInt +
-                ", retErr=" + retErr +
+                "Cookie='" + Cookie + '\'' +
+                ", retInt=" + retInt +
+                ", retErr='" + retErr + '\'' +
                 '}';
     }
 }

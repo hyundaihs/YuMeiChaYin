@@ -25,6 +25,7 @@ import com.sp.shangpin.fragments.FragmentMine;
 import com.sp.shangpin.fragments.FragmentStore;
 import com.sp.shangpin.utils.DialogUtil;
 import com.sp.shangpin.utils.InternetUtil;
+import com.sp.shangpin.utils.JsonObjectPostRequest;
 import com.sp.shangpin.utils.JsonUtil;
 import com.sp.shangpin.utils.RequestUtil;
 import com.sp.shangpin.utils.VolleyUtil;
@@ -118,7 +119,7 @@ public class HomeActivity extends AppCompatActivity {
     private void getUserInfo() {
         Map<String, String> map = new HashMap<>();
         VolleyUtil volleyUtil = VolleyUtil.getInstance(this);
-        JsonObjectRequest request = RequestUtil.createPostJsonRequest(InternetUtil.userinfo(),
+        JsonObjectPostRequest request = RequestUtil.createJsonObjectPostRequest(InternetUtil.userinfo(),
                 JsonUtil.objectToString(map),
                 new Response.Listener<JSONObject>() {
                     @Override

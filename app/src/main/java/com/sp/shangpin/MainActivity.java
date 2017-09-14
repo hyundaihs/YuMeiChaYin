@@ -19,6 +19,7 @@ import com.sp.shangpin.ui.LoginActivity;
 import com.sp.shangpin.ui.RegisterActivity;
 import com.sp.shangpin.utils.DialogUtil;
 import com.sp.shangpin.utils.InternetUtil;
+import com.sp.shangpin.utils.JsonObjectPostRequest;
 import com.sp.shangpin.utils.JsonUtil;
 import com.sp.shangpin.utils.RequestUtil;
 import com.sp.shangpin.utils.SharedPreferencesUtil;
@@ -59,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Map<String, String> map = new HashMap<>();
         map.put("login_verf", verf);
         VolleyUtil volleyUtil = VolleyUtil.getInstance(this);
-        JsonObjectRequest request = RequestUtil.createPostJsonRequest(InternetUtil.verflogin(),
+        JsonObjectPostRequest request = RequestUtil.createJsonObjectPostRequest(InternetUtil.verflogin(),
                 JsonUtil.objectToString(map),
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -68,6 +69,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         if (interResult.isSuccessed()) {
                             Log.i(TAG, "自动登录成功");
                             DialogUtil.showAskMessage(thisContext, "登录成功");
+                            RequestUtil.cookie = interResult.getCookie();
                             startActivity(new Intent(MainActivity.this, HomeActivity.class));
                             MyApplication.cleanAllActivitys();
                         } else {

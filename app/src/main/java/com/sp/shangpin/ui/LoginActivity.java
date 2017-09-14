@@ -1,9 +1,7 @@
 package com.sp.shangpin.ui;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -11,7 +9,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
@@ -24,11 +21,11 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.sp.shangpin.MyApplication;
 import com.sp.shangpin.R;
 import com.sp.shangpin.entity.InterResult;
-import com.sp.shangpin.entity.LoginInfo;
 import com.sp.shangpin.entity.LoginInfo_Sup;
 import com.sp.shangpin.entity.SharedKey;
 import com.sp.shangpin.utils.DialogUtil;
 import com.sp.shangpin.utils.InternetUtil;
+import com.sp.shangpin.utils.JsonObjectPostRequest;
 import com.sp.shangpin.utils.JsonUtil;
 import com.sp.shangpin.utils.ReExpressUtil;
 import com.sp.shangpin.utils.RequestUtil;
@@ -118,17 +115,19 @@ public class LoginActivity extends AppCompatActivity {
         map.put("account", account);
         map.put("password", password);
         VolleyUtil volleyUtil = VolleyUtil.getInstance(this);
-        JsonObjectRequest request = RequestUtil.createPostJsonRequest(InternetUtil.login(),
+        JsonObjectPostRequest request = RequestUtil.createJsonObjectPostRequest(InternetUtil.login(),
                 JsonUtil.objectToString(map),
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
+                        //从服务器响应response中的jsonObject中取出cookie的值，存到本地sharePreference
                         showProgress(false);
                         InterResult interResult =
                                 (InterResult) JsonUtil.stringToObject(response.toString(), InterResult.class);
                         if (interResult.isSuccessed()) {
-                        LoginInfo_Sup loginInfo_sup = (LoginInfo_Sup) JsonUtil.stringToObject(response.toString(), LoginInfo_Sup.class);
+                            LoginInfo_Sup loginInfo_sup = (LoginInfo_Sup) JsonUtil.stringToObject(response.toString(), LoginInfo_Sup.class);
                             DialogUtil.showAskMessage(thisContext, "登录成功");
+                            RequestUtil.cookie = interResult.getCookie();
                             SharedPreferencesUtil.setParam(LoginActivity.this, SharedKey.IS_REMEMBER, true);
                             SharedPreferencesUtil.setParam(LoginActivity.this, SharedKey.LOGIN_VERF, loginInfo_sup.getRetRes().getLogin_verf());
                             startActivity(new Intent(LoginActivity.this, HomeActivity.class));
