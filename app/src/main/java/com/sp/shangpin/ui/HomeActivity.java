@@ -112,7 +112,7 @@ public class HomeActivity extends AppCompatActivity {
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         disableShiftMode(navigation);
         setTitle("");
-        getUserInfo();
+//        getUserInfo();
     }
 
     private void getUserInfo() {

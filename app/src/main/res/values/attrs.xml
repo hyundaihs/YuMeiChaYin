@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="MyNestedScrollView">
+        <attr name="NestedTop" format="reference" />
+        <attr name="NestedMiddle" format="reference" />
+        <attr name="NestedList" format="reference" />
+    </declare-styleable>
+</resources>
