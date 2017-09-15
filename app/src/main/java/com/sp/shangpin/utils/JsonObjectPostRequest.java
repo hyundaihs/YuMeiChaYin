@@ -49,10 +49,10 @@ public class JsonObjectPostRequest extends JsonObjectRequest {
             if (m.find()) {
                 cookieFromResponse = m.group();
                 Log.w("LOG", "cookie from server " + cookieFromResponse);
+                //去掉cookie末尾的分号
+                cookieFromResponse = cookieFromResponse.substring(11, cookieFromResponse.length() - 1);
+                Log.w("LOG", "cookie substring " + cookieFromResponse);
             }
-            //去掉cookie末尾的分号
-            cookieFromResponse = cookieFromResponse.substring(11, cookieFromResponse.length() - 1);
-            Log.w("LOG", "cookie substring " + cookieFromResponse);
             //将cookie字符串添加到jsonObject中，该jsonObject会被deliverResponse递交，调用请求时则能在onResponse中得到
             JSONObject jsonObject = new JSONObject(jsonString);
             return Response.success(jsonObject,
@@ -74,7 +74,7 @@ public class JsonObjectPostRequest extends JsonObjectRequest {
         return sendHeader;
     }
 
-    public void setSendCookie(String cookie) {
+    public void setSendCookie() {
         sendHeader.put("Cookie", cookieFromResponse);
     }
 }

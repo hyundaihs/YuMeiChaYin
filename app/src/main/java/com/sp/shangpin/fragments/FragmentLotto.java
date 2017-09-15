@@ -27,6 +27,7 @@ import com.sp.shangpin.MyApplication;
 import com.sp.shangpin.R;
 import com.sp.shangpin.adapters.FragmentHomeAdapter;
 import com.sp.shangpin.adapters.FragmentLottoAdapter;
+import com.sp.shangpin.adapters.SpacesItemDecoration;
 import com.sp.shangpin.entity.InterResult;
 import com.sp.shangpin.entity.LottoInfo;
 import com.sp.shangpin.entity.LottoInfo_Sup;
@@ -34,6 +35,7 @@ import com.sp.shangpin.entity.UpgradeGoods;
 import com.sp.shangpin.ui.GoodsDetailsActivity;
 import com.sp.shangpin.ui.RuleActivity;
 import com.sp.shangpin.utils.DialogUtil;
+import com.sp.shangpin.utils.DisplayUtil;
 import com.sp.shangpin.utils.InternetUtil;
 import com.sp.shangpin.utils.JsonUtil;
 import com.sp.shangpin.utils.RequestUtil;
@@ -53,8 +55,8 @@ import java.util.Map;
  */
 
 public class FragmentLotto extends BaseFragment {
+    private static BaseFragment baseFragment;
     private final String TAG = getClass().getSimpleName();
-
     private Toolbar toolbar;
     private RecyclerView recyclerView;
     private RadioGroup radioGroup;
@@ -63,8 +65,6 @@ public class FragmentLotto extends BaseFragment {
     private LottoInfo lottoInfo;
     private FragmentLottoAdapter adapter;
     private List<UpgradeGoods> data;
-
-    private static BaseFragment baseFragment;
 
     public static BaseFragment getInstance() {
         if (null == baseFragment) {
@@ -111,7 +111,7 @@ public class FragmentLotto extends BaseFragment {
                         InterResult interResult =
                                 (InterResult) JsonUtil.stringToObject(response.toString(), InterResult.class);
                         if (interResult.isSuccessed()) {
-                        LottoInfo_Sup lottoInfo_sup = (LottoInfo_Sup) JsonUtil.stringToObject(response.toString(), LottoInfo_Sup.class);
+                            LottoInfo_Sup lottoInfo_sup = (LottoInfo_Sup) JsonUtil.stringToObject(response.toString(), LottoInfo_Sup.class);
                             Log.i(TAG, "抽奖信息获取成功");
                             lottoInfo = lottoInfo_sup.getRetRes();
                             refresh();
@@ -171,7 +171,7 @@ public class FragmentLotto extends BaseFragment {
         layoutManager.setOrientation(OrientationHelper.VERTICAL);
         adapter = new FragmentLottoAdapter(getActivity(), data);
         recyclerView.setAdapter(adapter);
-//        recyclerView.addItemDecoration(new DividerGridItemDecoration(getActivity()));
+        recyclerView.addItemDecoration(new SpacesItemDecoration(DisplayUtil.dp2px(getActivity(), 10)));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         adapter.setOnItemClickListener(new FragmentHomeAdapter.OnItemClickListener() {
             @Override

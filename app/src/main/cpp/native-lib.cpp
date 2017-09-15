@@ -1,7 +1,6 @@
 #include <jni.h>
 #include <string>
 
-
 extern "C"
 {
 
@@ -112,6 +111,78 @@ Java_com_sp_shangpin_utils_InternetUtil_goodssj(JNIEnv *env, jclass type) {
 JNIEXPORT jstring JNICALL
 Java_com_sp_shangpin_utils_InternetUtil_goodssjinfo(JNIEnv *env, jclass type) {
     std::string text = "goodssjinfo";
+    return env->NewStringUTF(text.c_str());
+}
+
+JNIEXPORT jstring JNICALL
+Java_com_sp_shangpin_utils_InternetUtil_goodstype(JNIEnv *env, jclass type) {
+    std::string text = "goodstype";
+    return env->NewStringUTF(text.c_str());
+}
+
+JNIEXPORT jstring JNICALL
+Java_com_sp_shangpin_utils_InternetUtil_goods(JNIEnv *env, jclass type) {
+    std::string text = "goods";
+    return env->NewStringUTF(text.c_str());
+}
+
+JNIEXPORT jstring JNICALL
+Java_com_sp_shangpin_utils_InternetUtil_goodsinfo(JNIEnv *env, jclass type) {
+    std::string text = "goodsinfo";
+    return env->NewStringUTF(text.c_str());
+}
+
+JNIEXPORT jstring JNICALL
+Java_com_sp_shangpin_utils_InternetUtil_cz(JNIEnv *env, jclass type) {
+    std::string text = "cz";
+    return env->NewStringUTF(text.c_str());
+}
+
+JNIEXPORT jstring JNICALL
+Java_com_sp_shangpin_utils_InternetUtil_czlists(JNIEnv *env, jclass type) {
+    std::string text = "czlists";
+    return env->NewStringUTF(text.c_str());
+}
+
+JNIEXPORT jstring JNICALL
+Java_com_sp_shangpin_utils_InternetUtil_czunset(JNIEnv *env, jclass type) {
+    std::string text = "czunset";
+    return env->NewStringUTF(text.c_str());
+}
+
+JNIEXPORT jstring JNICALL
+Java_com_sp_shangpin_utils_InternetUtil_orderssj(JNIEnv *env, jclass type) {
+    std::string text = "orderssj";
+    return env->NewStringUTF(text.c_str());
+}
+
+JNIEXPORT jstring JNICALL
+Java_com_sp_shangpin_utils_InternetUtil_sjlists(JNIEnv *env, jclass type) {
+    std::string text = "sjlists";
+    return env->NewStringUTF(text.c_str());
+}
+
+JNIEXPORT jstring JNICALL
+Java_com_sp_shangpin_utils_InternetUtil_sjsj(JNIEnv *env, jclass type) {
+    std::string text = "sjsj";
+    return env->NewStringUTF(text.c_str());
+}
+
+JNIEXPORT jstring JNICALL
+Java_com_sp_shangpin_utils_InternetUtil_sjth(JNIEnv *env, jclass type) {
+    std::string text = "sjth";
+    return env->NewStringUTF(text.c_str());
+}
+
+JNIEXPORT jstring JNICALL
+Java_com_sp_shangpin_utils_InternetUtil_sjtihuo(JNIEnv *env, jclass type) {
+    std::string text = "sjtihuo";
+    return env->NewStringUTF(text.c_str());
+}
+
+JNIEXPORT jstring JNICALL
+Java_com_sp_shangpin_utils_InternetUtil_jflists(JNIEnv *env, jclass type) {
+    std::string text = "jflists";
     return env->NewStringUTF(text.c_str());
 }
 

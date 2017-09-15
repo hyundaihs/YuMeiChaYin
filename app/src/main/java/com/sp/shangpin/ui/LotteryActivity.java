@@ -1,6 +1,7 @@
 package com.sp.shangpin.ui;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -13,7 +14,6 @@ import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -56,11 +56,13 @@ public class LotteryActivity extends AppCompatActivity implements View.OnClickLi
     private LotteryAdapter adapter;
     private List<LotteryInfo> data = new ArrayList<>();
     private SwipeRefreshLayout swipeRefreshLayout;
+    private int orderId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lottery);
+        orderId = getIntent().getIntExtra("order_id", 0);
         init();
     }
 
@@ -129,6 +131,39 @@ public class LotteryActivity extends AppCompatActivity implements View.OnClickLi
         return super.onOptionsItemSelected(item);
     }
 
+    private void getCaiJiOu(int index) {
+        Map<String, String> map = new HashMap<>();
+        map.put("orderssj_id", String.valueOf(orderId));
+        map.put("jo", String.valueOf(index));
+        VolleyUtil volleyUtil = VolleyUtil.getInstance(this);
+        JsonObjectRequest request = RequestUtil.createPostJsonRequest(InternetUtil.sjsj(),
+                JsonUtil.objectToString(map),
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        InterResult interResult =
+                                (InterResult) JsonUtil.stringToObject(response.toString(), InterResult.class);
+                        if (interResult.isSuccessed()) {
+                            DialogUtil.createDialog(thisContext, "提示", "还有多久开奖", "再逛逛", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    finish();
+                                }
+                            }, "坐等开奖", null);
+                        } else {
+                            DialogUtil.showErrorMessage(thisContext, interResult.getRetErr());
+                        }
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        DialogUtil.showErrorMessage(thisContext, error.toString());
+                    }
+                });
+        volleyUtil.addToRequestQueue(request, InternetUtil.reg());
+
+    }
+
     private void getLotteryInfos() {
         Map<String, String> map = new HashMap<>();
         VolleyUtil volleyUtil = VolleyUtil.getInstance(this);
@@ -140,8 +175,8 @@ public class LotteryActivity extends AppCompatActivity implements View.OnClickLi
                         InterResult interResult =
                                 (InterResult) JsonUtil.stringToObject(response.toString(), InterResult.class);
                         if (interResult.isSuccessed()) {
-                        LotteryInfo_Sup lotteryInfo_sup = (LotteryInfo_Sup)
-                                JsonUtil.stringToObject(response.toString(), LotteryInfo_Sup.class);
+                            LotteryInfo_Sup lotteryInfo_sup = (LotteryInfo_Sup)
+                                    JsonUtil.stringToObject(response.toString(), LotteryInfo_Sup.class);
                             data.clear();
                             data.addAll(lotteryInfo_sup.getRetRes());
                             refresh();
@@ -165,11 +200,21 @@ public class LotteryActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.top_up_top_up:
-                setResult(12);
-                finish();
+            case R.id.lottery_ji:
+                DialogUtil.showAskMessage(thisContext, "确定选择\"奇\"吗?", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        getCaiJiOu(1);
+                    }
+                });
                 break;
-            case R.id.top_up_price1:
+            case R.id.lottery_ou:
+                DialogUtil.showAskMessage(thisContext, "确定选择\"偶\"吗?", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        getCaiJiOu(2);
+                    }
+                });
                 break;
         }
     }

@@ -15,16 +15,16 @@ public class UpgradeGoods {
     protected int kucun; //  库存
     private String title_2; //  标题（升级后）
     private String file_url_2; //  图片（升级后）
-    private String price_2; //  价格（升级后）
+    private double price_2; //  价格（升级后）
     private String app_contents; //  详情(html代码)
-    private String yf; //  运费
-    private String yf_one; //  每增加一件增加的运费
+    private double yf; //  运费
+    private double yf_one; //  每增加一件增加的运费
 
     public UpgradeGoods() {
         super();
     }
 
-    public UpgradeGoods(int id, String title, String file_url, String info_file_url, double price, double yuanjia, int kucun, String title_2, String file_url_2, String price_2, String app_contents, String yf, String yf_one) {
+    public UpgradeGoods(int id, String title, String file_url, String info_file_url, double price, double yuanjia, int kucun, String title_2, String file_url_2, double price_2, String app_contents, double yf, double yf_one) {
         this.id = id;
         this.title = title;
         this.file_url = file_url;
@@ -104,11 +104,11 @@ public class UpgradeGoods {
         this.file_url_2 = file_url_2;
     }
 
-    public String getPrice_2() {
+    public double getPrice_2() {
         return price_2;
     }
 
-    public void setPrice_2(String price_2) {
+    public void setPrice_2(double price_2) {
         this.price_2 = price_2;
     }
 
@@ -128,19 +128,19 @@ public class UpgradeGoods {
         this.app_contents = app_contents;
     }
 
-    public String getYf() {
+    public double getYf() {
         return yf;
     }
 
-    public void setYf(String yf) {
+    public void setYf(double yf) {
         this.yf = yf;
     }
 
-    public String getYf_one() {
+    public double getYf_one() {
         return yf_one;
     }
 
-    public void setYf_one(String yf_one) {
+    public void setYf_one(double yf_one) {
         this.yf_one = yf_one;
     }
 

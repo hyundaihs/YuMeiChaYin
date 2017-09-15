@@ -119,19 +119,17 @@ public class HomeActivity extends AppCompatActivity {
     private void getUserInfo() {
         Map<String, String> map = new HashMap<>();
         VolleyUtil volleyUtil = VolleyUtil.getInstance(this);
-        JsonObjectPostRequest request = RequestUtil.createJsonObjectPostRequest(InternetUtil.userinfo(),
+        JsonObjectRequest request = RequestUtil.createPostJsonRequest(InternetUtil.userinfo(),
                 JsonUtil.objectToString(map),
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        Log.e(TAG, response.toString());
                         InterResult interResult =
                                 (InterResult) JsonUtil.stringToObject(response.toString(), InterResult.class);
                         if (interResult.isSuccessed()) {
                             UserInfo_Sup userInfo_sup =
                                     (UserInfo_Sup) JsonUtil.stringToObject(response.toString(), UserInfo_Sup.class);
                             MyApplication.userInfo = userInfo_sup.getRetRes();
-                            Log.i(TAG, userInfo_sup.toString());
                             loadFragment(FragmentHome.getInstance());
                         } else {
                             DialogUtil.showErrorMessage(thisContext, interResult.getRetErr());

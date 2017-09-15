@@ -134,4 +134,76 @@ public class InternetUtil {
      * @return
      */
     public static native String goodssjinfo();
+
+    /**
+     * 普通产品分类
+     * @return
+     */
+    public static native String goodstype();
+
+    /**
+     * 普通产品列表
+     *  @return
+     */
+    public static native String goods();
+
+    /**
+     * 普通产品详情
+     * @return
+     */
+    public static native String goodsinfo();
+
+    /**
+     * 充值
+     * @return
+     */
+    public static native String cz();
+
+    /**
+     * 充值记录
+     * @return
+     */
+    public static native String czlists();
+
+    /**
+     * 取消充值
+     * @return
+     */
+    public static native String czunset();
+
+    /**
+     * 创建升级订单
+     * @return
+     */
+    public static native String orderssj();
+
+    /**
+     * 升级记录
+     * @return
+     */
+    public static native String sjlists();
+
+    /**
+     * 升级订单(猜奇偶)
+     * @return
+     */
+    public static native String sjsj();
+
+    /**
+     * 升级订单退货
+     * @return
+     */
+    public static native String sjth();
+
+    /**
+     * 升级提货
+     * @return
+     */
+    public static native String sjtihuo();
+
+    /**
+     * 积分操作记录
+     * @return
+     */
+    public static native String jflists();
 }

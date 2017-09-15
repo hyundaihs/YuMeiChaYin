@@ -25,6 +25,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.sp.shangpin.MyApplication;
 import com.sp.shangpin.R;
 import com.sp.shangpin.adapters.FragmentHomeAdapter;
+import com.sp.shangpin.adapters.SpacesItemDecoration;
 import com.sp.shangpin.entity.HomeInfo;
 import com.sp.shangpin.entity.HomeInfo_Sup;
 import com.sp.shangpin.entity.InterResult;
@@ -34,6 +35,7 @@ import com.sp.shangpin.ui.GoodsDetailsActivity;
 import com.sp.shangpin.ui.HomeActivity;
 import com.sp.shangpin.ui.RuleActivity;
 import com.sp.shangpin.utils.DialogUtil;
+import com.sp.shangpin.utils.DisplayUtil;
 import com.sp.shangpin.utils.InternetUtil;
 import com.sp.shangpin.utils.JsonUtil;
 import com.sp.shangpin.utils.RequestUtil;
@@ -55,8 +57,8 @@ import java.util.Map;
  */
 
 public class FragmentHome extends BaseFragment implements View.OnClickListener {
+    private static BaseFragment baseFragment;
     private final String TAG = getClass().getSimpleName();
-
     private RecyclerView recyclerView;
     private Banner banner;
     private Toolbar toolbar;
@@ -65,8 +67,6 @@ public class FragmentHome extends BaseFragment implements View.OnClickListener {
     private TextView[] textViews = new TextView[3];
     private List<UpgradeGoods> data;
     private FragmentHomeAdapter adapter;
-
-    private static BaseFragment baseFragment;
 
     public static BaseFragment getInstance() {
         if (null == baseFragment) {
@@ -110,7 +110,7 @@ public class FragmentHome extends BaseFragment implements View.OnClickListener {
                         InterResult interResult =
                                 (InterResult) JsonUtil.stringToObject(response.toString(), InterResult.class);
                         if (interResult.isSuccessed()) {
-                        HomeInfo_Sup homeInfo_sup = (HomeInfo_Sup) JsonUtil.stringToObject(response.toString(), HomeInfo_Sup.class);
+                            HomeInfo_Sup homeInfo_sup = (HomeInfo_Sup) JsonUtil.stringToObject(response.toString(), HomeInfo_Sup.class);
                             Log.i(TAG, "首页信息获取成功");
                             homeInfo = homeInfo_sup.getRetRes();
                             refresh();
@@ -169,7 +169,6 @@ public class FragmentHome extends BaseFragment implements View.OnClickListener {
         layoutManager.setOrientation(OrientationHelper.VERTICAL);
         adapter = new FragmentHomeAdapter(getActivity(), data);
         recyclerView.setAdapter(adapter);
-//        recyclerView.addItemDecoration(new DividerGridItemDecoration(getActivity()));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         adapter.setOnItemClickListener(new FragmentHomeAdapter.OnItemClickListener() {
             @Override

@@ -72,6 +72,14 @@ public class CountNumberView extends LinearLayout implements View.OnClickListene
         });
     }
 
+    public OnNumberChangerListener getOnNumberChangerListener() {
+        return onNumberChangerListener;
+    }
+
+    public void setOnNumberChangerListener(OnNumberChangerListener onNumberChangerListener) {
+        this.onNumberChangerListener = onNumberChangerListener;
+    }
+
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();

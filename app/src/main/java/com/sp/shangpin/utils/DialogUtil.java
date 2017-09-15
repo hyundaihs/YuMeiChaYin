@@ -29,8 +29,8 @@ public class DialogUtil {
     }
 
 
-    public static AlertDialog showMessage(Context context, String title, String message) {
-        return createDialog(context, title, message, "确定", null, null, null);
+    public static AlertDialog showTipMessage(Context context, String message, DialogInterface.OnClickListener positiveListener) {
+        return createDialog(context, "提示", message, "确定", positiveListener, null, null);
     }
 
     public static AlertDialog createDialog(Context context, String title, String message,

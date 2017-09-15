@@ -25,7 +25,6 @@ import com.sp.shangpin.entity.LoginInfo_Sup;
 import com.sp.shangpin.entity.SharedKey;
 import com.sp.shangpin.utils.DialogUtil;
 import com.sp.shangpin.utils.InternetUtil;
-import com.sp.shangpin.utils.JsonObjectPostRequest;
 import com.sp.shangpin.utils.JsonUtil;
 import com.sp.shangpin.utils.ReExpressUtil;
 import com.sp.shangpin.utils.RequestUtil;
@@ -115,7 +114,7 @@ public class LoginActivity extends AppCompatActivity {
         map.put("account", account);
         map.put("password", password);
         VolleyUtil volleyUtil = VolleyUtil.getInstance(this);
-        JsonObjectPostRequest request = RequestUtil.createJsonObjectPostRequest(InternetUtil.login(),
+        JsonObjectRequest request = RequestUtil.createPostJsonRequest(InternetUtil.login(),
                 JsonUtil.objectToString(map),
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -127,7 +126,6 @@ public class LoginActivity extends AppCompatActivity {
                         if (interResult.isSuccessed()) {
                             LoginInfo_Sup loginInfo_sup = (LoginInfo_Sup) JsonUtil.stringToObject(response.toString(), LoginInfo_Sup.class);
                             DialogUtil.showAskMessage(thisContext, "登录成功");
-                            RequestUtil.cookie = interResult.getCookie();
                             SharedPreferencesUtil.setParam(LoginActivity.this, SharedKey.IS_REMEMBER, true);
                             SharedPreferencesUtil.setParam(LoginActivity.this, SharedKey.LOGIN_VERF, loginInfo_sup.getRetRes().getLogin_verf());
                             startActivity(new Intent(LoginActivity.this, HomeActivity.class));

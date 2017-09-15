@@ -7,16 +7,12 @@ import com.android.volley.toolbox.StringRequest;
 
 import org.json.JSONObject;
 
-import java.util.Map;
-
 /**
  * ShangPin
  * Created by 蔡雨峰 on 2017/9/8.
  */
 
 public class RequestUtil {
-
-    public static String cookie = "";
 
     public static JsonObjectRequest createJsonGetRequest(String action, JSONObject jsonObject,
                                                          Response.Listener<JSONObject> listener,
@@ -34,23 +30,21 @@ public class RequestUtil {
 
     }
 
-    public static JsonObjectRequest createPostJsonRequest(String action, String jsonObject,
-                                                          Response.Listener<JSONObject> listener,
-                                                          Response.ErrorListener errorListener) {
-        return new JsonObjectRequest(Request.Method.POST,
-                InternetUtil.urlApi() + action + InternetUtil.securityStr(),
-                jsonObject, listener, errorListener);
-    }
+//    public static JsonObjectRequest createPostJsonRequest(String action, String jsonObject,
+//                                                          Response.Listener<JSONObject> listener,
+//                                                          Response.ErrorListener errorListener) {
+//        return new JsonObjectRequest(Request.Method.POST,
+//                InternetUtil.urlApi() + action + InternetUtil.securityStr(),
+//                jsonObject, listener, errorListener);
+//    }
 
-    public static JsonObjectPostRequest createJsonObjectPostRequest(String action, String requestBody,
+    public static JsonObjectPostRequest createPostJsonRequest(String action, String requestBody,
                                                                     Response.Listener<JSONObject> listener,
                                                                     Response.ErrorListener errorListener) {
         JsonObjectPostRequest jsonObjectRequest = new JsonObjectPostRequest(
                 InternetUtil.urlApi() + action + InternetUtil.securityStr(),
                 requestBody, listener, errorListener);
-        if (action.equals(InternetUtil.userinfo())) {
-            jsonObjectRequest.setSendCookie(cookie);//向服务器发起post请求时加上cookie字段
-        }
+        jsonObjectRequest.setSendCookie();//向服务器发起post请求时加上cookie字段
         return jsonObjectRequest;
     }
 
