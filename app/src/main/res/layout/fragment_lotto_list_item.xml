@@ -20,14 +20,15 @@
 
         <ImageView
             android:id="@+id/fragment_lotto_list_item_not_upgrade_image"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:contentDescription="@null"
             android:src="@mipmap/ic_launcher"
+            app:layout_constraintHorizontal_weight="4"
+            app:layout_constraintHorizontal_chainStyle="spread"
             app:layout_constraintBottom_toTopOf="@+id/fragment_lotto_list_item_not_upgrade_name"
-            app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="@+id/fragment_lotto_list_item_guideline"
+            app:layout_constraintRight_toLeftOf="@+id/fragment_lotto_list_item_upgrade_icon"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_chainStyle="packed" />
 
@@ -57,13 +58,13 @@
 
         <ImageView
             android:id="@+id/fragment_lotto_list_item_upgrade_image"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:contentDescription="@null"
             android:src="@mipmap/ic_launcher"
+            app:layout_constraintHorizontal_weight="4"
             app:layout_constraintBottom_toTopOf="@+id/fragment_lotto_list_item_upgrade_name"
-            app:layout_constraintDimensionRatio="1:1"
-            app:layout_constraintLeft_toLeftOf="@+id/fragment_lotto_list_item_guideline"
+            app:layout_constraintLeft_toRightOf="@+id/fragment_lotto_list_item_upgrade_icon"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_chainStyle="packed" />
@@ -93,10 +94,12 @@
             app:layout_constraintTop_toBottomOf="@+id/fragment_lotto_list_item_upgrade_name" />
 
         <ImageView
-            android:layout_width="wrap_content"
+            android:id="@+id/fragment_lotto_list_item_upgrade_icon"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:src="@mipmap/ic_launcher_round"
-            android:visibility="gone"
+            android:visibility="visible"
+            app:layout_constraintHorizontal_weight="2"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@+id/fragment_lotto_list_item_not_upgrade_image"
             app:layout_constraintRight_toLeftOf="@+id/fragment_lotto_list_item_upgrade_image"

@@ -8,9 +8,11 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -18,8 +20,11 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.sp.shangpin.R;
 import com.sp.shangpin.adapters.EndLessOnScrollListener;
 import com.sp.shangpin.adapters.LineDecoration;
+import com.sp.shangpin.adapters.LotteryAdapter;
 import com.sp.shangpin.adapters.OrdersAdapter;
+import com.sp.shangpin.entity.HomeInfo_Sup;
 import com.sp.shangpin.entity.InterResult;
+import com.sp.shangpin.entity.LotteryInfo;
 import com.sp.shangpin.entity.OrderInfo;
 import com.sp.shangpin.entity.OrdersInfo_Sup;
 import com.sp.shangpin.utils.DialogUtil;
@@ -40,15 +45,14 @@ import java.util.Map;
  * Created by 蔡雨峰 on 2017/9/12.
  */
 
-public class FragmentPickUp extends BaseFragment {
-
+public class FragmentPayed extends BaseFragment {
     private final String TAG = getClass().getSimpleName();
 
     private static BaseFragment baseFragment;
 
     public static BaseFragment getInstance() {
         if (null == baseFragment) {
-            baseFragment = new FragmentPickUp();
+            baseFragment = new FragmentPayed();
         }
         return baseFragment;
     }
@@ -79,7 +83,7 @@ public class FragmentPickUp extends BaseFragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
         layoutManager.setOrientation(OrientationHelper.VERTICAL);
-        adapter = new OrdersAdapter(getActivity(), data,3);
+        adapter = new OrdersAdapter(getActivity(), data, 0);
         recyclerView.setAdapter(adapter);
         recyclerView.addItemDecoration(new LineDecoration(getActivity(), LineDecoration.VERTICAL_LIST));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -104,7 +108,7 @@ public class FragmentPickUp extends BaseFragment {
         Map<String, String> map = new HashMap<>();
         map.put("page", String.valueOf(page));
         map.put("pagesize", "20");
-        map.put("type_id", "4");
+        map.put("type_id", "1");
         VolleyUtil volleyUtil = VolleyUtil.getInstance(getActivity());
         JsonObjectRequest request = RequestUtil.createPostJsonRequest(InternetUtil.sjlists(),
                 JsonUtil.objectToString(map),
@@ -133,4 +137,5 @@ public class FragmentPickUp extends BaseFragment {
                 });
         volleyUtil.addToRequestQueue(request, InternetUtil.reg());
     }
+
 }

@@ -40,15 +40,14 @@ import java.util.Map;
  * Created by 蔡雨峰 on 2017/9/12.
  */
 
-public class FragmentPickUp extends BaseFragment {
-
+public class FragmentReturned extends BaseFragment {
     private final String TAG = getClass().getSimpleName();
 
     private static BaseFragment baseFragment;
 
     public static BaseFragment getInstance() {
         if (null == baseFragment) {
-            baseFragment = new FragmentPickUp();
+            baseFragment = new FragmentReturned();
         }
         return baseFragment;
     }
@@ -79,7 +78,7 @@ public class FragmentPickUp extends BaseFragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
         layoutManager.setOrientation(OrientationHelper.VERTICAL);
-        adapter = new OrdersAdapter(getActivity(), data,3);
+        adapter = new OrdersAdapter(getActivity(), data, 2);
         recyclerView.setAdapter(adapter);
         recyclerView.addItemDecoration(new LineDecoration(getActivity(), LineDecoration.VERTICAL_LIST));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -104,7 +103,7 @@ public class FragmentPickUp extends BaseFragment {
         Map<String, String> map = new HashMap<>();
         map.put("page", String.valueOf(page));
         map.put("pagesize", "20");
-        map.put("type_id", "4");
+        map.put("type_id", "3");
         VolleyUtil volleyUtil = VolleyUtil.getInstance(getActivity());
         JsonObjectRequest request = RequestUtil.createPostJsonRequest(InternetUtil.sjlists(),
                 JsonUtil.objectToString(map),
