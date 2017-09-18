@@ -206,4 +206,24 @@ public class InternetUtil {
      * @return
      */
     public static native String jflists();
+    /**
+     * 创建普通订单
+     * @return
+     */
+    public static native String orders();
+    /**
+     * 订单列表
+     * @return
+     */
+    public static native String orderslists();
+    /**
+     * 取消普通订单(退款)
+     * @return
+     */
+    public static native String unsetorders();
+    /**
+     * 普通订单确认收货
+     * @return
+     */
+    public static native String shorders();
 }

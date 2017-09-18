@@ -1,6 +1,5 @@
 package com.sp.shangpin.fragments;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -63,9 +62,9 @@ public class FragmentPickUp extends BaseFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_wait, container, false);
-        recyclerView = view.findViewById(R.id.fragment_wait_recycler_view);
-        swipeRefreshLayout = view.findViewById(R.id.fragment_wait_swipe_layout);
+        View view = inflater.inflate(R.layout.fragment_paid, container, false);
+        recyclerView = view.findViewById(R.id.fragment_paid_recycler_view);
+        swipeRefreshLayout = view.findViewById(R.id.fragment_paid_swipe_layout);
         return view;
     }
 
@@ -79,7 +78,7 @@ public class FragmentPickUp extends BaseFragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
         layoutManager.setOrientation(OrientationHelper.VERTICAL);
-        adapter = new OrdersAdapter(getActivity(), data,3);
+        adapter = new OrdersAdapter(getActivity(),this, data,3);
         recyclerView.setAdapter(adapter);
         recyclerView.addItemDecoration(new LineDecoration(getActivity(), LineDecoration.VERTICAL_LIST));
         recyclerView.setItemAnimator(new DefaultItemAnimator());

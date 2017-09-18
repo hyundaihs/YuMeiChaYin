@@ -186,4 +186,29 @@ Java_com_sp_shangpin_utils_InternetUtil_jflists(JNIEnv *env, jclass type) {
     return env->NewStringUTF(text.c_str());
 }
 
+JNIEXPORT jstring JNICALL
+Java_com_sp_shangpin_utils_InternetUtil_orders(JNIEnv *env, jclass type) {
+    std::string text = "orders";
+    return env->NewStringUTF(text.c_str());
+}
+
+JNIEXPORT jstring JNICALL
+Java_com_sp_shangpin_utils_InternetUtil_orderslists(JNIEnv *env, jclass type) {
+    std::string text = "orderslists";
+    return env->NewStringUTF(text.c_str());
+}
+
+JNIEXPORT jstring JNICALL
+Java_com_sp_shangpin_utils_InternetUtil_unsetorders(JNIEnv *env, jclass type) {
+    std::string text = "unsetorders";
+    return env->NewStringUTF(text.c_str());
+}
+
+JNIEXPORT jstring JNICALL
+Java_com_sp_shangpin_utils_InternetUtil_shorders(JNIEnv *env, jclass type) {
+    std::string text = "shorders";
+    return env->NewStringUTF(text.c_str());
+}
+
+
 }

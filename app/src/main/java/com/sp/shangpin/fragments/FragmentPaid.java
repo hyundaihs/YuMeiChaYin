@@ -1,6 +1,6 @@
 package com.sp.shangpin.fragments;
 
-import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -12,21 +12,19 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.sp.shangpin.MyApplication;
 import com.sp.shangpin.R;
 import com.sp.shangpin.adapters.EndLessOnScrollListener;
 import com.sp.shangpin.adapters.LineDecoration;
-import com.sp.shangpin.adapters.LotteryAdapter;
 import com.sp.shangpin.adapters.OrdersAdapter;
-import com.sp.shangpin.entity.HomeInfo_Sup;
 import com.sp.shangpin.entity.InterResult;
-import com.sp.shangpin.entity.LotteryInfo;
 import com.sp.shangpin.entity.OrderInfo;
 import com.sp.shangpin.entity.OrdersInfo_Sup;
+import com.sp.shangpin.entity.RequestAndResult;
 import com.sp.shangpin.utils.DialogUtil;
 import com.sp.shangpin.utils.InternetUtil;
 import com.sp.shangpin.utils.JsonUtil;
@@ -45,31 +43,28 @@ import java.util.Map;
  * Created by 蔡雨峰 on 2017/9/12.
  */
 
-public class FragmentPayed extends BaseFragment {
-    private final String TAG = getClass().getSimpleName();
-
+public class FragmentPaid extends BaseFragment {
     private static BaseFragment baseFragment;
-
-    public static BaseFragment getInstance() {
-        if (null == baseFragment) {
-            baseFragment = new FragmentPayed();
-        }
-        return baseFragment;
-    }
-
+    private final String TAG = getClass().getSimpleName();
     private RecyclerView recyclerView;
     private OrdersAdapter adapter;
     private List<OrderInfo> data = new ArrayList<>();
     private SwipeRefreshLayout swipeRefreshLayout;
     private EndLessOnScrollListener endLessOnScrollListener;
 
+    public static BaseFragment getInstance() {
+        if (null == baseFragment) {
+            baseFragment = new FragmentPaid();
+        }
+        return baseFragment;
+    }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_wait, container, false);
-        recyclerView = view.findViewById(R.id.fragment_wait_recycler_view);
-        swipeRefreshLayout = view.findViewById(R.id.fragment_wait_swipe_layout);
+        View view = inflater.inflate(R.layout.fragment_paid, container, false);
+        recyclerView = view.findViewById(R.id.fragment_paid_recycler_view);
+        swipeRefreshLayout = view.findViewById(R.id.fragment_paid_swipe_layout);
         return view;
     }
 
@@ -83,7 +78,7 @@ public class FragmentPayed extends BaseFragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
         layoutManager.setOrientation(OrientationHelper.VERTICAL);
-        adapter = new OrdersAdapter(getActivity(), data, 0);
+        adapter = new OrdersAdapter(getActivity(), this, data, 0);
         recyclerView.setAdapter(adapter);
         recyclerView.addItemDecoration(new LineDecoration(getActivity(), LineDecoration.VERTICAL_LIST));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -138,4 +133,46 @@ public class FragmentPayed extends BaseFragment {
         volleyUtil.addToRequestQueue(request, InternetUtil.reg());
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.d("Paid", "onActivityResult");
+        if (requestCode == RequestAndResult.REQUEST_FROM_PAID && resultCode == RequestAndResult.RESULT_OK) {
+            int id = data.getIntExtra("order_id", -1);
+            if (id != -1) {
+                pickUp(id);
+            }
+        }
+    }
+
+    private void pickUp(final int position) {
+        Map<String, String> map = new HashMap<>();
+        map.put("orderssj_id", String.valueOf(data.get(position).getId()));
+        map.put("title", MyApplication.userInfo.getWl_title());
+        map.put("phone", MyApplication.userInfo.getWl_phone());
+        map.put("pca", MyApplication.userInfo.getWl_pca());
+        map.put("address", MyApplication.userInfo.getWl_address());
+        map.put("contents", MyApplication.userInfo.getWl_content());
+        VolleyUtil volleyUtil = VolleyUtil.getInstance(getActivity());
+        JsonObjectRequest request = RequestUtil.createPostJsonRequest(InternetUtil.sjtihuo(),
+                JsonUtil.objectToString(map),
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        InterResult interResult = (InterResult) JsonUtil.stringToObject(response.toString(), InterResult.class);
+                        if (interResult.isSuccessed()) {
+                            data.remove(position);
+                            adapter.notifyItemRemoved(position);
+                        } else {
+                            DialogUtil.showErrorMessage(getActivity(), interResult.getRetErr());
+                        }
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        DialogUtil.showErrorMessage(getActivity(), error.toString());
+                    }
+                });
+        volleyUtil.addToRequestQueue(request, InternetUtil.reg());
+    }
 }

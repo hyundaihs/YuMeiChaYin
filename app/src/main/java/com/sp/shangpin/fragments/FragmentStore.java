@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.sp.shangpin.R;
+import com.sp.shangpin.ui.NormalGoodsActivity;
 import com.sp.shangpin.ui.RuleActivity;
 
 /**
@@ -20,10 +21,9 @@ import com.sp.shangpin.ui.RuleActivity;
  * Created by 蔡雨峰 on 2017/9/4.
  */
 
-public class FragmentStore extends BaseFragment {
-    private Toolbar toolbar;
-
+public class FragmentStore extends BaseFragment implements View.OnClickListener {
     private static BaseFragment baseFragment;
+    private Toolbar toolbar;
 
     public static BaseFragment getInstance() {
         if (null == baseFragment) {
@@ -37,6 +37,10 @@ public class FragmentStore extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_store, container, false);
         toolbar = view.findViewById(R.id.fragment_store_toolbar);
+        view.findViewById(R.id.fragment_store_store1).setOnClickListener(this);
+        view.findViewById(R.id.fragment_store_store2).setOnClickListener(this);
+        view.findViewById(R.id.fragment_store_store3).setOnClickListener(this);
+        view.findViewById(R.id.fragment_store_store4).setOnClickListener(this);
         return view;
     }
 
@@ -66,6 +70,21 @@ public class FragmentStore extends BaseFragment {
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.fragment_store_store1:
+                startActivity(new Intent(getActivity(), NormalGoodsActivity.class));
+                break;
+            case R.id.fragment_store_store2:
+                break;
+            case R.id.fragment_store_store3:
+                break;
+            case R.id.fragment_store_store4:
+                break;
         }
     }
 }

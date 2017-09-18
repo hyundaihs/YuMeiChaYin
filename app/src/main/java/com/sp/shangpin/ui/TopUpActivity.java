@@ -22,6 +22,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.sp.shangpin.R;
 import com.sp.shangpin.entity.InterResult;
+import com.sp.shangpin.entity.RequestAndResult;
 import com.sp.shangpin.entity.SharedKey;
 import com.sp.shangpin.utils.DialogUtil;
 import com.sp.shangpin.utils.InternetUtil;
@@ -120,7 +121,7 @@ public class TopUpActivity extends AppCompatActivity implements View.OnClickList
                             DialogUtil.showTipMessage(thisContext, "充值成功", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
-                                    setResult(12);
+                                    setResult(RequestAndResult.RESULT_OK);
                                     finish();
                                 }
                             });

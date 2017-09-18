@@ -17,8 +17,11 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.sp.shangpin.MyApplication;
 import com.sp.shangpin.R;
 import com.sp.shangpin.entity.InterResult;
+import com.sp.shangpin.entity.RequestAndResult;
 import com.sp.shangpin.entity.UserInfo_Sup;
+import com.sp.shangpin.ui.NormalOrdersActivity;
 import com.sp.shangpin.ui.OrdersActivity;
+import com.sp.shangpin.ui.TopUpActivity;
 import com.sp.shangpin.utils.DialogUtil;
 import com.sp.shangpin.utils.InternetUtil;
 import com.sp.shangpin.utils.JsonUtil;
@@ -61,6 +64,7 @@ public class FragmentMine extends BaseFragment implements View.OnClickListener {
         view.findViewById(R.id.fragment_mine_gold_coin).setOnClickListener(this);
         view.findViewById(R.id.fragment_mine_upgrade_orders).setOnClickListener(this);
         view.findViewById(R.id.fragment_mine_orders).setOnClickListener(this);
+        view.findViewById(R.id.fragment_mine_normal_orders).setOnClickListener(this);
         view.findViewById(R.id.fragment_mine_alert_pwd).setOnClickListener(this);
         view.findViewById(R.id.fragment_mine_voucher).setOnClickListener(this);
         return view;
@@ -77,12 +81,20 @@ public class FragmentMine extends BaseFragment implements View.OnClickListener {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.fragment_mine_recharge:
+                startActivityForResult(new Intent(thisContext, TopUpActivity.class),
+                        RequestAndResult.REQUEST_FROM_FRAGMENT_MINE);
                 break;
             case R.id.fragment_mine_cash:
                 break;
             case R.id.fragment_mine_gold_coin:
                 break;
             case R.id.fragment_mine_upgrade_orders:
+                Intent intent = new Intent(getActivity(), OrdersActivity.class);
+                intent.putExtra("index", 1);
+                startActivity(intent);
+                break;
+            case R.id.fragment_mine_normal_orders:
+                startActivity(new Intent(getActivity(), NormalOrdersActivity.class));
                 break;
             case R.id.fragment_mine_orders:
                 startActivity(new Intent(getActivity(), OrdersActivity.class));
@@ -95,7 +107,16 @@ public class FragmentMine extends BaseFragment implements View.OnClickListener {
         }
     }
 
-    private void refresh(){
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == RequestAndResult.REQUEST_FROM_FRAGMENT_MINE
+                && resultCode == RequestAndResult.RESULT_OK) {
+            getUserInfo();
+        }
+    }
+
+    private void refresh() {
         VolleyUtil volleyUtil = VolleyUtil.getInstance(getActivity());
         if (null != MyApplication.userInfo) {
             volleyUtil.getImage(imagePhone, MyApplication.userInfo.getFile_url());

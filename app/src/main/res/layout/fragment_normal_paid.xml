@@ -5,13 +5,14 @@
     android:orientation="vertical">
 
     <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/fragment_wait_swipe_layout"
+        android:id="@+id/fragment_normal_paid_swipe_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/fragment_wait_recycler_view"
+            android:id="@+id/fragment_normal_paid_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </android.support.v4.widget.SwipeRefreshLayout>
+
 </LinearLayout>

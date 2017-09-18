@@ -37,6 +37,9 @@
         <activity android:name=".ui.RuleActivity" />
         <activity android:name=".ui.OrdersActivity" />
         <activity android:name=".ui.InputAddrActivity" />
+        <activity android:name=".ui.NormalGoodsActivity" />
+        <activity android:name=".ui.NormalGoodsDetailsActivity" />
+        <activity android:name=".ui.NormalOrdersActivity" />
     </application>
 
 </manifest>

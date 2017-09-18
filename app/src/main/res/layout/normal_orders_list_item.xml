@@ -12,7 +12,7 @@
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/orders_list_item_order_time"
+            android:id="@+id/normal_orders_list_item_order_time"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -22,7 +22,7 @@
             android:textSize="12sp" />
 
         <TextView
-            android:id="@+id/orders_list_item_order_id"
+            android:id="@+id/normal_orders_list_item_order_id"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -47,14 +47,14 @@
                 android:layout_margin="5dp">
 
                 <ImageView
-                    android:id="@+id/orders_list_item_image"
+                    android:id="@+id/normal_orders_list_item_image"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:src="@mipmap/ic_launcher"
                     app:layout_constraintDimensionRatio="1:1" />
 
                 <TextView
-                    android:id="@+id/orders_list_item_name"
+                    android:id="@+id/normal_orders_list_item_name"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
@@ -62,13 +62,13 @@
                     android:text="福寿膏"
                     android:textColor="@android:color/black"
                     android:textSize="14sp"
-                    app:layout_constraintBottom_toTopOf="@+id/orders_list_item_number"
-                    app:layout_constraintLeft_toRightOf="@+id/orders_list_item_image"
-                    app:layout_constraintRight_toLeftOf="@+id/orders_list_item_status"
+                    app:layout_constraintBottom_toTopOf="@+id/normal_orders_list_item_number"
+                    app:layout_constraintLeft_toRightOf="@+id/normal_orders_list_item_image"
+                    app:layout_constraintRight_toLeftOf="@+id/normal_orders_list_item_status"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/orders_list_item_number"
+                    android:id="@+id/normal_orders_list_item_number"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:gravity="left|center_vertical"
@@ -76,12 +76,12 @@
                     android:textColor="@android:color/black"
                     android:textSize="14sp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintLeft_toLeftOf="@+id/orders_list_item_name"
-                    app:layout_constraintRight_toLeftOf="@+id/orders_list_item_status"
-                    app:layout_constraintTop_toBottomOf="@+id/orders_list_item_name" />
+                    app:layout_constraintLeft_toLeftOf="@+id/normal_orders_list_item_name"
+                    app:layout_constraintRight_toLeftOf="@+id/normal_orders_list_item_status"
+                    app:layout_constraintTop_toBottomOf="@+id/normal_orders_list_item_name" />
 
                 <TextView
-                    android:id="@+id/orders_list_item_status"
+                    android:id="@+id/normal_orders_list_item_status"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="right|center_vertical"
@@ -89,7 +89,7 @@
                     android:textColor="@android:color/black"
                     android:textSize="14sp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintLeft_toRightOf="@+id/orders_list_item_name"
+                    app:layout_constraintLeft_toRightOf="@+id/normal_orders_list_item_name"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -104,60 +104,32 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                android:orientation="horizontal">
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp">
 
-                <TextView
-                    android:id="@+id/orders_list_item_lottery_time"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="开奖时间:2017-09-12 21:18:22"
+                <ImageView
+                    android:id="@+id/normal_orders_list_item_goods_flag"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:contentDescription="@null"
+                    android:src="@mipmap/ic_launcher"
                     android:textColor="@android:color/black"
                     android:textSize="12sp" />
 
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
 
                 <TextView
-                    android:id="@+id/orders_list_item_gold_coin"
+                    android:id="@+id/normal_orders_list_item_return"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@android:color/holo_orange_dark"
-                    android:padding="5dp"
-                    android:text="兑金币"
-                    android:textColor="@android:color/white"
-                    android:textSize="12sp"
-                    android:visibility="gone" />
-
-                <TextView
-                    android:id="@+id/orders_list_item_return"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
                     android:background="@android:color/holo_orange_dark"
                     android:padding="5dp"
                     android:text="退款"
-                    android:textColor="@android:color/white"
-                    android:textSize="12sp" />
-
-
-                <TextView
-                    android:id="@+id/orders_list_item_pick_up"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:background="@android:color/holo_orange_dark"
-                    android:padding="5dp"
-                    android:text="提货"
-                    android:textColor="@android:color/white"
-                    android:textSize="12sp" />
-
-                <TextView
-                    android:id="@+id/orders_list_item_upgrade"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:background="@android:color/holo_orange_dark"
-                    android:padding="5dp"
-                    android:text="升级"
                     android:textColor="@android:color/white"
                     android:textSize="12sp" />
 
@@ -182,7 +154,7 @@
                     android:textSize="12sp" />
 
                 <TextView
-                    android:id="@+id/orders_list_item_price"
+                    android:id="@+id/normal_orders_list_item_price"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -198,7 +170,7 @@
                     android:textSize="12sp" />
 
                 <TextView
-                    android:id="@+id/orders_list_item_total_price"
+                    android:id="@+id/normal_orders_list_item_total_price"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -207,7 +179,7 @@
                     android:textSize="12sp" />
 
                 <TextView
-                    android:id="@+id/orders_list_item_details"
+                    android:id="@+id/normal_orders_list_item_details"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@android:color/holo_orange_dark"
@@ -217,6 +189,77 @@
                     android:textSize="12sp" />
 
             </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/fragment_content_bg" />
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingTop="5dp"
+                android:text="收件信息"
+                android:textColor="@android:color/black"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/normal_orders_list_item_addr_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingTop="5dp"
+                android:text="联系人:哈哈哈"
+                android:textColor="@android:color/black"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/normal_orders_list_item_addr_phone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingTop="5dp"
+                android:text="手机:18571514990"
+                android:textColor="@android:color/black"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/normal_orders_list_item_addr_area"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingTop="5dp"
+                android:text="收货地址:佛挡杀佛酒店式的"
+                android:textColor="@android:color/black"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/normal_orders_list_item_addr_addr"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingTop="5dp"
+                android:text="详细地址:范德萨方第三方但是范德萨发生的"
+                android:textColor="@android:color/black"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/normal_orders_list_item_addr_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingTop="5dp"
+                android:text="备注:范德萨范德萨范德萨"
+                android:textColor="@android:color/black"
+                android:textSize="12sp" />
         </LinearLayout>
     </android.support.v7.widget.CardView>
 

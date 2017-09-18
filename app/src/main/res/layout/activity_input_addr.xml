@@ -74,7 +74,6 @@
             android:hint="地区(如:湖北省武汉市江夏区)"
             android:imeOptions="actionNext"
             android:inputType="text"
-            android:maxLines="1"
             android:nextFocusForward="@+id/input_addr_addr" />
 
     </android.support.design.widget.TextInputLayout>
@@ -94,7 +93,6 @@
             android:hint="详细地址(如:x县市x路x小区x栋x单元x室)"
             android:imeOptions="actionNext"
             android:inputType="text"
-            android:maxLines="1"
             android:nextFocusForward="@+id/input_addr_content" />
 
     </android.support.design.widget.TextInputLayout>
@@ -113,7 +111,7 @@
             android:layout_height="wrap_content"
             android:hint="其它备注(非必填)"
             android:imeOptions="actionDone"
-            android:inputType="text"/>
+            android:inputType="text" />
 
     </android.support.design.widget.TextInputLayout>
 

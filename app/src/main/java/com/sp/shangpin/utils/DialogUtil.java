@@ -20,6 +20,11 @@ public class DialogUtil {
         return createDialog(context, "提示", message, "确定", null, null, null);
     }
 
+    public static AlertDialog showAskMessage(Context context, String message, String ok,
+                                             DialogInterface.OnClickListener positiveListener) {
+        return createDialog(context, "提示", message, null == ok ? "确定" : ok, positiveListener, "取消", null);
+    }
+
     public static AlertDialog showErrorMessage(Context context, String message) {
         return createDialog(context, "错误", message, "确定", null, null, null);
     }

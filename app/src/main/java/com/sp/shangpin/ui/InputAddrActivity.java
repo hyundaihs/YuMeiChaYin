@@ -6,8 +6,6 @@ import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.PersistableBundle;
-import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -15,27 +13,12 @@ import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
-import android.widget.Button;
 
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
+import com.sp.shangpin.MyApplication;
 import com.sp.shangpin.R;
-import com.sp.shangpin.entity.AddressInfo;
-import com.sp.shangpin.entity.InterResult;
-import com.sp.shangpin.entity.OrdersInfo_Sup;
 import com.sp.shangpin.entity.RequestAndResult;
 import com.sp.shangpin.utils.DialogUtil;
-import com.sp.shangpin.utils.InternetUtil;
-import com.sp.shangpin.utils.JsonUtil;
 import com.sp.shangpin.utils.ReExpressUtil;
-import com.sp.shangpin.utils.RequestUtil;
-import com.sp.shangpin.utils.VolleyUtil;
-
-import org.json.JSONObject;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * ChaYin
@@ -47,13 +30,11 @@ public class InputAddrActivity extends AppCompatActivity {
     private final Context thisContext = this;
 
     private AutoCompleteTextView name, phone, area, addr, content;
-    private int orderId = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_input_addr);
-        orderId = getIntent().getIntExtra("order_id", -1);
         initActionBar();
         initViews();
     }
@@ -87,6 +68,12 @@ public class InputAddrActivity extends AppCompatActivity {
                 });
             }
         });
+        if (null != MyApplication.userInfo && !TextUtils.isEmpty(MyApplication.userInfo.getWl_title())) {
+            name.setText(MyApplication.userInfo.getWl_title());
+            phone.setText(MyApplication.userInfo.getWl_phone());
+            area.setText(MyApplication.userInfo.getWl_pca());
+            addr.setText(MyApplication.userInfo.getWl_address());
+        }
     }
 
     private boolean check() {
@@ -110,58 +97,15 @@ public class InputAddrActivity extends AppCompatActivity {
         /**
          * 提交给服务器,成功后关闭页面   返回OK  并返回地址信息
          */
-        Map<String, String> map = new HashMap<>();
-        map.put("orderssj_id", String.valueOf(orderId));
-        map.put("title", name.getText().toString());
-        map.put("phone", phone.getText().toString());
-        map.put("pca", area.getText().toString());
-        map.put("address", addr.getText().toString());
-        map.put("contents", content.getText().toString());
-//        VolleyUtil volleyUtil = VolleyUtil.getInstance(thisContext);
-//        JsonObjectRequest request = RequestUtil.createPostJsonRequest(InternetUtil.sjlists(),
-//                JsonUtil.objectToString(map),
-//                new Response.Listener<JSONObject>() {
-//                    @Override
-//                    public void onResponse(JSONObject response) {
-//                        InterResult interResult = (InterResult) JsonUtil.stringToObject(response.toString(), InterResult.class);
-//                        if (interResult.isSuccessed()) {
-//                        } else {
-//                            DialogUtil.showErrorMessage(thisContext, interResult.getRetErr());
-//                        }
-//                    }
-//                }, new Response.ErrorListener() {
-//                    @Override
-//                    public void onErrorResponse(VolleyError error) {
-//                        DialogUtil.showErrorMessage(thisContext, error.toString());
-//                    }
-//                });
-//        volleyUtil.addToRequestQueue(request, InternetUtil.reg());
-        if (orderId >= 0) {
-            pickUp(map);
-        }
-    }
-
-    private void pickUp(Map<String, String> map) {
-        VolleyUtil volleyUtil = VolleyUtil.getInstance(thisContext);
-        JsonObjectRequest request = RequestUtil.createPostJsonRequest(InternetUtil.sjtihuo(),
-                JsonUtil.objectToString(map),
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        InterResult interResult = (InterResult) JsonUtil.stringToObject(response.toString(), InterResult.class);
-                        if (interResult.isSuccessed()) {
-                            finish();
-                        } else {
-                            DialogUtil.showErrorMessage(thisContext, interResult.getRetErr());
-                        }
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        DialogUtil.showErrorMessage(thisContext, error.toString());
-                    }
-                });
-        volleyUtil.addToRequestQueue(request, InternetUtil.reg());
+        MyApplication.userInfo.setWl_title(name.getText().toString());
+        MyApplication.userInfo.setWl_phone(phone.getText().toString());
+        MyApplication.userInfo.setWl_pca(area.getText().toString());
+        MyApplication.userInfo.setWl_address(addr.getText().toString());
+        MyApplication.userInfo.setWl_content(content.getText().toString());
+        Intent intent = new Intent();
+        intent.putExtra("position", getIntent().getIntExtra("position", -1));
+        setResult(RequestAndResult.RESULT_OK, intent);
+        finish();
     }
 
     @Override

@@ -1,11 +1,9 @@
 package com.sp.shangpin.adapters;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,12 +15,11 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.sp.shangpin.R;
 import com.sp.shangpin.entity.InterResult;
-import com.sp.shangpin.entity.LotteryInfo;
-import com.sp.shangpin.entity.LottoInfo;
 import com.sp.shangpin.entity.OrderInfo;
 import com.sp.shangpin.entity.OrderStatus;
-import com.sp.shangpin.entity.OrdersInfo_Sup;
+import com.sp.shangpin.entity.RequestAndResult;
 import com.sp.shangpin.entity.UpgradeStatus;
+import com.sp.shangpin.fragments.BaseFragment;
 import com.sp.shangpin.ui.InputAddrActivity;
 import com.sp.shangpin.ui.LotteryActivity;
 import com.sp.shangpin.utils.CalendarUtil;
@@ -50,12 +47,14 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.MyViewHold
     private LayoutInflater inflater;
     private FragmentHomeAdapter.OnItemClickListener onItemClickListener;
     private int index;
+    private BaseFragment fragment;
 
-    public OrdersAdapter(Context context, List<OrderInfo> datas, int index) {
+    public OrdersAdapter(Context context, BaseFragment fragment, List<OrderInfo> datas, int index) {
         this.mContext = context;
         this.mDatas = datas;
         inflater = LayoutInflater.from(mContext);
         this.index = index;
+        this.fragment = fragment;
     }
 
     public void setOnItemClickListener(FragmentHomeAdapter.OnItemClickListener onItemClickListener) {
@@ -71,7 +70,6 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.MyViewHold
     @Override
     public void onBindViewHolder(OrdersAdapter.MyViewHolder holder, final int position) {
         OrderInfo orderInfo = mDatas.get(position);
-        Log.d("Bind", new CalendarUtil().getTimeInMillis() + "");
         VolleyUtil volleyUtil = VolleyUtil.getInstance(mContext);
         if (orderInfo.getSj_status() == UpgradeStatus.UPGRADE_SUCCESS) {
             holder.orderTime.setText("升级时间:" + new CalendarUtil(orderInfo.getSj_time(), true).format(CalendarUtil.STANDARD));
@@ -143,47 +141,6 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.MyViewHold
         }
     }
 
-    private class MyOnClickListener implements View.OnClickListener {
-        int position;
-
-        MyOnClickListener(int position) {
-            this.position = position;
-        }
-
-        @Override
-        public void onClick(View view) {
-            switch (view.getId()) {
-                case R.id.orders_list_item_gold_coin:
-                    break;
-                case R.id.orders_list_item_return:
-                    DialogUtil.showAskMessage(mContext, "确定要退款吗？", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            returnGoods(position);
-                        }
-                    });
-                    break;
-                case R.id.orders_list_item_pick_up:
-                    /**
-                     * 判断用户是否有默认地址
-                     * 如果没有跳转填写地址页面
-                     */
-                    Intent intent = new Intent(mContext, InputAddrActivity.class);
-                    intent.putExtra("order_id", mDatas.get(position).getId());
-                    mContext.startActivity(intent);
-                    break;
-                case R.id.orders_list_item_upgrade:
-                    Log.d("up", "click");
-                    intent = new Intent(mContext, LotteryActivity.class);
-                    intent.putExtra("order_id", mDatas.get(position).getId());
-                    mContext.startActivity(intent);
-                    break;
-                case R.id.orders_list_item_details:
-                    break;
-            }
-        }
-    }
-
     private void returnGoods(final int position) {
         Map<String, String> map = new HashMap<>();
         map.put("orderssj_id", String.valueOf(mDatas.get(position).getId()));
@@ -218,6 +175,50 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.MyViewHold
         return new OrdersAdapter.MyViewHolder(view);
     }
 
+
+    private void goInputAddr(int position) {
+        Intent intent = new Intent(mContext, InputAddrActivity.class);
+        intent.putExtra("position", position);
+        fragment.startActivityForResult(intent, RequestAndResult.REQUEST_FROM_PAID);
+    }
+
+    private void goLottery(int position) {
+        Intent intent = new Intent(mContext, LotteryActivity.class);
+        intent.putExtra("order_id", mDatas.get(position).getId());
+        fragment.startActivity(intent);
+    }
+
+    private class MyOnClickListener implements View.OnClickListener {
+        int position;
+
+        MyOnClickListener(int position) {
+            this.position = position;
+        }
+
+        @Override
+        public void onClick(View view) {
+            switch (view.getId()) {
+                case R.id.orders_list_item_gold_coin:
+                    break;
+                case R.id.orders_list_item_return:
+                    DialogUtil.showAskMessage(mContext, "确定要退款吗？", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            returnGoods(position);
+                        }
+                    });
+                    break;
+                case R.id.orders_list_item_pick_up:
+                    goInputAddr(position);
+                    break;
+                case R.id.orders_list_item_upgrade:
+                    goLottery(position);
+                    break;
+                case R.id.orders_list_item_details:
+                    break;
+            }
+        }
+    }
 
     class MyViewHolder extends RecyclerView.ViewHolder {
 
