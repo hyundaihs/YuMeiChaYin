@@ -226,4 +226,40 @@ public class InternetUtil {
      * @return
      */
     public static native String shorders();
+
+    /**
+     * 金币产品分类
+     * @return
+     */
+    public static native String goodsjftype();
+
+    /**
+     * 金币产品列表
+     * @return
+     */
+    public static native String goodsjf();
+
+    /**
+     * 金币产品详情
+     * @return
+     */
+    public static native String goodsjfinfo();
+
+    /**
+     * 创建金币产品订单
+     * @return
+     */
+    public static native String ordersjf();
+
+    /**
+     * 金币产品订单列表
+     * @return
+     */
+    public static native String ordersjflists();
+
+    /**
+     * 金币订单确认收货
+     * @return
+     */
+    public static native String shordersjf();
 }

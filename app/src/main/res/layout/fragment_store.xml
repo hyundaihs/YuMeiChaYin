@@ -48,7 +48,7 @@
             android:gravity="center"
             android:scaleType="centerCrop"
             android:src="@mipmap/ic_launcher"
-            android:text="精美商品" />
+            android:text="精品商品" />
     </android.support.v7.widget.CardView>
 
     <android.support.v7.widget.CardView
@@ -70,7 +70,7 @@
             android:gravity="center"
             android:scaleType="centerCrop"
             android:src="@mipmap/ic_launcher"
-            android:text="活动商品" />
+            android:text="金币商品" />
     </android.support.v7.widget.CardView>
 
     <android.support.v7.widget.CardView
@@ -92,7 +92,7 @@
             android:gravity="center"
             android:scaleType="centerCrop"
             android:src="@mipmap/ic_launcher"
-            android:text="积分商品" />
+            android:text="促销商品" />
     </android.support.v7.widget.CardView>
 
     <android.support.v7.widget.CardView

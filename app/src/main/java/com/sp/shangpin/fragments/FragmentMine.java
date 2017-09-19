@@ -1,14 +1,24 @@
 package com.sp.shangpin.fragments;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.OrientationHelper;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.volley.Response;
@@ -16,7 +26,10 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.sp.shangpin.MyApplication;
 import com.sp.shangpin.R;
+import com.sp.shangpin.adapters.FragmentHomeAdapter;
+import com.sp.shangpin.adapters.FragmentMineAdapter;
 import com.sp.shangpin.entity.InterResult;
+import com.sp.shangpin.entity.NormalOrderType;
 import com.sp.shangpin.entity.RequestAndResult;
 import com.sp.shangpin.entity.UserInfo_Sup;
 import com.sp.shangpin.ui.NormalOrdersActivity;
@@ -38,12 +51,16 @@ import java.util.Map;
  * Created by 蔡雨峰 on 2017/9/4.
  */
 
-public class FragmentMine extends BaseFragment implements View.OnClickListener {
-
+public class FragmentMine extends BaseFragment {
     private static BaseFragment baseFragment;
+    private final String TAG = getClass().getSimpleName();
     private ImageView imageBg, imagePhone;
     private TextView balance;
-    private Context thisContext = getActivity();
+    private Toolbar toolbar;
+    private RecyclerView recyclerView;
+    private FragmentMineAdapter adapter;
+    private String[] MENUS = {"充值", "提现", "金币专区", "升级产品订单",
+            "金币商品订单", "精品商品订单", "促销商品订单", "修改密码", "我的代金券"};
 
     public static BaseFragment getInstance() {
         if (null == baseFragment) {
@@ -56,54 +73,93 @@ public class FragmentMine extends BaseFragment implements View.OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_mine, container, false);
+        toolbar = view.findViewById(R.id.fragment_mine_toolbar);
         imageBg = view.findViewById(R.id.fragment_mine_image_bg);
         imagePhone = view.findViewById(R.id.fragment_mine_image_photo);
         balance = view.findViewById(R.id.fragment_mine_image_balance);
-        view.findViewById(R.id.fragment_mine_recharge).setOnClickListener(this);
-        view.findViewById(R.id.fragment_mine_cash).setOnClickListener(this);
-        view.findViewById(R.id.fragment_mine_gold_coin).setOnClickListener(this);
-        view.findViewById(R.id.fragment_mine_upgrade_orders).setOnClickListener(this);
-        view.findViewById(R.id.fragment_mine_orders).setOnClickListener(this);
-        view.findViewById(R.id.fragment_mine_normal_orders).setOnClickListener(this);
-        view.findViewById(R.id.fragment_mine_alert_pwd).setOnClickListener(this);
-        view.findViewById(R.id.fragment_mine_voucher).setOnClickListener(this);
+        recyclerView = view.findViewById(R.id.fragment_mine_recyclerView);
         return view;
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        initActionBar();
+        initListView();
         refresh();
         getUserInfo();
     }
 
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.fragment_mine_recharge:
-                startActivityForResult(new Intent(thisContext, TopUpActivity.class),
-                        RequestAndResult.REQUEST_FROM_FRAGMENT_MINE);
-                break;
-            case R.id.fragment_mine_cash:
-                break;
-            case R.id.fragment_mine_gold_coin:
-                break;
-            case R.id.fragment_mine_upgrade_orders:
-                Intent intent = new Intent(getActivity(), OrdersActivity.class);
-                intent.putExtra("index", 1);
-                startActivity(intent);
-                break;
-            case R.id.fragment_mine_normal_orders:
-                startActivity(new Intent(getActivity(), NormalOrdersActivity.class));
-                break;
-            case R.id.fragment_mine_orders:
-                startActivity(new Intent(getActivity(), OrdersActivity.class));
-                break;
-            case R.id.fragment_mine_alert_pwd:
-                break;
-            case R.id.fragment_mine_voucher:
-                break;
+    private void initListView() {
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(layoutManager);
+        layoutManager.setOrientation(OrientationHelper.VERTICAL);
+        adapter = new FragmentMineAdapter(getActivity(), MENUS);
+        recyclerView.setAdapter(adapter);
+        recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayout.VERTICAL));
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        adapter.setOnItemClickListener(new FragmentHomeAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                switch (position) {
+                    case 0://充值
+                        startActivityForResult(new Intent(getActivity(), TopUpActivity.class),
+                                RequestAndResult.REQUEST_FROM_FRAGMENT_MINE);
+                        break;
+                    case 1://提现
+                        break;
+                    case 2://金币专区
+                        break;
+                    case 3://升级产品订单
+                        startActivity(new Intent(getActivity(), OrdersActivity.class));
+                        break;
+                    case 4://金币商品订单
+                        Intent intent = new Intent(getActivity(), NormalOrdersActivity.class);
+                        intent.putExtra(NormalOrderType.KEY, NormalOrderType.GOLD);
+                        startActivity(intent);
+                        break;
+                    case 5://精品商品订单
+                        intent = new Intent(getActivity(), NormalOrdersActivity.class);
+                        intent.putExtra(NormalOrderType.KEY, NormalOrderType.ORIGINAL);
+                        startActivity(intent);
+                        break;
+                    case 6://促销商品订单
+                        intent = new Intent(getActivity(), NormalOrdersActivity.class);
+                        intent.putExtra(NormalOrderType.KEY, NormalOrderType.ON_SALE);
+                        startActivity(intent);
+                        break;
+                    case 7://修改密码
+                        break;
+                    case 8://我的代金券
+                        break;
+                }
+            }
+        });
+    }
 
+    public void initActionBar() {
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        toolbar.inflateMenu(R.menu.menu_mine);
+        toolbar.setTitle("");
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        Log.d(TAG, "onCreateOptionsMenu");
+        menu.clear();
+        inflater.inflate(R.menu.menu_mine, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Log.d(TAG, "onOptionsItemSelected");
+        switch (item.getItemId()) {
+            case R.id.menu_mine_login_out:
+//                startActivity(new Intent(getActivity(), RuleActivity.class));
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 
@@ -127,7 +183,7 @@ public class FragmentMine extends BaseFragment implements View.OnClickListener {
 
     private void getUserInfo() {
         Map<String, String> map = new HashMap<>();
-        VolleyUtil volleyUtil = VolleyUtil.getInstance(thisContext);
+        VolleyUtil volleyUtil = VolleyUtil.getInstance(getActivity());
         JsonObjectRequest request = RequestUtil.createPostJsonRequest(InternetUtil.userinfo(),
                 JsonUtil.objectToString(map),
                 new Response.Listener<JSONObject>() {
@@ -141,13 +197,13 @@ public class FragmentMine extends BaseFragment implements View.OnClickListener {
                             MyApplication.userInfo = userInfo_sup.getRetRes();
                             refresh();
                         } else {
-                            DialogUtil.showErrorMessage(thisContext, interResult.getRetErr());
+                            DialogUtil.showErrorMessage(getActivity(), interResult.getRetErr());
                         }
                     }
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        DialogUtil.showErrorMessage(thisContext, error.toString());
+                        DialogUtil.showErrorMessage(getActivity(), error.toString());
                     }
                 });
         volleyUtil.addToRequestQueue(request, InternetUtil.reg());

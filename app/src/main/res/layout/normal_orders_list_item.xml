@@ -17,7 +17,6 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="left|center_vertical"
-            android:text="下单时间:2017-09-17 20:28:29"
             android:textColor="@android:color/black"
             android:textSize="12sp" />
 
@@ -27,7 +26,6 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="right|center_vertical"
-            android:text="订单:17091720282971620"
             android:textColor="@android:color/black"
             android:textSize="12sp" />
     </LinearLayout>
@@ -59,7 +57,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:gravity="left|center_vertical"
-                    android:text="福寿膏"
                     android:textColor="@android:color/black"
                     android:textSize="14sp"
                     app:layout_constraintBottom_toTopOf="@+id/normal_orders_list_item_number"
@@ -85,7 +82,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="right|center_vertical"
-                    android:text="已支付(未升级)"
                     android:textColor="@android:color/black"
                     android:textSize="14sp"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -158,7 +154,6 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="￥99.00"
                     android:textColor="@android:color/holo_red_light"
                     android:textSize="12sp" />
 
@@ -174,7 +169,6 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="￥990.00"
                     android:textColor="@android:color/holo_red_light"
                     android:textSize="12sp" />
 
@@ -213,7 +207,6 @@
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:paddingTop="5dp"
-                android:text="联系人:哈哈哈"
                 android:textColor="@android:color/black"
                 android:textSize="12sp" />
 
@@ -224,7 +217,6 @@
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:paddingTop="5dp"
-                android:text="手机:18571514990"
                 android:textColor="@android:color/black"
                 android:textSize="12sp" />
 
@@ -235,7 +227,6 @@
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:paddingTop="5dp"
-                android:text="收货地址:佛挡杀佛酒店式的"
                 android:textColor="@android:color/black"
                 android:textSize="12sp" />
 
@@ -246,7 +237,6 @@
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:paddingTop="5dp"
-                android:text="详细地址:范德萨方第三方但是范德萨发生的"
                 android:textColor="@android:color/black"
                 android:textSize="12sp" />
 
@@ -254,10 +244,7 @@
                 android:id="@+id/normal_orders_list_item_addr_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
-                android:paddingTop="5dp"
-                android:text="备注:范德萨范德萨范德萨"
+                android:padding="5dp"
                 android:textColor="@android:color/black"
                 android:textSize="12sp" />
         </LinearLayout>

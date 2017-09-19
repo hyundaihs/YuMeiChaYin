@@ -14,6 +14,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -25,6 +26,7 @@ import com.sp.shangpin.entity.InterResult;
 import com.sp.shangpin.entity.NormalGoodsInfo;
 import com.sp.shangpin.entity.NormalGoodsInfoList;
 import com.sp.shangpin.entity.NormalGoodsInfoList_Sup;
+import com.sp.shangpin.entity.NormalOrderType;
 import com.sp.shangpin.utils.DialogUtil;
 import com.sp.shangpin.utils.InternetUtil;
 import com.sp.shangpin.utils.JsonUtil;
@@ -54,18 +56,32 @@ public class NormalGoodsActivity extends AppCompatActivity {
     private List<String> images;
     private List<NormalGoodsInfo> data;
     private NormalGoodsAdapter adapter;
+    private int orderType;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_normal_goods);
+        orderType = getIntent().getIntExtra(NormalOrderType.KEY, NormalOrderType.ORIGINAL);
         initActionBar();
         initViews();
     }
 
     public void initActionBar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.normal_goods_toolbar);
+        TextView title = (TextView) findViewById(R.id.normal_goods_toolbar_title);
+        switch (orderType) {
+            case NormalOrderType.ORIGINAL:
+                title.setText("精品商城");
+                break;
+            case NormalOrderType.GOLD:
+                title.setText("金币商城");
+                break;
+            case NormalOrderType.ON_SALE:
+                title.setText("促销商城");
+                break;
+        }
         setSupportActionBar(toolbar);
         setTitle("");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -91,10 +107,11 @@ public class NormalGoodsActivity extends AppCompatActivity {
             public void onItemClick(View view, int position) {
                 Intent intent = new Intent(thisContext, NormalGoodsDetailsActivity.class);
                 intent.putExtra("id", data.get(position).getId());
+                intent.putExtra(NormalOrderType.KEY, orderType);
                 startActivity(intent);
             }
         });
-        getGoodsInfo(1, 4);
+        getGoodsInfo(4);
     }
 
     private void refresh() {
@@ -102,13 +119,14 @@ public class NormalGoodsActivity extends AppCompatActivity {
         adapter.notifyDataSetChanged();
     }
 
-    private void getGoodsInfo(int cx, int yhq_num) {
+    private void getGoodsInfo(int yhq_num) {
         Map<String, String> map = new HashMap<>();
         map.put("type_id", "");//type_id:类别ID
-        map.put("cx", String.valueOf(cx));//cx:是否促销（0：原价商城，1：促销商城）
+        map.put("cx", orderType == NormalOrderType.ON_SALE ? "1" : "0");//cx:是否促销（0：原价商城，1：促销商城）
         map.put("yhq_num", String.valueOf(yhq_num));//yhq_num:优惠券数量
         VolleyUtil volleyUtil = VolleyUtil.getInstance(thisContext);
-        JsonObjectRequest request = RequestUtil.createPostJsonRequest(InternetUtil.goods(),
+        JsonObjectRequest request = RequestUtil.createPostJsonRequest(orderType == NormalOrderType.GOLD
+                        ? InternetUtil.goodsjf() : InternetUtil.goods(),
                 JsonUtil.objectToString(map),
                 new Response.Listener<JSONObject>() {
                     @Override

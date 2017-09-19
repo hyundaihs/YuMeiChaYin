@@ -2,7 +2,6 @@ package com.sp.shangpin.adapters;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,11 +15,8 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.sp.shangpin.R;
 import com.sp.shangpin.entity.InterResult;
 import com.sp.shangpin.entity.NormalOrderInfo;
-import com.sp.shangpin.entity.OrderStatus;
-import com.sp.shangpin.entity.RequestAndResult;
-import com.sp.shangpin.fragments.BaseFragment;
-import com.sp.shangpin.ui.InputAddrActivity;
-import com.sp.shangpin.ui.LotteryActivity;
+import com.sp.shangpin.entity.NormalOrderStatus;
+import com.sp.shangpin.entity.NormalOrderType;
 import com.sp.shangpin.utils.CalendarUtil;
 import com.sp.shangpin.utils.DialogUtil;
 import com.sp.shangpin.utils.InternetUtil;
@@ -46,14 +42,14 @@ public class NormalOrdersAdapter extends RecyclerView.Adapter<NormalOrdersAdapte
     private LayoutInflater inflater;
     private FragmentHomeAdapter.OnItemClickListener onItemClickListener;
     private int index;
-    private BaseFragment fragment;
+    private int orderType;
 
-    public NormalOrdersAdapter(Context context, BaseFragment fragment, List<NormalOrderInfo> datas, int index) {
+    public NormalOrdersAdapter(Context context, int orderType, List<NormalOrderInfo> datas, int index) {
         this.mContext = context;
         this.mDatas = datas;
         inflater = LayoutInflater.from(mContext);
         this.index = index;
-        this.fragment = fragment;
+        this.orderType = orderType;
     }
 
     public void setOnItemClickListener(FragmentHomeAdapter.OnItemClickListener onItemClickListener) {
@@ -72,14 +68,16 @@ public class NormalOrdersAdapter extends RecyclerView.Adapter<NormalOrdersAdapte
         VolleyUtil volleyUtil = VolleyUtil.getInstance(mContext);
         holder.orderTime.setText("下单时间:" + new CalendarUtil(normalOrderInfo.getCreate_time(), true)
                 .format(CalendarUtil.STANDARD));
+        holder.orderId.setText("订单:" + normalOrderInfo.getNumbers());
         volleyUtil.getImage(holder.image, normalOrderInfo.getGoods_lists().get(0).getGoods_file_url());
         holder.name.setText(normalOrderInfo.getGoods_lists().get(0).getGoods_title());
         holder.number.setText("x" + normalOrderInfo.getGoods_lists().get(0).getNum());
-        holder.status.setText(OrderStatus.STRINGS[normalOrderInfo.getStatus()]);
+        holder.status.setText(NormalOrderStatus.STRINGS[normalOrderInfo.getStatus()]);
         holder.price.setText("￥" + normalOrderInfo.getGoods_lists().get(0).getPrice());
         holder.totalPrice.setText("￥" + normalOrderInfo.getPrice());
         holder.returnG.setOnClickListener(new NormalOrdersAdapter.MyOnClickListener(position));
         holder.details.setOnClickListener(new NormalOrdersAdapter.MyOnClickListener(position));
+        holder.details.setVisibility(View.GONE);
         holder.goodsFlag.setVisibility(normalOrderInfo.getCx() == 1 ? View.VISIBLE : View.GONE);
         holder.addrName.setText("收货人:" + normalOrderInfo.getTitle());
         holder.addrPhone.setText("手机:" + normalOrderInfo.getPhone());
@@ -88,15 +86,16 @@ public class NormalOrdersAdapter extends RecyclerView.Adapter<NormalOrdersAdapte
         holder.addrContent.setText("备注:" + normalOrderInfo.getContents());
         switch (index) {
             case 0:
-                holder.returnG.setVisibility(View.VISIBLE);
                 holder.returnG.setText("退款");
+                holder.returnG.setVisibility(orderType == NormalOrderType.GOLD ? View.GONE : View.VISIBLE);
                 break;
             case 1:
                 holder.returnG.setVisibility(View.GONE);
                 break;
             case 2:
-                holder.returnG.setVisibility(View.VISIBLE);
                 holder.returnG.setText("确认收货");
+                holder.returnG.setVisibility(
+                        normalOrderInfo.getStatus() == NormalOrderStatus.WAIT_RECEIVE ? View.VISIBLE : View.GONE);
                 break;
             default:
                 holder.returnG.setVisibility(View.GONE);
@@ -111,6 +110,34 @@ public class NormalOrdersAdapter extends RecyclerView.Adapter<NormalOrdersAdapte
                 }
             });
         }
+    }
+
+    private void receiveGoods(final int position) {
+        Map<String, String> map = new HashMap<>();
+        map.put("orders_id", String.valueOf(mDatas.get(position).getId()));
+        VolleyUtil volleyUtil = VolleyUtil.getInstance(mContext);
+        JsonObjectRequest request = RequestUtil.createPostJsonRequest(orderType == NormalOrderType.GOLD
+                        ? InternetUtil.shordersjf() : InternetUtil.shorders(),
+                JsonUtil.objectToString(map),
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        InterResult interResult =
+                                (InterResult) JsonUtil.stringToObject(response.toString(), InterResult.class);
+                        if (interResult.isSuccessed()) {
+                            mDatas.get(position).setStatus(NormalOrderStatus.DONE);
+                            notifyItemChanged(position);
+                        } else {
+                            DialogUtil.showErrorMessage(mContext, interResult.getRetErr());
+                        }
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        DialogUtil.showErrorMessage(mContext, error.toString());
+                    }
+                });
+        volleyUtil.addToRequestQueue(request, InternetUtil.reg());
     }
 
     private void returnGoods(final int position) {
@@ -159,7 +186,12 @@ public class NormalOrdersAdapter extends RecyclerView.Adapter<NormalOrdersAdapte
             switch (view.getId()) {
                 case R.id.normal_orders_list_item_return:
                     if (index == 2) {//确认收货
-
+                        DialogUtil.showAskMessage(mContext, "确定收货吗？", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                receiveGoods(position);
+                            }
+                        });
                     } else {
                         DialogUtil.showAskMessage(mContext, "确定要退款吗？", new DialogInterface.OnClickListener() {
                             @Override
@@ -196,11 +228,11 @@ public class NormalOrdersAdapter extends RecyclerView.Adapter<NormalOrdersAdapte
             price = view.findViewById(R.id.normal_orders_list_item_price);
             totalPrice = view.findViewById(R.id.normal_orders_list_item_total_price);
             details = view.findViewById(R.id.normal_orders_list_item_details);
-            addrName = view.findViewById(R.id.normal_orders_list_item_details);
-            addrPhone = view.findViewById(R.id.normal_orders_list_item_details);
-            addrArea = view.findViewById(R.id.normal_orders_list_item_details);
-            addrAddr = view.findViewById(R.id.normal_orders_list_item_details);
-            addrContent = view.findViewById(R.id.normal_orders_list_item_details);
+            addrName = view.findViewById(R.id.normal_orders_list_item_addr_name);
+            addrPhone = view.findViewById(R.id.normal_orders_list_item_addr_phone);
+            addrArea = view.findViewById(R.id.normal_orders_list_item_addr_area);
+            addrAddr = view.findViewById(R.id.normal_orders_list_item_addr_addr);
+            addrContent = view.findViewById(R.id.normal_orders_list_item_addr_content);
         }
     }
 }

@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.sp.shangpin.R;
+import com.sp.shangpin.entity.NormalOrderType;
 import com.sp.shangpin.ui.NormalGoodsActivity;
 import com.sp.shangpin.ui.RuleActivity;
 
@@ -76,12 +77,20 @@ public class FragmentStore extends BaseFragment implements View.OnClickListener 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.fragment_store_store1:
-                startActivity(new Intent(getActivity(), NormalGoodsActivity.class));
+            case R.id.fragment_store_store1://精品商品
+                Intent intent = new Intent(getActivity(), NormalGoodsActivity.class);
+                intent.putExtra(NormalOrderType.KEY, NormalOrderType.ORIGINAL);
+                startActivity(intent);
                 break;
-            case R.id.fragment_store_store2:
+            case R.id.fragment_store_store2://金币商品
+                intent = new Intent(getActivity(), NormalGoodsActivity.class);
+                intent.putExtra(NormalOrderType.KEY, NormalOrderType.GOLD);
+                startActivity(intent);
                 break;
-            case R.id.fragment_store_store3:
+            case R.id.fragment_store_store3://促销商品
+                intent = new Intent(getActivity(), NormalGoodsActivity.class);
+                intent.putExtra(NormalOrderType.KEY, NormalOrderType.ON_SALE);
+                startActivity(intent);
                 break;
             case R.id.fragment_store_store4:
                 break;

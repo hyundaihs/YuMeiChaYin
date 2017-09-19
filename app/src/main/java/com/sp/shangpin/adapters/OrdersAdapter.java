@@ -74,6 +74,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.MyViewHold
         if (orderInfo.getSj_status() == UpgradeStatus.UPGRADE_SUCCESS) {
             holder.orderTime.setText("升级时间:" + new CalendarUtil(orderInfo.getSj_time(), true).format(CalendarUtil.STANDARD));
             volleyUtil.getImage(holder.image, orderInfo.getGoodssj_file_url_2());
+            holder.orderId.setText("订单:" + orderInfo.getNumbers());
             holder.name.setText(orderInfo.getGoodssj_title_2());
             holder.number.setText("x" + orderInfo.getNum());
             holder.status.setText(OrderStatus.STRINGS[orderInfo.getStatus()] + "(" + UpgradeStatus.STRINGS[orderInfo.getSj_status()] + ")");
@@ -82,6 +83,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.MyViewHold
         } else {
             holder.orderTime.setText("下单时间:" + new CalendarUtil(orderInfo.getCreate_time(), true).format(CalendarUtil.STANDARD));
             volleyUtil.getImage(holder.image, orderInfo.getGoodssj_file_url());
+            holder.orderId.setText("订单:" + orderInfo.getNumbers());
             holder.name.setText(orderInfo.getGoodssj_title());
             holder.number.setText("x" + orderInfo.getNum());
             holder.status.setText(OrderStatus.STRINGS[orderInfo.getStatus()] + "(" + UpgradeStatus.STRINGS[orderInfo.getSj_status()] + ")");

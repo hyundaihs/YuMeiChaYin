@@ -21,6 +21,7 @@ import com.sp.shangpin.adapters.NormalOrdersAdapter;
 import com.sp.shangpin.entity.InterResult;
 import com.sp.shangpin.entity.NormalOrderInfo;
 import com.sp.shangpin.entity.NormalOrderInfo_Sup;
+import com.sp.shangpin.entity.NormalOrderType;
 import com.sp.shangpin.utils.DialogUtil;
 import com.sp.shangpin.utils.InternetUtil;
 import com.sp.shangpin.utils.JsonUtil;
@@ -39,21 +40,22 @@ import java.util.Map;
  * Created by 蔡雨峰 on 2017/9/18.
  */
 
-public class FragmentNormalReturned extends BaseFragment  {
+public class FragmentNormalReturned extends BaseFragment {
     private static BaseFragment baseFragment;
-
-    public static BaseFragment getInstance() {
-        if (null == baseFragment) {
-            baseFragment = new FragmentNormalReturned();
-        }
-        return baseFragment;
-    }
-
+    private static int orderType;
     private RecyclerView recyclerView;
     private NormalOrdersAdapter adapter;
     private List<NormalOrderInfo> data = new ArrayList<>();
     private SwipeRefreshLayout swipeRefreshLayout;
     private EndLessOnScrollListener endLessOnScrollListener;
+
+    public static BaseFragment getInstance(int type) {
+        if (null == baseFragment) {
+            baseFragment = new FragmentNormalReturned();
+        }
+        orderType = type;
+        return baseFragment;
+    }
 
     @Nullable
     @Override
@@ -74,7 +76,7 @@ public class FragmentNormalReturned extends BaseFragment  {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
         layoutManager.setOrientation(OrientationHelper.VERTICAL);
-        adapter = new NormalOrdersAdapter(getActivity(), this, data, 1);
+        adapter = new NormalOrdersAdapter(getActivity(), orderType, data, 1);
         recyclerView.setAdapter(adapter);
         recyclerView.addItemDecoration(new LineDecoration(getActivity(), LineDecoration.VERTICAL_LIST));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -99,9 +101,11 @@ public class FragmentNormalReturned extends BaseFragment  {
         Map<String, String> map = new HashMap<>();
         map.put("page", String.valueOf(page));
         map.put("pagesize", "20");
+        map.put("cx", orderType == NormalOrderType.ON_SALE ? "1" : "0");
         map.put("type_id", "2");
         VolleyUtil volleyUtil = VolleyUtil.getInstance(getActivity());
-        JsonObjectRequest request = RequestUtil.createPostJsonRequest(InternetUtil.orderslists(),
+        JsonObjectRequest request = RequestUtil.createPostJsonRequest(orderType == NormalOrderType.GOLD
+                        ? InternetUtil.ordersjflists() : InternetUtil.orderslists(),
                 JsonUtil.objectToString(map),
                 new Response.Listener<JSONObject>() {
                     @Override

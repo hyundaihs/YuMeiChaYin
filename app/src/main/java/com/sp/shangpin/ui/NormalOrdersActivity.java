@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.sp.shangpin.R;
 import com.sp.shangpin.adapters.FragmentsAdapter;
+import com.sp.shangpin.entity.NormalOrderType;
 import com.sp.shangpin.fragments.BaseFragment;
 import com.sp.shangpin.fragments.FragmentNormalPaid;
 import com.sp.shangpin.fragments.FragmentNormalPickUp;
@@ -33,13 +34,13 @@ public class NormalOrdersActivity extends AppCompatActivity {
 
     private List<BaseFragment> list;
     private String[] titles = {"已付订单", "退货订单", "提货订单"};
-    private int index;
+    private int orderType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_orders);
-        index = getIntent().getIntExtra("index", 0);
+        orderType = getIntent().getIntExtra(NormalOrderType.KEY, NormalOrderType.GOLD);
         initActionBar();
         initViews();
     }
@@ -47,7 +48,17 @@ public class NormalOrdersActivity extends AppCompatActivity {
     public void initActionBar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.orders_toolbar);
         TextView textView = (TextView) findViewById(R.id.orders_toolbar_title);
-        textView.setText("促销商品");
+        switch (orderType){
+            case NormalOrderType.GOLD:
+                textView.setText("金币商品订单");
+                break;
+            case NormalOrderType.ORIGINAL:
+                textView.setText("精品商品订单");
+                break;
+            case NormalOrderType.ON_SALE:
+                textView.setText("促销商品订单");
+                break;
+        }
         setSupportActionBar(toolbar);
         setTitle("");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -58,9 +69,9 @@ public class NormalOrdersActivity extends AppCompatActivity {
 
     private void initViews() {
         list = new ArrayList<>();
-        list.add(FragmentNormalPaid.getInstance());
-        list.add(FragmentNormalReturned.getInstance());
-        list.add(FragmentNormalPickUp.getInstance());
+        list.add(FragmentNormalPaid.getInstance(orderType));
+        list.add(FragmentNormalReturned.getInstance(orderType));
+        list.add(FragmentNormalPickUp.getInstance(orderType));
         ViewPager viewPager = (ViewPager) findViewById(R.id.orders_content);
         TabLayout tabLayout = (TabLayout) findViewById(R.id.orders_model_tab_layout);
         //ViewPager的适配器
@@ -68,7 +79,6 @@ public class NormalOrdersActivity extends AppCompatActivity {
         viewPager.setAdapter(adapter);
         //绑定
         tabLayout.setupWithViewPager(viewPager);
-        viewPager.setCurrentItem(index);
     }
 
     @Override

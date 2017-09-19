@@ -210,5 +210,40 @@ Java_com_sp_shangpin_utils_InternetUtil_shorders(JNIEnv *env, jclass type) {
     return env->NewStringUTF(text.c_str());
 }
 
+JNIEXPORT jstring JNICALL
+Java_com_sp_shangpin_utils_InternetUtil_goodsjftype(JNIEnv *env, jclass type) {
+    std::string text = "goodsjftype";
+    return env->NewStringUTF(text.c_str());
+}
+
+JNIEXPORT jstring JNICALL
+Java_com_sp_shangpin_utils_InternetUtil_goodsjf(JNIEnv *env, jclass type) {
+    std::string text = "goodsjf";
+    return env->NewStringUTF(text.c_str());
+}
+
+JNIEXPORT jstring JNICALL
+Java_com_sp_shangpin_utils_InternetUtil_goodsjfinfo(JNIEnv *env, jclass type) {
+    std::string text = "goodsjfinfo";
+    return env->NewStringUTF(text.c_str());
+}
+
+JNIEXPORT jstring JNICALL
+Java_com_sp_shangpin_utils_InternetUtil_ordersjf(JNIEnv *env, jclass type) {
+    std::string text = "ordersjf";
+    return env->NewStringUTF(text.c_str());
+}
+
+JNIEXPORT jstring JNICALL
+Java_com_sp_shangpin_utils_InternetUtil_ordersjflists(JNIEnv *env, jclass type) {
+    std::string text = "ordersjflists";
+    return env->NewStringUTF(text.c_str());
+}
+
+JNIEXPORT jstring JNICALL
+Java_com_sp_shangpin_utils_InternetUtil_shordersjf(JNIEnv *env, jclass type) {
+    std::string text = "shordersjf";
+    return env->NewStringUTF(text.c_str());
+}
 
 }

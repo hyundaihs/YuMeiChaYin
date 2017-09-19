@@ -18,8 +18,8 @@ public class NormalOrderInfo {
     private String phone; //  电话
     private String pca; //  地区
     private String address; //  详细地址
-    private String wl_title; //  物流名称
     private String contents; // 备注
+    private String wl_title; //  物流名称
     private String wl_numbers; //  物流编号
     private int status; //  订单状态（1:待支付 2:待发货 3:待收货 4:已取消 5:已完成 6:退款中 7:已退款）
     private long create_time; //  创建时间（时间戳）

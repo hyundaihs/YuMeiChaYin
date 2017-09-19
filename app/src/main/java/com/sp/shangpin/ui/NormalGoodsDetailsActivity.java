@@ -24,6 +24,7 @@ import com.sp.shangpin.R;
 import com.sp.shangpin.entity.InterResult;
 import com.sp.shangpin.entity.NormalGoodsInfo;
 import com.sp.shangpin.entity.NormalGoodsInfo_Sup;
+import com.sp.shangpin.entity.NormalOrderType;
 import com.sp.shangpin.entity.OrderInfo_Sup;
 import com.sp.shangpin.entity.RequestAndResult;
 import com.sp.shangpin.entity.UserInfo_Sup;
@@ -54,11 +55,13 @@ public class NormalGoodsDetailsActivity extends AppCompatActivity implements Vie
     private TextView balance, buy;
     private CountNumberView countView;
     private int goodsId;
+    private int orderType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_goods_details);
+        orderType = getIntent().getIntExtra(NormalOrderType.KEY, NormalOrderType.ORIGINAL);
         init();
     }
 
@@ -70,7 +73,17 @@ public class NormalGoodsDetailsActivity extends AppCompatActivity implements Vie
     public void initActionBar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.goods_details_toolbar);
         TextView title = (TextView) findViewById(R.id.goods_details_toolbar_title);
-        title.setText("促销商品详情");
+        switch (orderType) {
+            case NormalOrderType.ORIGINAL:
+                title.setText("精品商品详情");
+                break;
+            case NormalOrderType.GOLD:
+                title.setText("金币商品详情");
+                break;
+            case NormalOrderType.ON_SALE:
+                title.setText("促销商品详情");
+                break;
+        }
         setSupportActionBar(toolbar);
         setTitle("");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -111,7 +124,9 @@ public class NormalGoodsDetailsActivity extends AppCompatActivity implements Vie
         goodsPrice.setText("单价：￥" + normalGoodsInfo.getPrice());
         goodsFreight.setText("邮费：￥" + normalGoodsInfo.getYf() +
                 "(运费首件" + normalGoodsInfo.getYf() + "元，此后每件依次加" + normalGoodsInfo.getYf_one() + "元)");
-        goodsIntroduce.setText(Html.fromHtml(normalGoodsInfo.getApp_contents()));
+        if (null != normalGoodsInfo.getApp_contents()) {
+            goodsIntroduce.setText(Html.fromHtml(normalGoodsInfo.getApp_contents()));
+        }
         if (normalGoodsInfo.getCx() == 1) {
             yuanPrice.setVisibility(View.VISIBLE);
             yuanPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG); //中划线
@@ -133,7 +148,8 @@ public class NormalGoodsDetailsActivity extends AppCompatActivity implements Vie
         Map<String, String> map = new HashMap<>();
         map.put("id", String.valueOf(id));
         VolleyUtil volleyUtil = VolleyUtil.getInstance(this);
-        JsonObjectRequest request = RequestUtil.createPostJsonRequest(InternetUtil.goodsinfo(),
+        JsonObjectRequest request = RequestUtil.createPostJsonRequest(orderType == NormalOrderType.GOLD
+                        ? InternetUtil.goodsjfinfo() : InternetUtil.goodsinfo(),
                 JsonUtil.objectToString(map),
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -209,7 +225,7 @@ public class NormalGoodsDetailsActivity extends AppCompatActivity implements Vie
 
     private void createNormalOrder() {
         Map<String, String> map = new HashMap<>();
-        map.put("goods_id", String.valueOf(goodsId)); // goods_id:产品ID
+        map.put(orderType == NormalOrderType.GOLD ? "goodsjf_id" : "goods_id", String.valueOf(goodsId)); // goods_id:产品ID
         map.put("num", String.valueOf(countView.getCurrNum())); // num:数量
         map.put("title", MyApplication.userInfo.getWl_title()); // title:收货人 张三
         map.put("phone", MyApplication.userInfo.getWl_phone()); // phone：电话 18614221874
@@ -220,7 +236,8 @@ public class NormalGoodsDetailsActivity extends AppCompatActivity implements Vie
             map.put("yhq_ids", ""); // yhq_ids:优惠券ID（数组）
         }
         VolleyUtil volleyUtil = VolleyUtil.getInstance(this);
-        JsonObjectRequest request = RequestUtil.createPostJsonRequest(InternetUtil.orders(),
+        JsonObjectRequest request = RequestUtil.createPostJsonRequest(orderType == NormalOrderType.GOLD
+                        ? InternetUtil.ordersjf() : InternetUtil.orders(),
                 JsonUtil.objectToString(map),
                 new Response.Listener<JSONObject>() {
                     @Override

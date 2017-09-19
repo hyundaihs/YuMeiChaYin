@@ -7,14 +7,21 @@ package com.sp.shangpin.entity;
 
 public class InterResult {
     protected int retInt;
+    protected int retCounts;
     protected String retErr;
 
     public InterResult() {
         super();
     }
 
-    public InterResult(int retInt, String retErr) {
+    public InterResult(int retInt,String retErr) {
         this.retInt = retInt;
+        this.retErr = retErr;
+    }
+
+    public InterResult(int retInt, int retCounts, String retErr) {
+        this.retInt = retInt;
+        this.retCounts = retCounts;
         this.retErr = retErr;
     }
 
@@ -30,6 +37,14 @@ public class InterResult {
         this.retInt = retInt;
     }
 
+    public int getRetCounts() {
+        return retCounts;
+    }
+
+    public void setRetCounts(int retCounts) {
+        this.retCounts = retCounts;
+    }
+
     public String getRetErr() {
         return retErr;
     }
@@ -41,7 +56,8 @@ public class InterResult {
     @Override
     public String toString() {
         return "InterResult{" +
-                ", retInt=" + retInt +
+                "retInt=" + retInt +
+                ", retCounts=" + retCounts +
                 ", retErr='" + retErr + '\'' +
                 '}';
     }
