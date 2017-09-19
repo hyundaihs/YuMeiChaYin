@@ -1,5 +1,7 @@
 package com.sp.shangpin.utils;
 
+import android.text.format.Time;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
@@ -13,7 +15,11 @@ public class CalendarUtil {
     /**
      * 标准的
      */
+    private Time time;
     public static final String STANDARD = "yyyy-MM-dd HH:mm:ss";
+    public static final String YYYY_MM = "yyyy-MM";
+    public static final String YYYYMMDDHHMMSS = "yyyyMMddHHmmss";
+    public static final String YYYY_MM_DD = "yyyy-MM-dd";
 
     private Calendar c;
 
@@ -48,6 +54,46 @@ public class CalendarUtil {
     public CalendarUtil(int year, int month, int date, int hourOfDay, int minute, int second) {
         this();
         c.set(year, month, date, hourOfDay, minute, second);
+    }
+
+    public void set(int year, int month, int day) {
+        c.set(year, month, day);
+    }
+
+    public void set(int year, int month, int day, int hourOfDay, int minute) {
+        c.set(year, month, day, hourOfDay, minute);
+    }
+
+    public void set(int year, int month, int day, int hourOfDay, int minute, int second) {
+        c.set(year, month, day, hourOfDay, minute, second);
+    }
+
+    public void setTimeInMillis(long timeInMillis) {
+        c.setTimeInMillis(timeInMillis);
+    }
+
+    public void setYear(int year) {
+        c.set(Calendar.YEAR, year);
+    }
+
+    public void setMonth(int month) {
+        c.set(Calendar.MONTH, month);
+    }
+
+    public void setDate(int date) {
+        c.set(Calendar.DATE, date);
+    }
+
+    public void setHour(int hour) {
+        c.set(Calendar.HOUR, hour);
+    }
+
+    public void setMinute(int minute) {
+        c.set(Calendar.MINUTE, minute);
+    }
+
+    public void setSecond(int second) {
+        c.set(Calendar.SECOND, second);
     }
 
     public int getYear() {
@@ -100,8 +146,12 @@ public class CalendarUtil {
         return c.get(Calendar.DAY_OF_MONTH);
     }
 
-    public int getWeekOfWeek() {
+    public int getDayOfWeekInMonth() {
         return c.get(Calendar.DAY_OF_WEEK_IN_MONTH);
+    }
+
+    public int getWeekOfMonth() {
+        return c.get(Calendar.WEEK_OF_MONTH);
     }
 
     public int getDayOfWeek() {
