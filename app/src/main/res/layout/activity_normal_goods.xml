@@ -17,6 +17,18 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="促销商城" />
+
+        <TextView
+            android:id="@+id/normal_goods_toolbar_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|right"
+            android:layout_marginRight="5dp"
+            android:padding="10dp"
+            android:text="优惠券"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            android:visibility="gone" />
     </android.support.v7.widget.Toolbar>
 
 
