@@ -54,6 +54,8 @@ public class NormalGoodsDetailsActivity extends AppCompatActivity implements Vie
     private TextView goodsName, goodsPrice, goodsFreight, goodsIntroduce, yuanPrice;
     private TextView balance, buy;
     private CountNumberView countView;
+    private TextView yhq;
+    private View yhqLayout;
     private int goodsId;
     private int orderType;
 
@@ -103,7 +105,11 @@ public class NormalGoodsDetailsActivity extends AppCompatActivity implements Vie
         balance = (TextView) findViewById(R.id.goods_details_balance);
         buy = (TextView) findViewById(R.id.goods_details_buy);
         countView = (CountNumberView) findViewById(R.id.goods_details_number);
+        yhqLayout = findViewById(R.id.goods_details_yhq_layout);
+        yhq = (TextView) findViewById(R.id.goods_details_yhq);
+        yhqLayout.setVisibility(orderType == NormalOrderType.ORIGINAL ? View.VISIBLE : View.GONE);
         buy.setOnClickListener(this);
+        yhqLayout.setOnClickListener(this);
         countView.setOnNumberChangerListener(new CountNumberView.OnNumberChangerListener() {
             @Override
             public void onNumberChange(int curr) {
@@ -126,6 +132,9 @@ public class NormalGoodsDetailsActivity extends AppCompatActivity implements Vie
                 "(运费首件" + normalGoodsInfo.getYf() + "元，此后每件依次加" + normalGoodsInfo.getYf_one() + "元)");
         if (null != normalGoodsInfo.getApp_contents()) {
             goodsIntroduce.setText(Html.fromHtml(normalGoodsInfo.getApp_contents()));
+        }
+        if (orderType == NormalOrderType.ORIGINAL) {
+            yhq.setText("您有" + normalGoodsInfo.getYhq_num() + "张优惠券可以使用,点击使用");
         }
         if (normalGoodsInfo.getCx() == 1) {
             yuanPrice.setVisibility(View.VISIBLE);
@@ -180,6 +189,9 @@ public class NormalGoodsDetailsActivity extends AppCompatActivity implements Vie
         switch (view.getId()) {
             case R.id.goods_details_buy:
                 buyPay();
+                break;
+            case R.id.goods_details_yhq_layout:
+                startActivity(new Intent(this, YhqActivity.class));
                 break;
         }
     }

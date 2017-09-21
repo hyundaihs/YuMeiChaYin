@@ -97,7 +97,7 @@
             android:id="@+id/fragment_lotto_list_item_upgrade_icon"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:src="@mipmap/ic_launcher_round"
+            android:src="@mipmap/sj"
             android:visibility="visible"
             app:layout_constraintHorizontal_weight="2"
             app:layout_constraintBottom_toBottomOf="parent"

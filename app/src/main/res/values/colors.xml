@@ -9,4 +9,5 @@
     <!--Fragment Home-->
     <color name="fragment_content_bg">#DEDEDE</color>
     <color name="fragment_upgrade_text_bg">#55FFA45C</color>
+    <color name="fragment_yhq_item_num_bg">#C9A063</color>
 </resources>

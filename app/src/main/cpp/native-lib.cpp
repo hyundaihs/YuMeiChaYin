@@ -85,6 +85,12 @@ Java_com_sp_shangpin_utils_InternetUtil_userinfo(JNIEnv *env, jclass type) {
 }
 
 JNIEXPORT jstring JNICALL
+Java_com_sp_shangpin_utils_InternetUtil_yhq(JNIEnv *env, jclass type) {
+    std::string text = "yhq";
+    return env->NewStringUTF(text.c_str());
+}
+
+JNIEXPORT jstring JNICALL
 Java_com_sp_shangpin_utils_InternetUtil_tz(JNIEnv *env, jclass type) {
     std::string text = "tz";
     return env->NewStringUTF(text.c_str());

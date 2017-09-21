@@ -101,6 +101,13 @@ public class InternetUtil {
     public static native String userinfo();
 
     /**
+     * 获取我的优惠券
+     * @return
+     */
+
+    public static native String yhq();
+
+    /**
      * 通知信息
      *
      * @return
