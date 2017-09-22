@@ -24,7 +24,7 @@ import com.sp.shangpin.entity.GoodsDetails_Sup;
 import com.sp.shangpin.entity.InterResult;
 import com.sp.shangpin.entity.OrderInfo;
 import com.sp.shangpin.entity.OrderInfo_Sup;
-import com.sp.shangpin.entity.RequestAndResult;
+import com.sp.shangpin.entity.IntentUtil;
 import com.sp.shangpin.entity.UpgradeGoods;
 import com.sp.shangpin.entity.UserInfo_Sup;
 import com.sp.shangpin.utils.DialogUtil;
@@ -92,7 +92,7 @@ public class GoodsDetailsActivity extends AppCompatActivity implements View.OnCl
         countView.setOnNumberChangerListener(new CountNumberView.OnNumberChangerListener() {
             @Override
             public void onNumberChange(int curr) {
-                goodsFreight.setText("邮费：￥" + String.valueOf(upgradeGoods.getYf() + 5 * curr) +
+                goodsFreight.setText("邮费：¥" + String.valueOf(upgradeGoods.getYf() + 5 * curr) +
                         "(运费首件" + upgradeGoods.getYf() + "元，此后每件依次加" + upgradeGoods.getYf_one() + "元)");
             }
         });
@@ -106,8 +106,8 @@ public class GoodsDetailsActivity extends AppCompatActivity implements View.OnCl
         VolleyUtil volleyUtil = VolleyUtil.getInstance(this);
         volleyUtil.getImage(goodsImage, upgradeGoods.getInfo_file_url());
         goodsName.setText(upgradeGoods.getTitle());
-        goodsPrice.setText("单价：￥" + upgradeGoods.getPrice());
-        goodsFreight.setText("邮费：￥" + upgradeGoods.getYf() +
+        goodsPrice.setText("单价：¥" + upgradeGoods.getPrice());
+        goodsFreight.setText("邮费：¥" + upgradeGoods.getYf() +
                 "(运费首件" + upgradeGoods.getYf() + "元，此后每件依次加" + upgradeGoods.getYf_one() + "元)");
         goodsIntroduce.setText(Html.fromHtml(upgradeGoods.getApp_contents()));
     }
@@ -175,7 +175,7 @@ public class GoodsDetailsActivity extends AppCompatActivity implements View.OnCl
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
                     startActivityForResult(new Intent(thisContext, TopUpActivity.class),
-                            RequestAndResult.REQUEST_FROM_GOODS_DETAILS);
+                            IntentUtil.REQUEST_FROM_GOODS_DETAILS);
                 }
             });
         }
@@ -184,11 +184,11 @@ public class GoodsDetailsActivity extends AppCompatActivity implements View.OnCl
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == RequestAndResult.REQUEST_FROM_GOODS_DETAILS
-                && resultCode == RequestAndResult.RESULT_OK) {
+        if (requestCode == IntentUtil.REQUEST_FROM_GOODS_DETAILS
+                && resultCode == IntentUtil.RESULT_OK) {
             getUserInfo();
-        }else if (requestCode == RequestAndResult.REQUEST_FROM_GOODS_DETAILS_INPUT
-                && resultCode == RequestAndResult.RESULT_OK) {
+        }else if (requestCode == IntentUtil.REQUEST_FROM_GOODS_DETAILS_INPUT
+                && resultCode == IntentUtil.RESULT_OK) {
             pickUp();
         }
     }
@@ -222,7 +222,7 @@ public class GoodsDetailsActivity extends AppCompatActivity implements View.OnCl
                                 public void onClick(DialogInterface dialogInterface, int i) {
                                     Intent intent = new Intent(thisContext, InputAddrActivity.class);
                                     intent.putExtra("position", i);
-                                    startActivityForResult(intent, RequestAndResult.REQUEST_FROM_GOODS_DETAILS_INPUT);
+                                    startActivityForResult(intent, IntentUtil.REQUEST_FROM_GOODS_DETAILS_INPUT);
                                 }
                             });
                         } else {

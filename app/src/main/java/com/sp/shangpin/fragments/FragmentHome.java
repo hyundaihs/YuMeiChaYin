@@ -188,7 +188,6 @@ public class FragmentHome extends BaseFragment implements View.OnClickListener {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        Log.d(TAG, "onCreateOptionsMenu");
         menu.clear();
         inflater.inflate(R.menu.menu_home, menu);
         super.onCreateOptionsMenu(menu, inflater);

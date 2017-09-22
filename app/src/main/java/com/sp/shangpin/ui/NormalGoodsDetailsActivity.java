@@ -11,6 +11,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -21,13 +22,14 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.sp.shangpin.MyApplication;
 import com.sp.shangpin.R;
+import com.sp.shangpin.entity.IntentUtil;
 import com.sp.shangpin.entity.InterResult;
 import com.sp.shangpin.entity.NormalGoodsInfo;
 import com.sp.shangpin.entity.NormalGoodsInfo_Sup;
 import com.sp.shangpin.entity.NormalOrderType;
 import com.sp.shangpin.entity.OrderInfo_Sup;
-import com.sp.shangpin.entity.RequestAndResult;
 import com.sp.shangpin.entity.UserInfo_Sup;
+import com.sp.shangpin.entity.YHQ;
 import com.sp.shangpin.utils.DialogUtil;
 import com.sp.shangpin.utils.InternetUtil;
 import com.sp.shangpin.utils.JsonUtil;
@@ -37,6 +39,7 @@ import com.sp.shangpin.widget.CountNumberView;
 
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -58,12 +61,14 @@ public class NormalGoodsDetailsActivity extends AppCompatActivity implements Vie
     private View yhqLayout;
     private int goodsId;
     private int orderType;
+    private ArrayList<YHQ> checkYhq;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_goods_details);
         orderType = getIntent().getIntExtra(NormalOrderType.KEY, NormalOrderType.ORIGINAL);
+        checkYhq = new ArrayList<>();
         init();
     }
 
@@ -113,13 +118,22 @@ public class NormalGoodsDetailsActivity extends AppCompatActivity implements Vie
         countView.setOnNumberChangerListener(new CountNumberView.OnNumberChangerListener() {
             @Override
             public void onNumberChange(int curr) {
-                goodsFreight.setText("邮费：￥" + String.valueOf(normalGoodsInfo.getYf() + 5 * curr) +
+                goodsFreight.setText("邮费：¥" + String.valueOf(normalGoodsInfo.getYf() + 5 * curr) +
                         "(运费首件" + normalGoodsInfo.getYf() + "元，此后每件依次加" + normalGoodsInfo.getYf_one() + "元)");
             }
         });
-        balance.setText("余额:" + MyApplication.userInfo.getYe_price());
+        setBalance();
         if (goodsId > 0) {
             getGoodsDetails(goodsId);
+        }
+        getUserInfo();
+    }
+
+    private void setBalance(){
+        if(orderType == NormalOrderType.GOLD){
+            balance.setText("金币:" + MyApplication.userInfo.getJf_price());
+        }else{
+            balance.setText("余额:" + MyApplication.userInfo.getYe_price());
         }
     }
 
@@ -127,8 +141,8 @@ public class NormalGoodsDetailsActivity extends AppCompatActivity implements Vie
         VolleyUtil volleyUtil = VolleyUtil.getInstance(this);
         volleyUtil.getImage(goodsImage, normalGoodsInfo.getInfo_file_url());
         goodsName.setText(normalGoodsInfo.getTitle());
-        goodsPrice.setText("单价：￥" + normalGoodsInfo.getPrice());
-        goodsFreight.setText("邮费：￥" + normalGoodsInfo.getYf() +
+        goodsPrice.setText("单价：¥" + normalGoodsInfo.getPrice());
+        goodsFreight.setText("邮费：¥" + normalGoodsInfo.getYf() +
                 "(运费首件" + normalGoodsInfo.getYf() + "元，此后每件依次加" + normalGoodsInfo.getYf_one() + "元)");
         if (null != normalGoodsInfo.getApp_contents()) {
             goodsIntroduce.setText(Html.fromHtml(normalGoodsInfo.getApp_contents()));
@@ -139,7 +153,7 @@ public class NormalGoodsDetailsActivity extends AppCompatActivity implements Vie
         if (normalGoodsInfo.getCx() == 1) {
             yuanPrice.setVisibility(View.VISIBLE);
             yuanPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG); //中划线
-            yuanPrice.setText("原价：￥" + normalGoodsInfo.getYuanjia());
+            yuanPrice.setText("原价：¥" + normalGoodsInfo.getYuanjia());
         }
     }
 
@@ -191,24 +205,32 @@ public class NormalGoodsDetailsActivity extends AppCompatActivity implements Vie
                 buyPay();
                 break;
             case R.id.goods_details_yhq_layout:
-                startActivity(new Intent(this, YhqActivity.class));
+                Intent intent = new Intent(this, YhqActivity.class);
+                intent.putExtra("what", IntentUtil.REQUEST_FROM_NORMAL_GOODS_DETAILS_YHQ);
+                intent.putExtra("max", normalGoodsInfo.getYhq_num());
+                startActivityForResult(intent, IntentUtil.REQUEST_FROM_NORMAL_GOODS_DETAILS_YHQ);
                 break;
         }
     }
 
     private void buyPay() {
+        double youhui = 0;
+        for (int i = 0; i < checkYhq.size(); i++) {
+            youhui += checkYhq.get(i).getPrice();
+        }
+        double yufei = normalGoodsInfo.getYf() + 5 * (countView.getCurrNum() - 1);
         double total = normalGoodsInfo.getPrice() * countView.getCurrNum() +
-                normalGoodsInfo.getYf() + 5 * countView.getCurrNum();
+                normalGoodsInfo.getYf() + 5 * countView.getCurrNum() - youhui;
         if (total <= MyApplication.userInfo.getYe_price()) {
             DialogUtil.showAskMessage(thisContext, "您将购买此商品" + countView.getCurrNum() +
-                    "件,商品总价:￥" + normalGoodsInfo.getPrice() * countView.getCurrNum() +
-                    ",物流费:￥" + (normalGoodsInfo.getYf() + 5 * countView.getCurrNum()) +
-                    "." + "合计:￥" + total, "去提货", new DialogInterface.OnClickListener() {
+                    "件,商品总价:¥" + normalGoodsInfo.getPrice() * countView.getCurrNum() +
+                    ",物流费:¥" + yufei +
+                    ",优惠:¥" + youhui + "\n合计:¥" + total, "去提货", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
                     Intent intent = new Intent(thisContext, InputAddrActivity.class);
                     intent.putExtra("position", i);
-                    startActivityForResult(intent, RequestAndResult.REQUEST_FROM_NORMAL_GOODS_DETAILS_INPUT);
+                    startActivityForResult(intent, IntentUtil.REQUEST_FROM_NORMAL_GOODS_DETAILS_INPUT);
                 }
             });
         } else {
@@ -217,7 +239,7 @@ public class NormalGoodsDetailsActivity extends AppCompatActivity implements Vie
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
                     startActivityForResult(new Intent(thisContext, TopUpActivity.class),
-                            RequestAndResult.REQUEST_FROM_NORMAL_GOODS_DETAILS);
+                            IntentUtil.REQUEST_FROM_NORMAL_GOODS_DETAILS);
                 }
             });
         }
@@ -226,17 +248,26 @@ public class NormalGoodsDetailsActivity extends AppCompatActivity implements Vie
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == RequestAndResult.REQUEST_FROM_NORMAL_GOODS_DETAILS
-                && resultCode == RequestAndResult.RESULT_OK) {
+        if (requestCode == IntentUtil.REQUEST_FROM_NORMAL_GOODS_DETAILS
+                && resultCode == IntentUtil.RESULT_OK) {
             getUserInfo();
-        } else if (requestCode == RequestAndResult.REQUEST_FROM_NORMAL_GOODS_DETAILS_INPUT
-                && resultCode == RequestAndResult.RESULT_OK) {
+        } else if (requestCode == IntentUtil.REQUEST_FROM_NORMAL_GOODS_DETAILS_INPUT
+                && resultCode == IntentUtil.RESULT_OK) {
             createNormalOrder();
+        } else if (requestCode == IntentUtil.REQUEST_FROM_NORMAL_GOODS_DETAILS_YHQ
+                && resultCode == IntentUtil.RESULT_OK) {
+            checkYhq.clear();
+            ArrayList<YHQ> ids = data.getParcelableArrayListExtra("ids");
+            checkYhq.addAll(ids);
+            yhq.setText("优惠券:");
+            for (int i = 0; i < ids.size(); i++) {
+                yhq.append("-" + ids.get(i).getPrice() + " ");
+            }
         }
     }
 
     private void createNormalOrder() {
-        Map<String, String> map = new HashMap<>();
+        Map<String, Object> map = new HashMap<>();
         map.put(orderType == NormalOrderType.GOLD ? "goodsjf_id" : "goods_id", String.valueOf(goodsId)); // goods_id:产品ID
         map.put("num", String.valueOf(countView.getCurrNum())); // num:数量
         map.put("title", MyApplication.userInfo.getWl_title()); // title:收货人 张三
@@ -244,8 +275,12 @@ public class NormalGoodsDetailsActivity extends AppCompatActivity implements Vie
         map.put("pca", MyApplication.userInfo.getWl_pca()); // pca：收货地区 湖北省武汉市江夏区
         map.put("address", MyApplication.userInfo.getWl_address()); // address:详细地址 武大科技园
         map.put("contents", MyApplication.userInfo.getWl_content()); // contents：备注
-        if (normalGoodsInfo.getCx() == 1) {
-            map.put("yhq_ids", ""); // yhq_ids:优惠券ID（数组）
+        if (orderType == NormalOrderType.ORIGINAL) {
+            int[] array = new int[checkYhq.size()];
+            for (int i = 0; i < checkYhq.size(); i++) {
+                array[i] = (checkYhq.get(i).getId());
+            }
+            map.put("yhq_ids", array); // yhq_ids:优惠券ID（数组）
         }
         VolleyUtil volleyUtil = VolleyUtil.getInstance(this);
         JsonObjectRequest request = RequestUtil.createPostJsonRequest(orderType == NormalOrderType.GOLD
@@ -287,7 +322,7 @@ public class NormalGoodsDetailsActivity extends AppCompatActivity implements Vie
                             UserInfo_Sup userInfo_sup =
                                     (UserInfo_Sup) JsonUtil.stringToObject(response.toString(), UserInfo_Sup.class);
                             MyApplication.userInfo = userInfo_sup.getRetRes();
-                            balance.setText("余额:" + MyApplication.userInfo.getYe_price());
+                            setBalance();
                         } else {
                             DialogUtil.showErrorMessage(thisContext, interResult.getRetErr());
                         }

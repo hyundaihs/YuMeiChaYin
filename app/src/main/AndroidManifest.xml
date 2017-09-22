@@ -41,6 +41,7 @@
         <activity android:name=".ui.NormalGoodsDetailsActivity" />
         <activity android:name=".ui.NormalOrdersActivity" />
         <activity android:name=".ui.YhqActivity" />
+        <activity android:name=".ui.AlertPasswordActivity" />
     </application>
 
 </manifest>

@@ -73,8 +73,8 @@ public class NormalOrdersAdapter extends RecyclerView.Adapter<NormalOrdersAdapte
         holder.name.setText(normalOrderInfo.getGoods_lists().get(0).getGoods_title());
         holder.number.setText("x" + normalOrderInfo.getGoods_lists().get(0).getNum());
         holder.status.setText(NormalOrderStatus.STRINGS[normalOrderInfo.getStatus()]);
-        holder.price.setText("￥" + normalOrderInfo.getGoods_lists().get(0).getPrice());
-        holder.totalPrice.setText("￥" + normalOrderInfo.getPrice());
+        holder.price.setText("¥" + normalOrderInfo.getGoods_lists().get(0).getPrice());
+        holder.totalPrice.setText("¥" + normalOrderInfo.getPrice());
         holder.returnG.setOnClickListener(new NormalOrdersAdapter.MyOnClickListener(position));
         holder.details.setOnClickListener(new NormalOrdersAdapter.MyOnClickListener(position));
         holder.details.setVisibility(View.GONE);

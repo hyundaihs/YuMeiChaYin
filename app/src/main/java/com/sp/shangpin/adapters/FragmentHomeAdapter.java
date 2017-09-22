@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.android.volley.toolbox.NetworkImageView;
 import com.sp.shangpin.R;
@@ -45,6 +46,9 @@ public class FragmentHomeAdapter extends RecyclerView.Adapter<FragmentHomeAdapte
     public void onBindViewHolder(MyViewHolder holder, final int position) {
         VolleyUtil volleyUtil = VolleyUtil.getInstance(mContext);
         volleyUtil.getImageByNetwork(holder.image, mDatas.get(position).getFile_url());
+        holder.name.setText(mDatas.get(position).getTitle());
+        holder.oPrice.setText(mDatas.get(position).getYuanjia() + "");
+        holder.price.setText(mDatas.get(position).getPrice() + "");
         holder.rootView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -69,12 +73,17 @@ public class FragmentHomeAdapter extends RecyclerView.Adapter<FragmentHomeAdapte
     class MyViewHolder extends RecyclerView.ViewHolder {
 
         NetworkImageView image;
+        TextView name, oPrice, price;
         View rootView;
 
         MyViewHolder(View view) {
             super(view);
             rootView = view;
             image = view.findViewById(R.id.fragment_home_list_item_image);
+            image = view.findViewById(R.id.fragment_home_list_item_image);
+            name = view.findViewById(R.id.fragment_home_list_item_name);
+            oPrice = view.findViewById(R.id.fragment_home_list_item_oPrice);
+            price = view.findViewById(R.id.fragment_home_list_item_price);
         }
     }
 }

@@ -66,7 +66,7 @@
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
                 android:paddingTop="5dp"
-                android:text="账户余额：￥9527\n账户金币：7259"
+                android:text="账户余额：¥9527\n账户金币：7259"
                 app:layout_constraintBottom_toBottomOf="@+id/fragment_mine_image_bg"
                 app:layout_constraintRight_toRightOf="@+id/fragment_mine_image_bg" />
 

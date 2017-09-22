@@ -47,7 +47,10 @@ public class FragmentLottoAdapter extends RecyclerView.Adapter<FragmentLottoAdap
         VolleyUtil volleyUtil = VolleyUtil.getInstance(mContext);
         volleyUtil.getImage(holder.notUpgradeImage, upgradeGoods.getFile_url());
         volleyUtil.getImage(holder.upgradeImage, upgradeGoods.getFile_url_2());
-//        holder.image.setText(mDatas.get(position));
+        holder.notUpgradeName.setText(mDatas.get(position).getTitle());
+        holder.upgradeName.setText(mDatas.get(position).getTitle_2());
+        holder.notUpgradePrice.setText("¥" + mDatas.get(position).getPrice());
+        holder.upgradePrice.setText("¥" + mDatas.get(position).getPrice_2());
         holder.rootView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

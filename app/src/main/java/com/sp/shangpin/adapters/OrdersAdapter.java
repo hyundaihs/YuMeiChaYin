@@ -17,7 +17,7 @@ import com.sp.shangpin.R;
 import com.sp.shangpin.entity.InterResult;
 import com.sp.shangpin.entity.OrderInfo;
 import com.sp.shangpin.entity.OrderStatus;
-import com.sp.shangpin.entity.RequestAndResult;
+import com.sp.shangpin.entity.IntentUtil;
 import com.sp.shangpin.entity.UpgradeStatus;
 import com.sp.shangpin.fragments.BaseFragment;
 import com.sp.shangpin.ui.InputAddrActivity;
@@ -78,8 +78,8 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.MyViewHold
             holder.name.setText(orderInfo.getGoodssj_title_2());
             holder.number.setText("x" + orderInfo.getNum());
             holder.status.setText(OrderStatus.STRINGS[orderInfo.getStatus()] + "(" + UpgradeStatus.STRINGS[orderInfo.getSj_status()] + ")");
-            holder.price.setText("￥" + orderInfo.getGoodssj_price_2());
-            holder.totalPrice.setText("￥" + orderInfo.getPrice_2());
+            holder.price.setText("¥" + orderInfo.getGoodssj_price_2());
+            holder.totalPrice.setText("¥" + orderInfo.getPrice_2());
         } else {
             holder.orderTime.setText("下单时间:" + new CalendarUtil(orderInfo.getCreate_time(), true).format(CalendarUtil.STANDARD));
             volleyUtil.getImage(holder.image, orderInfo.getGoodssj_file_url());
@@ -87,8 +87,8 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.MyViewHold
             holder.name.setText(orderInfo.getGoodssj_title());
             holder.number.setText("x" + orderInfo.getNum());
             holder.status.setText(OrderStatus.STRINGS[orderInfo.getStatus()] + "(" + UpgradeStatus.STRINGS[orderInfo.getSj_status()] + ")");
-            holder.price.setText("￥" + orderInfo.getDanjia());
-            holder.totalPrice.setText("￥" + orderInfo.getPrice());
+            holder.price.setText("¥" + orderInfo.getDanjia());
+            holder.totalPrice.setText("¥" + orderInfo.getPrice());
         }
         holder.goldCoin.setOnClickListener(new MyOnClickListener(position));
         holder.returnG.setOnClickListener(new MyOnClickListener(position));
@@ -181,7 +181,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.MyViewHold
     private void goInputAddr(int position) {
         Intent intent = new Intent(mContext, InputAddrActivity.class);
         intent.putExtra("position", position);
-        fragment.startActivityForResult(intent, RequestAndResult.REQUEST_FROM_PAID);
+        fragment.startActivityForResult(intent, IntentUtil.REQUEST_FROM_PAID);
     }
 
     private void goLottery(int position) {

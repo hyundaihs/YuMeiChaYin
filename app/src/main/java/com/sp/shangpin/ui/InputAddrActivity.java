@@ -16,7 +16,7 @@ import android.widget.AutoCompleteTextView;
 
 import com.sp.shangpin.MyApplication;
 import com.sp.shangpin.R;
-import com.sp.shangpin.entity.RequestAndResult;
+import com.sp.shangpin.entity.IntentUtil;
 import com.sp.shangpin.utils.DialogUtil;
 import com.sp.shangpin.utils.ReExpressUtil;
 
@@ -104,7 +104,7 @@ public class InputAddrActivity extends AppCompatActivity {
         MyApplication.userInfo.setWl_content(content.getText().toString());
         Intent intent = new Intent();
         intent.putExtra("position", getIntent().getIntExtra("position", -1));
-        setResult(RequestAndResult.RESULT_OK, intent);
+        setResult(IntentUtil.RESULT_OK, intent);
         finish();
     }
 

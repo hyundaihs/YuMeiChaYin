@@ -13,6 +13,7 @@ import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -63,7 +64,7 @@ public class NormalGoodsActivity extends AppCompatActivity implements PopupMenu.
     private PopupMenu popup;
     private int[] yhq;
     private TextView btn;
-    private int currentYhq = 4;
+    private int currentYhq = 1;
 
 
     @Override
@@ -157,6 +158,7 @@ public class NormalGoodsActivity extends AppCompatActivity implements PopupMenu.
                         InterResult interResult =
                                 (InterResult) JsonUtil.stringToObject(response.toString(), InterResult.class);
                         if (interResult.isSuccessed()) {
+                            Log.d(TAG,response.toString());
                             NormalGoodsInfoList_Sup normalGoodsInfoList_sup = (NormalGoodsInfoList_Sup) JsonUtil.stringToObject(response.toString(),
                                     NormalGoodsInfoList_Sup.class);
                             NormalGoodsInfoList normalGoodsInfoList = normalGoodsInfoList_sup.getRetRes();

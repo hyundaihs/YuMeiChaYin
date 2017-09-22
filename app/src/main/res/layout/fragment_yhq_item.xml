@@ -9,28 +9,55 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/fragment_yhq_item_price"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/fragment_yhq_item_price_layout"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             android:background="@color/fragment_yhq_item_num_bg"
-            android:padding="30dp"
-            android:textColor="@android:color/white"
-            android:textSize="50sp" />
+            android:gravity="center"
+            app:layout_constraintDimensionRatio="5:3"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/fragment_yhq_item_1"
+            app:layout_constraintVertical_chainStyle="spread">
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:maxLines="1"
+                android:text="¥"
+                android:textColor="@android:color/white"
+                android:textSize="12sp"
+                app:layout_constraintBaseline_toBaselineOf="@+id/fragment_yhq_item_price"
+                app:layout_constraintRight_toLeftOf="@+id/fragment_yhq_item_price" />
+
+            <TextView
+                android:id="@+id/fragment_yhq_item_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:maxLines="1"
+                android:text="100.0"
+                android:textColor="@android:color/white"
+                android:textSize="30sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </android.support.constraint.ConstraintLayout>
 
         <TextView
             android:id="@+id/fragment_yhq_item_1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp"
             android:text="代金券"
             android:textColor="@android:color/black"
             android:textSize="16sp"
             app:layout_constraintBottom_toTopOf="@+id/fragment_yhq_item_2"
-            app:layout_constraintLeft_toRightOf="@+id/fragment_yhq_item_price"
-            app:layout_constraintTop_toTopOf="@+id/fragment_yhq_item_price"
-            app:layout_constraintVertical_chainStyle="spread" />
+            app:layout_constraintLeft_toRightOf="@+id/fragment_yhq_item_price_layout"
+            app:layout_constraintTop_toTopOf="@+id/fragment_yhq_item_price_layout" />
 
         <TextView
             android:id="@+id/fragment_yhq_item_2"
@@ -56,9 +83,10 @@
             android:id="@+id/fragment_yhq_item_4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
             android:text="仅限尚品商城使用"
             android:textSize="14sp"
-            app:layout_constraintBottom_toBottomOf="@+id/fragment_yhq_item_price"
+            app:layout_constraintBottom_toBottomOf="@+id/fragment_yhq_item_price_layout"
             app:layout_constraintLeft_toLeftOf="@+id/fragment_yhq_item_1"
             app:layout_constraintTop_toBottomOf="@+id/fragment_yhq_item_3" />
 
@@ -66,10 +94,11 @@
             android:id="@+id/fragment_yhq_check"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
             android:src="@mipmap/y"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@id/fragment_yhq_item_1"
             app:layout_constraintRight_toRightOf="parent"
-            android:layout_marginRight="10dp"
             app:layout_constraintTop_toTopOf="@+id/fragment_yhq_item_1" />
     </android.support.constraint.ConstraintLayout>
 </android.support.v7.widget.CardView>

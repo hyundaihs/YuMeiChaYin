@@ -16,11 +16,12 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.sp.shangpin.R;
 import com.sp.shangpin.adapters.FragmentYhqAdapter;
-import com.sp.shangpin.adapters.LineDecoration;
+import com.sp.shangpin.adapters.SpacesItemDecoration;
 import com.sp.shangpin.entity.InterResult;
 import com.sp.shangpin.entity.YHQ;
 import com.sp.shangpin.entity.YHQS_Sup;
 import com.sp.shangpin.utils.DialogUtil;
+import com.sp.shangpin.utils.DisplayUtil;
 import com.sp.shangpin.utils.InternetUtil;
 import com.sp.shangpin.utils.JsonUtil;
 import com.sp.shangpin.utils.RequestUtil;
@@ -40,16 +41,22 @@ import java.util.Map;
 
 public class FragmentYhq extends BaseFragment {
     private static BaseFragment baseFragment;
-    private static int status;
+    private static boolean isCheck;
+    private static int maxNum;
     private final String TAG = getClass().getSimpleName();
+    private int status;
     private RecyclerView recyclerView;
     private FragmentYhqAdapter adapter;
     private List<YHQ> data = new ArrayList<>();
     private SwipeRefreshLayout swipeRefreshLayout;
 
-    public static BaseFragment getInstance(int index) {
+    public static BaseFragment getInstance(int status, boolean check, int max) {
         baseFragment = new FragmentYhq();
-        status = index;
+        Bundle bundle = new Bundle();
+        bundle.putInt("status", status);
+        baseFragment.setArguments(bundle);
+        isCheck = check;
+        maxNum = max;
         return baseFragment;
     }
 
@@ -59,6 +66,7 @@ public class FragmentYhq extends BaseFragment {
         View view = inflater.inflate(R.layout.fragment_paid, container, false);
         recyclerView = view.findViewById(R.id.fragment_paid_recycler_view);
         swipeRefreshLayout = view.findViewById(R.id.fragment_paid_swipe_layout);
+        status = getArguments().getInt("status", 1);
         return view;
     }
 
@@ -72,9 +80,9 @@ public class FragmentYhq extends BaseFragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
         layoutManager.setOrientation(OrientationHelper.VERTICAL);
-        adapter = new FragmentYhqAdapter(getActivity(), data);
+        adapter = new FragmentYhqAdapter(getActivity(), data, isCheck, maxNum);
         recyclerView.setAdapter(adapter);
-        recyclerView.addItemDecoration(new LineDecoration(getActivity(), LineDecoration.VERTICAL_LIST));
+        recyclerView.addItemDecoration(new SpacesItemDecoration(DisplayUtil.dp2px(getActivity(), 10)));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             public void onRefresh() {
@@ -82,6 +90,10 @@ public class FragmentYhq extends BaseFragment {
             }
         });
         getYHQInfo();
+    }
+
+    public ArrayList<YHQ> getCheckIds() {
+        return adapter.getCheckedIds();
     }
 
     private void getYHQInfo() {
@@ -100,6 +112,7 @@ public class FragmentYhq extends BaseFragment {
                                     , YHQS_Sup.class);
                             data.clear();
                             data.addAll(yhqs_sup.getRetRes());
+                            adapter.cleanChecked();
                             adapter.notifyDataSetChanged();
                             swipeRefreshLayout.setRefreshing(false);
                         } else {

@@ -5,7 +5,7 @@ package com.sp.shangpin.entity;
  * Created by ${蔡雨峰} on 2017/9/17/017.
  */
 
-public class RequestAndResult {
+public class IntentUtil {
     public static final int RESULT_OK = 100;
     public static final int RESULT_NOT_OK = 101;
 
@@ -34,4 +34,12 @@ public class RequestAndResult {
      * 从普通订单详情进入地址填写
      */
     public static final int REQUEST_FROM_NORMAL_GOODS_DETAILS_INPUT = 15;
+    /**
+     * 从普通订单详情进入优惠券选择
+     */
+    public static final int REQUEST_FROM_NORMAL_GOODS_DETAILS_YHQ = 16;
+    /**
+     * 从我的进入密码修改
+     */
+    public static final int REQUEST_FROM_MINE_TO_ALERT_PASS = 17;
 }

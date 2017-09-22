@@ -1,5 +1,6 @@
 package com.sp.shangpin.fragments;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,7 +11,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -24,21 +24,26 @@ import android.widget.TextView;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.sp.shangpin.MainActivity;
 import com.sp.shangpin.MyApplication;
 import com.sp.shangpin.R;
 import com.sp.shangpin.adapters.FragmentHomeAdapter;
 import com.sp.shangpin.adapters.FragmentMineAdapter;
+import com.sp.shangpin.entity.IntentUtil;
 import com.sp.shangpin.entity.InterResult;
 import com.sp.shangpin.entity.NormalOrderType;
-import com.sp.shangpin.entity.RequestAndResult;
+import com.sp.shangpin.entity.SharedKey;
 import com.sp.shangpin.entity.UserInfo_Sup;
+import com.sp.shangpin.ui.AlertPasswordActivity;
 import com.sp.shangpin.ui.NormalOrdersActivity;
 import com.sp.shangpin.ui.OrdersActivity;
 import com.sp.shangpin.ui.TopUpActivity;
+import com.sp.shangpin.ui.YhqActivity;
 import com.sp.shangpin.utils.DialogUtil;
 import com.sp.shangpin.utils.InternetUtil;
 import com.sp.shangpin.utils.JsonUtil;
 import com.sp.shangpin.utils.RequestUtil;
+import com.sp.shangpin.utils.SharedPreferencesUtil;
 import com.sp.shangpin.utils.VolleyUtil;
 
 import org.json.JSONObject;
@@ -104,7 +109,7 @@ public class FragmentMine extends BaseFragment {
                 switch (position) {
                     case 0://充值
                         startActivityForResult(new Intent(getActivity(), TopUpActivity.class),
-                                RequestAndResult.REQUEST_FROM_FRAGMENT_MINE);
+                                IntentUtil.REQUEST_FROM_FRAGMENT_MINE);
                         break;
                     case 1://提现
                         break;
@@ -129,8 +134,11 @@ public class FragmentMine extends BaseFragment {
                         startActivity(intent);
                         break;
                     case 7://修改密码
+                        intent = new Intent(getActivity(), AlertPasswordActivity.class);
+                        startActivityForResult(intent, IntentUtil.REQUEST_FROM_MINE_TO_ALERT_PASS);
                         break;
                     case 8://我的代金券
+                        startActivity(new Intent(getActivity(), YhqActivity.class));
                         break;
                 }
             }
@@ -145,7 +153,6 @@ public class FragmentMine extends BaseFragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        Log.d(TAG, "onCreateOptionsMenu");
         menu.clear();
         inflater.inflate(R.menu.menu_mine, menu);
         super.onCreateOptionsMenu(menu, inflater);
@@ -153,10 +160,14 @@ public class FragmentMine extends BaseFragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Log.d(TAG, "onOptionsItemSelected");
         switch (item.getItemId()) {
             case R.id.menu_mine_login_out:
-//                startActivity(new Intent(getActivity(), RuleActivity.class));
+                DialogUtil.showAskMessage(getActivity(), "确定要退出登录吗?", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        logout();
+                    }
+                });
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -166,9 +177,13 @@ public class FragmentMine extends BaseFragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == RequestAndResult.REQUEST_FROM_FRAGMENT_MINE
-                && resultCode == RequestAndResult.RESULT_OK) {
+        if (requestCode == IntentUtil.REQUEST_FROM_FRAGMENT_MINE
+                && resultCode == IntentUtil.RESULT_OK) {
             getUserInfo();
+        } else if (requestCode == IntentUtil.REQUEST_FROM_MINE_TO_ALERT_PASS
+                && resultCode == IntentUtil.RESULT_OK) {
+            startActivity(new Intent(getActivity(), MainActivity.class));
+            getActivity().finish();
         }
     }
 
@@ -176,7 +191,7 @@ public class FragmentMine extends BaseFragment {
         VolleyUtil volleyUtil = VolleyUtil.getInstance(getActivity());
         if (null != MyApplication.userInfo) {
             volleyUtil.getImage(imagePhone, MyApplication.userInfo.getFile_url());
-            balance.setText("账户余额:￥" + MyApplication.userInfo.getYe_price()
+            balance.setText("账户余额:¥" + MyApplication.userInfo.getYe_price()
                     + "\n账户金币:" + MyApplication.userInfo.getJf_price());
         }
     }
@@ -196,6 +211,33 @@ public class FragmentMine extends BaseFragment {
                                     (UserInfo_Sup) JsonUtil.stringToObject(response.toString(), UserInfo_Sup.class);
                             MyApplication.userInfo = userInfo_sup.getRetRes();
                             refresh();
+                        } else {
+                            DialogUtil.showErrorMessage(getActivity(), interResult.getRetErr());
+                        }
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        DialogUtil.showErrorMessage(getActivity(), error.toString());
+                    }
+                });
+        volleyUtil.addToRequestQueue(request, InternetUtil.reg());
+    }
+
+    private void logout() {
+        Map<String, String> map = new HashMap<>();
+        VolleyUtil volleyUtil = VolleyUtil.getInstance(getActivity());
+        JsonObjectRequest request = RequestUtil.createPostJsonRequest(InternetUtil.logout(),
+                JsonUtil.objectToString(map),
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        InterResult interResult =
+                                (InterResult) JsonUtil.stringToObject(response.toString(), InterResult.class);
+                        if (interResult.isSuccessed()) {
+                            SharedPreferencesUtil.setParam(getActivity(), SharedKey.IS_REMEMBER, false);
+                            startActivity(new Intent(getActivity(), MainActivity.class));
+                            getActivity().finish();
                         } else {
                             DialogUtil.showErrorMessage(getActivity(), interResult.getRetErr());
                         }

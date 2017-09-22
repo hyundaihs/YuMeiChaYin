@@ -24,7 +24,7 @@ import com.sp.shangpin.adapters.OrdersAdapter;
 import com.sp.shangpin.entity.InterResult;
 import com.sp.shangpin.entity.OrderInfo;
 import com.sp.shangpin.entity.OrdersInfo_Sup;
-import com.sp.shangpin.entity.RequestAndResult;
+import com.sp.shangpin.entity.IntentUtil;
 import com.sp.shangpin.utils.DialogUtil;
 import com.sp.shangpin.utils.InternetUtil;
 import com.sp.shangpin.utils.JsonUtil;
@@ -140,7 +140,7 @@ public class FragmentUpgrade extends BaseFragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Log.d("Paid", "onActivityResult");
-        if (requestCode == RequestAndResult.REQUEST_FROM_PAID && resultCode == RequestAndResult.RESULT_OK) {
+        if (requestCode == IntentUtil.REQUEST_FROM_PAID && resultCode == IntentUtil.RESULT_OK) {
             int position = data.getIntExtra("position", -1);
             if (position != -1) {
                 pickUp(position);

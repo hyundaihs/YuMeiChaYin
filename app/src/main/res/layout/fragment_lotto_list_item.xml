@@ -11,22 +11,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <android.support.constraint.Guideline
-            android:id="@+id/fragment_lotto_list_item_guideline"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.5" />
-
         <ImageView
             android:id="@+id/fragment_lotto_list_item_not_upgrade_image"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:contentDescription="@null"
             android:src="@mipmap/ic_launcher"
-            app:layout_constraintHorizontal_weight="4"
-            app:layout_constraintHorizontal_chainStyle="spread"
             app:layout_constraintBottom_toTopOf="@+id/fragment_lotto_list_item_not_upgrade_name"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintHorizontal_weight="4"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toLeftOf="@+id/fragment_lotto_list_item_upgrade_icon"
             app:layout_constraintTop_toTopOf="parent"
@@ -37,11 +30,9 @@
             style="@style/fragment_lotto_list_item_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="名称："
-            android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@+id/fragment_lotto_list_item_not_upgrade_price"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="@+id/fragment_lotto_list_item_guideline"
+            app:layout_constraintLeft_toLeftOf="@+id/fragment_lotto_list_item_not_upgrade_image"
+            app:layout_constraintRight_toRightOf="@+id/fragment_lotto_list_item_not_upgrade_image"
             app:layout_constraintTop_toBottomOf="@+id/fragment_lotto_list_item_not_upgrade_image" />
 
         <TextView
@@ -49,11 +40,9 @@
             style="@style/fragment_lotto_list_item_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="价格："
-            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="@+id/fragment_lotto_list_item_guideline"
+            app:layout_constraintLeft_toLeftOf="@+id/fragment_lotto_list_item_not_upgrade_name"
+            app:layout_constraintRight_toRightOf="@+id/fragment_lotto_list_item_not_upgrade_name"
             app:layout_constraintTop_toBottomOf="@+id/fragment_lotto_list_item_not_upgrade_name" />
 
         <ImageView
@@ -62,8 +51,8 @@
             android:layout_height="wrap_content"
             android:contentDescription="@null"
             android:src="@mipmap/ic_launcher"
-            app:layout_constraintHorizontal_weight="4"
             app:layout_constraintBottom_toTopOf="@+id/fragment_lotto_list_item_upgrade_name"
+            app:layout_constraintHorizontal_weight="4"
             app:layout_constraintLeft_toRightOf="@+id/fragment_lotto_list_item_upgrade_icon"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -74,11 +63,9 @@
             style="@style/fragment_lotto_list_item_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="名称："
-            android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@+id/fragment_lotto_list_item_upgrade_price"
-            app:layout_constraintLeft_toLeftOf="@+id/fragment_lotto_list_item_guideline"
-            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toLeftOf="@+id/fragment_lotto_list_item_upgrade_image"
+            app:layout_constraintRight_toRightOf="@+id/fragment_lotto_list_item_upgrade_image"
             app:layout_constraintTop_toBottomOf="@+id/fragment_lotto_list_item_upgrade_image" />
 
         <TextView
@@ -86,11 +73,9 @@
             style="@style/fragment_lotto_list_item_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="价格："
-            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="@+id/fragment_lotto_list_item_guideline"
-            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toLeftOf="@+id/fragment_lotto_list_item_upgrade_name"
+            app:layout_constraintRight_toRightOf="@+id/fragment_lotto_list_item_upgrade_name"
             app:layout_constraintTop_toBottomOf="@+id/fragment_lotto_list_item_upgrade_name" />
 
         <ImageView
@@ -99,8 +84,8 @@
             android:layout_height="wrap_content"
             android:src="@mipmap/sj"
             android:visibility="visible"
-            app:layout_constraintHorizontal_weight="2"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_weight="2"
             app:layout_constraintLeft_toRightOf="@+id/fragment_lotto_list_item_not_upgrade_image"
             app:layout_constraintRight_toLeftOf="@+id/fragment_lotto_list_item_upgrade_image"
             app:layout_constraintTop_toTopOf="parent" />

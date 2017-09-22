@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.sp.shangpin.R;
 import com.sp.shangpin.entity.YHQ;
+import com.sp.shangpin.utils.ToastUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,16 +28,32 @@ public class FragmentYhqAdapter extends RecyclerView.Adapter<FragmentYhqAdapter.
     private LayoutInflater inflater;
     private FragmentHomeAdapter.OnItemClickListener onItemClickListener;
     private List<Integer> checked;
+    private boolean isCheck;
+    private int maxNum;
 
-    public FragmentYhqAdapter(Context context, List<YHQ> datas) {
+    public FragmentYhqAdapter(Context context, List<YHQ> datas, boolean check, int max) {
         this.mContext = context;
         this.mDatas = datas;
         inflater = LayoutInflater.from(mContext);
         checked = new ArrayList<>();
+        isCheck = check;
+        maxNum = max;
     }
 
     public void setOnItemClickListener(FragmentHomeAdapter.OnItemClickListener onItemClickListener) {
         this.onItemClickListener = onItemClickListener;
+    }
+
+    public void cleanChecked() {
+        checked.clear();
+    }
+
+    public ArrayList<YHQ> getCheckedIds() {
+        ArrayList<YHQ> ids = new ArrayList<>();
+        for (int i = 0; i < checked.size(); i++) {
+            ids.add(mDatas.get(checked.get(i)));
+        }
+        return ids;
     }
 
     @Override
@@ -47,22 +64,28 @@ public class FragmentYhqAdapter extends RecyclerView.Adapter<FragmentYhqAdapter.
     //填充onCreateViewHolder方法返回的holder中的控件
     @Override
     public void onBindViewHolder(FragmentYhqAdapter.MyViewHolder holder, final int position) {
-        holder.price.setText("￥" + mDatas.get(position).getPrice());
-        holder.check.setVisibility(checked.contains(Integer.valueOf(position)) ? View.VISIBLE : View.GONE);
-        holder.rootView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (checked.contains(Integer.valueOf(position))) {
-                    checked.remove(Integer.valueOf(position));
-                } else {
-                    checked.add(Integer.valueOf(position));
+        holder.price.setText(mDatas.get(position).getPrice() + "");
+        if (isCheck) {
+            holder.check.setVisibility(checked.contains(Integer.valueOf(position)) ? View.VISIBLE : View.GONE);
+            holder.rootView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (checked.contains(Integer.valueOf(position))) {
+                        checked.remove(Integer.valueOf(position));
+                    } else {
+                        if (checked.size() < maxNum) {
+                            checked.add(Integer.valueOf(position));
+                        } else {
+                            ToastUtil.show(mContext, "最多能选" + maxNum + "张");
+                        }
+                    }
+                    notifyItemChanged(position);
+                    if (null != onItemClickListener) {
+                        onItemClickListener.onItemClick(view, position);
+                    }
                 }
-                notifyItemChanged(position);
-                if (null != onItemClickListener) {
-                    onItemClickListener.onItemClick(view, position);
-                }
-            }
-        });
+            });
+        }
     }
 
     //重写onCreateViewHolder方法，返回一个自定义的ViewHolder
