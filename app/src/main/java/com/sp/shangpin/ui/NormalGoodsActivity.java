@@ -179,7 +179,8 @@ public class NormalGoodsActivity extends AppCompatActivity implements PopupMenu.
                         DialogUtil.showErrorMessage(thisContext, error.toString());
                     }
                 });
-        volleyUtil.addToRequestQueue(request, InternetUtil.reg());
+        volleyUtil.addToRequestQueue(request, orderType == NormalOrderType.GOLD
+                ? InternetUtil.goodsjf() : InternetUtil.goods());
     }
 
 

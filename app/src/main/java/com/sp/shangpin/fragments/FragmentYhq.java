@@ -125,7 +125,7 @@ public class FragmentYhq extends BaseFragment {
                         DialogUtil.showErrorMessage(getActivity(), error.toString());
                     }
                 });
-        volleyUtil.addToRequestQueue(request, InternetUtil.reg());
+        volleyUtil.addToRequestQueue(request, InternetUtil.yhq());
     }
 
 

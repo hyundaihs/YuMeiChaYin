@@ -13,7 +13,7 @@
             android:id="@+id/fragment_yhq_item_price_layout"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:background="@color/fragment_yhq_item_num_bg"
+            android:background="@color/colorPrimary"
             android:gravity="center"
             app:layout_constraintDimensionRatio="5:3"
             app:layout_constraintLeft_toLeftOf="parent"

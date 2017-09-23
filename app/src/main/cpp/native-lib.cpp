@@ -3,7 +3,16 @@
 
 extern "C"
 {
-
+JNIEXPORT jstring JNICALL
+Java_com_sp_shangpin_utils_InternetUtil_getWChatSecret(JNIEnv *env, jclass type) {
+    std::string text = "bf126cc683cb82fa285ccad2296cb7aa";
+    return env->NewStringUTF(text.c_str());
+}
+JNIEXPORT jstring JNICALL
+Java_com_sp_shangpin_utils_InternetUtil_getWChatAppId(JNIEnv *env, jclass type) {
+    std::string text = "TODOwx0179f29873f7c069";
+    return env->NewStringUTF(text.c_str());
+}
 
 JNIEXPORT jstring JNICALL
 Java_com_sp_shangpin_utils_InternetUtil_urlHome(JNIEnv *env, jclass type) {
@@ -249,6 +258,25 @@ Java_com_sp_shangpin_utils_InternetUtil_ordersjflists(JNIEnv *env, jclass type) 
 JNIEXPORT jstring JNICALL
 Java_com_sp_shangpin_utils_InternetUtil_shordersjf(JNIEnv *env, jclass type) {
     std::string text = "shordersjf";
+    return env->NewStringUTF(text.c_str());
+}
+
+
+JNIEXPORT jstring JNICALL
+Java_com_sp_shangpin_utils_InternetUtil_smrz(JNIEnv *env, jclass type) {
+    std::string text = "smrz";
+    return env->NewStringUTF(text.c_str());
+}
+
+JNIEXPORT jstring JNICALL
+Java_com_sp_shangpin_utils_InternetUtil_smrzstatus(JNIEnv *env, jclass type) {
+    std::string text = "smrzstatus";
+    return env->NewStringUTF(text.c_str());
+}
+
+JNIEXPORT jstring JNICALL
+Java_com_sp_shangpin_utils_InternetUtil_txsq(JNIEnv *env, jclass type) {
+    std::string text = "txsq";
     return env->NewStringUTF(text.c_str());
 }
 

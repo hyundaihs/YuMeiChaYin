@@ -1,7 +1,6 @@
 package com.sp.shangpin.ui;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -36,45 +35,42 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * ShangPin
- * Created by 蔡雨峰 on 2017/9/7.
+ * ChaYin
+ * Created by ${蔡雨峰} on 2017/9/23/023.
  */
 
-public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
+public class FindPasswordActivity extends AppCompatActivity implements View.OnClickListener {
 
     private final String TAG = getClass().getSimpleName();
     private final Context thisContext = this;
-    private AutoCompleteTextView phone, securityCode, password, confirmPwd, recommendCode;
+    private AutoCompleteTextView phone, securityCode, password, confirmPwd;
     private ProgressBar progressBar;
-    private Button register, alreadyRegist;
+    private Button submit;
     private SecurityCodeView securityCodeView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         MyApplication.addActivity(this);
-        setContentView(R.layout.activity_register);
+        setContentView(R.layout.activity_find_password);
         init();
     }
 
     private void init() {
         initActionBar();
-        register = (Button) findViewById(R.id.register_register);
-        register.setOnClickListener(this);
-        alreadyRegist = (Button) findViewById(R.id.register_already_registered);
-        alreadyRegist.setOnClickListener(this);
-        securityCodeView = (SecurityCodeView) findViewById(R.id.register_security_code);
+        submit = (Button) findViewById(R.id.find_pass_register);
+        submit.setOnClickListener(this);
+        securityCodeView = (SecurityCodeView) findViewById(R.id.find_pass_security_code);
         securityCodeView.setOnClickListener(this);
-        progressBar = (ProgressBar) findViewById(R.id.register_progress);
-        phone = (AutoCompleteTextView) findViewById(R.id.register_phone_num);
-        securityCode = (AutoCompleteTextView) findViewById(R.id.register_security_code_input);
-        password = (AutoCompleteTextView) findViewById(R.id.register_password_input);
-        confirmPwd = (AutoCompleteTextView) findViewById(R.id.register_confirm_password_input);
-        recommendCode = (AutoCompleteTextView) findViewById(R.id.register_recommend_code_input);
+        progressBar = (ProgressBar) findViewById(R.id.find_pass_progress);
+        phone = (AutoCompleteTextView) findViewById(R.id.find_pass_phone_num);
+        securityCode = (AutoCompleteTextView) findViewById(R.id.find_pass_security_code_input);
+        password = (AutoCompleteTextView) findViewById(R.id.find_pass_password_input);
+        confirmPwd = (AutoCompleteTextView) findViewById(R.id.find_pass_confirm_password_input);
     }
 
     public void initActionBar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.register_toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.find_pass_toolbar);
         setSupportActionBar(toolbar);
         setTitle("");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -96,15 +92,12 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.register_register:
-                if (attemptRegister()) {
-                    register();
+            case R.id.find_pass_register:
+                if (attemptSubmit()) {
+                    submit();
                 }
                 break;
-            case R.id.register_already_registered:
-                startActivity(new Intent(this, LoginActivity.class));
-                break;
-            case R.id.register_security_code:
+            case R.id.find_pass_security_code:
                 if (TextUtils.isEmpty(phone.getText())) {
                     phone.setError("手机号不能为空");
                     return;
@@ -118,7 +111,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         }
     }
 
-    private boolean attemptRegister() {
+    private boolean attemptSubmit() {
         if (TextUtils.isEmpty(phone.getText())) {
             phone.setError("手机号不能为空");
         } else if (TextUtils.isEmpty(securityCode.getText())) {
@@ -141,7 +134,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     private void getSecurityCode() {
         Map<String, String> map = new HashMap<>();
         map.put("phone", phone.getText().toString());
-        map.put("type", "reg");
+        map.put("type", "reset");
         VolleyUtil volleyUtil = VolleyUtil.getInstance(this);
         final JsonObjectRequest request = RequestUtil.createPostJsonRequest(InternetUtil.sendmsg(),
                 JsonUtil.objectToString(map),
@@ -164,16 +157,13 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         volleyUtil.addToRequestQueue(request, InternetUtil.sendmsg());
     }
 
-    private void register() {
+    private void submit() {
         Map<String, String> map = new HashMap<>();
         map.put("account", phone.getText().toString());
         map.put("password", password.getText().toString());
         map.put("verf", securityCode.getText().toString());
-        if (!TextUtils.isEmpty(recommendCode.getText())) {
-            map.put("numbers", recommendCode.getText().toString());
-        }
         VolleyUtil volleyUtil = VolleyUtil.getInstance(this);
-        JsonObjectRequest request = RequestUtil.createPostJsonRequest(InternetUtil.reg(),
+        JsonObjectRequest request = RequestUtil.createPostJsonRequest(InternetUtil.fpass(),
                 JsonUtil.objectToString(map),
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -181,7 +171,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                         showProgress(false);
                         InterResult interResult = (InterResult) JsonUtil.stringToObject(response.toString(), InterResult.class);
                         if (interResult.isSuccessed()) {
-                            DialogUtil.showAskMessage(thisContext, "注册成功");
+                            Log.d(TAG,response.toString());
+                            DialogUtil.showAskMessage(thisContext, "密码设置成功");
                             finish();
                         } else {
                             DialogUtil.showErrorMessage(thisContext, interResult.getRetErr());
@@ -194,8 +185,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                         DialogUtil.showErrorMessage(thisContext, error.toString());
                     }
                 });
-        volleyUtil.addToRequestQueue(request, InternetUtil.reg());
-
+        volleyUtil.addToRequestQueue(request, InternetUtil.fpass());
     }
 
     private void showProgress(boolean show) {
@@ -204,9 +194,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         securityCode.setVisibility(show ? View.GONE : View.VISIBLE);
         password.setVisibility(show ? View.GONE : View.VISIBLE);
         confirmPwd.setVisibility(show ? View.GONE : View.VISIBLE);
-        register.setVisibility(show ? View.GONE : View.VISIBLE);
-        alreadyRegist.setVisibility(show ? View.GONE : View.VISIBLE);
+        submit.setVisibility(show ? View.GONE : View.VISIBLE);
         securityCodeView.setVisibility(show ? View.GONE : View.VISIBLE);
-        recommendCode.setVisibility(show ? View.GONE : View.VISIBLE);
     }
 }

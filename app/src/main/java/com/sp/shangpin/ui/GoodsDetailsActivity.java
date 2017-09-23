@@ -24,7 +24,7 @@ import com.sp.shangpin.entity.GoodsDetails_Sup;
 import com.sp.shangpin.entity.InterResult;
 import com.sp.shangpin.entity.OrderInfo;
 import com.sp.shangpin.entity.OrderInfo_Sup;
-import com.sp.shangpin.entity.IntentUtil;
+import com.sp.shangpin.utils.IntentUtil;
 import com.sp.shangpin.entity.UpgradeGoods;
 import com.sp.shangpin.entity.UserInfo_Sup;
 import com.sp.shangpin.utils.DialogUtil;
@@ -235,7 +235,7 @@ public class GoodsDetailsActivity extends AppCompatActivity implements View.OnCl
                         DialogUtil.showErrorMessage(thisContext, error.toString());
                     }
                 });
-        volleyUtil.addToRequestQueue(request, InternetUtil.reg());
+        volleyUtil.addToRequestQueue(request, InternetUtil.orderssj());
     }
 
     private void getUserInfo() {
@@ -263,7 +263,7 @@ public class GoodsDetailsActivity extends AppCompatActivity implements View.OnCl
                         DialogUtil.showErrorMessage(thisContext, error.toString());
                     }
                 });
-        volleyUtil.addToRequestQueue(request, InternetUtil.reg());
+        volleyUtil.addToRequestQueue(request, InternetUtil.userinfo());
     }
 
 
@@ -294,6 +294,6 @@ public class GoodsDetailsActivity extends AppCompatActivity implements View.OnCl
                         DialogUtil.showErrorMessage(thisContext, error.toString());
                     }
                 });
-        volleyUtil.addToRequestQueue(request, InternetUtil.reg());
+        volleyUtil.addToRequestQueue(request, InternetUtil.sjtihuo());
     }
 }

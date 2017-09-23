@@ -16,7 +16,7 @@ import android.widget.AutoCompleteTextView;
 
 import com.sp.shangpin.MyApplication;
 import com.sp.shangpin.R;
-import com.sp.shangpin.entity.IntentUtil;
+import com.sp.shangpin.utils.IntentUtil;
 import com.sp.shangpin.utils.DialogUtil;
 import com.sp.shangpin.utils.ReExpressUtil;
 

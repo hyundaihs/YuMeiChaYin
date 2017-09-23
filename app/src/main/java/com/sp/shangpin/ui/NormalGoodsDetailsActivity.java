@@ -11,7 +11,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -22,7 +21,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.sp.shangpin.MyApplication;
 import com.sp.shangpin.R;
-import com.sp.shangpin.entity.IntentUtil;
+import com.sp.shangpin.utils.IntentUtil;
 import com.sp.shangpin.entity.InterResult;
 import com.sp.shangpin.entity.NormalGoodsInfo;
 import com.sp.shangpin.entity.NormalGoodsInfo_Sup;
@@ -194,7 +193,8 @@ public class NormalGoodsDetailsActivity extends AppCompatActivity implements Vie
                         DialogUtil.showErrorMessage(thisContext, error.toString());
                     }
                 });
-        volleyUtil.addToRequestQueue(request, InternetUtil.reg());
+        volleyUtil.addToRequestQueue(request, orderType == NormalOrderType.GOLD
+                ? InternetUtil.goodsjfinfo() : InternetUtil.goodsinfo());
 
     }
 
@@ -305,7 +305,8 @@ public class NormalGoodsDetailsActivity extends AppCompatActivity implements Vie
                         DialogUtil.showErrorMessage(thisContext, error.toString());
                     }
                 });
-        volleyUtil.addToRequestQueue(request, InternetUtil.reg());
+        volleyUtil.addToRequestQueue(request, orderType == NormalOrderType.GOLD
+                ? InternetUtil.ordersjf() : InternetUtil.orders());
     }
 
     private void getUserInfo() {
@@ -333,6 +334,6 @@ public class NormalGoodsDetailsActivity extends AppCompatActivity implements Vie
                         DialogUtil.showErrorMessage(thisContext, error.toString());
                     }
                 });
-        volleyUtil.addToRequestQueue(request, InternetUtil.reg());
+        volleyUtil.addToRequestQueue(request, InternetUtil.userinfo());
     }
 }

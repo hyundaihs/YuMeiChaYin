@@ -17,7 +17,7 @@ import com.sp.shangpin.R;
 import com.sp.shangpin.entity.InterResult;
 import com.sp.shangpin.entity.OrderInfo;
 import com.sp.shangpin.entity.OrderStatus;
-import com.sp.shangpin.entity.IntentUtil;
+import com.sp.shangpin.utils.IntentUtil;
 import com.sp.shangpin.entity.UpgradeStatus;
 import com.sp.shangpin.fragments.BaseFragment;
 import com.sp.shangpin.ui.InputAddrActivity;
@@ -167,7 +167,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.MyViewHold
                         DialogUtil.showErrorMessage(mContext, error.toString());
                     }
                 });
-        volleyUtil.addToRequestQueue(request, InternetUtil.reg());
+        volleyUtil.addToRequestQueue(request, InternetUtil.sjth());
     }
 
     //重写onCreateViewHolder方法，返回一个自定义的ViewHolder

@@ -1,10 +1,10 @@
 package com.sp.shangpin.ui;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.annotation.IdRes;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -15,6 +15,8 @@ import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -36,45 +38,53 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * ShangPin
- * Created by 蔡雨峰 on 2017/9/7.
+ * ChaYin
+ * Created by ${蔡雨峰} on 2017/9/23/023.
  */
 
-public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
+public class RealNameActivity extends AppCompatActivity implements View.OnClickListener {
 
     private final String TAG = getClass().getSimpleName();
     private final Context thisContext = this;
-    private AutoCompleteTextView phone, securityCode, password, confirmPwd, recommendCode;
+    private TextView nickName;
+    private AutoCompleteTextView phone, securityCode, name, identity;
+    private RadioGroup radioGroup;
     private ProgressBar progressBar;
-    private Button register, alreadyRegist;
+    private Button submit;
     private SecurityCodeView securityCodeView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         MyApplication.addActivity(this);
-        setContentView(R.layout.activity_register);
+        setContentView(R.layout.activity_real_name);
         init();
     }
 
     private void init() {
         initActionBar();
-        register = (Button) findViewById(R.id.register_register);
-        register.setOnClickListener(this);
-        alreadyRegist = (Button) findViewById(R.id.register_already_registered);
-        alreadyRegist.setOnClickListener(this);
-        securityCodeView = (SecurityCodeView) findViewById(R.id.register_security_code);
+        submit = (Button) findViewById(R.id.real_name_register);
+        submit.setOnClickListener(this);
+        nickName = (TextView) findViewById(R.id.real_name_nick_name);
+        nickName.setText(MyApplication.userInfo.getTitle());
+        securityCodeView = (SecurityCodeView) findViewById(R.id.real_name_security_code);
         securityCodeView.setOnClickListener(this);
-        progressBar = (ProgressBar) findViewById(R.id.register_progress);
-        phone = (AutoCompleteTextView) findViewById(R.id.register_phone_num);
-        securityCode = (AutoCompleteTextView) findViewById(R.id.register_security_code_input);
-        password = (AutoCompleteTextView) findViewById(R.id.register_password_input);
-        confirmPwd = (AutoCompleteTextView) findViewById(R.id.register_confirm_password_input);
-        recommendCode = (AutoCompleteTextView) findViewById(R.id.register_recommend_code_input);
+        progressBar = (ProgressBar) findViewById(R.id.real_name_progress);
+        phone = (AutoCompleteTextView) findViewById(R.id.real_name_phone_num);
+        securityCode = (AutoCompleteTextView) findViewById(R.id.real_name_security_code_input);
+        name = (AutoCompleteTextView) findViewById(R.id.real_name_name_input);
+        identity = (AutoCompleteTextView) findViewById(R.id.real_name_identity_input);
+        radioGroup = (RadioGroup) findViewById(R.id.real_name_sex_group);
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, @IdRes int i) {
+
+            }
+        });
     }
 
     public void initActionBar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.register_toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.real_name_toolbar);
         setSupportActionBar(toolbar);
         setTitle("");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -96,15 +106,12 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.register_register:
-                if (attemptRegister()) {
-                    register();
+            case R.id.real_name_register:
+                if (attemptSubmit()) {
+                    submit();
                 }
                 break;
-            case R.id.register_already_registered:
-                startActivity(new Intent(this, LoginActivity.class));
-                break;
-            case R.id.register_security_code:
+            case R.id.real_name_security_code:
                 if (TextUtils.isEmpty(phone.getText())) {
                     phone.setError("手机号不能为空");
                     return;
@@ -118,19 +125,17 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         }
     }
 
-    private boolean attemptRegister() {
+    private boolean attemptSubmit() {
         if (TextUtils.isEmpty(phone.getText())) {
             phone.setError("手机号不能为空");
         } else if (TextUtils.isEmpty(securityCode.getText())) {
             securityCode.setError("验证码不能为空");
-        } else if (TextUtils.isEmpty(password.getText())) {
-            password.setError("密码不能为空");
-        } else if (TextUtils.isEmpty(confirmPwd.getText())) {
-            confirmPwd.setError("确认密码不能为空");
+        } else if (TextUtils.isEmpty(name.getText())) {
+            name.setError("真实姓名不能为空");
+        } else if (TextUtils.isEmpty(identity.getText())) {
+            identity.setError("身份证号码不能为空");
         } else if (!ReExpressUtil.isMatcher(ReExpressUtil.PHONE, phone.getText().toString())) {
             phone.setError("手机号格式不对");
-        } else if (!password.getText().toString().equals(confirmPwd.getText().toString())) {
-            confirmPwd.setError("两次密码不一样");
         } else {
             showProgress(true);
             return true;
@@ -141,7 +146,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     private void getSecurityCode() {
         Map<String, String> map = new HashMap<>();
         map.put("phone", phone.getText().toString());
-        map.put("type", "reg");
+        map.put("type", "reset");
         VolleyUtil volleyUtil = VolleyUtil.getInstance(this);
         final JsonObjectRequest request = RequestUtil.createPostJsonRequest(InternetUtil.sendmsg(),
                 JsonUtil.objectToString(map),
@@ -164,16 +169,15 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         volleyUtil.addToRequestQueue(request, InternetUtil.sendmsg());
     }
 
-    private void register() {
+    private void submit() {
         Map<String, String> map = new HashMap<>();
-        map.put("account", phone.getText().toString());
-        map.put("password", password.getText().toString());
+        map.put("true_name", name.getText().toString());
+        map.put("id_numbers", identity.getText().toString());
+        map.put("sex", radioGroup.getCheckedRadioButtonId() == R.id.real_name_sex_man ? "男" : "女");
         map.put("verf", securityCode.getText().toString());
-        if (!TextUtils.isEmpty(recommendCode.getText())) {
-            map.put("numbers", recommendCode.getText().toString());
-        }
+        map.put("phone", phone.getText().toString());
         VolleyUtil volleyUtil = VolleyUtil.getInstance(this);
-        JsonObjectRequest request = RequestUtil.createPostJsonRequest(InternetUtil.reg(),
+        JsonObjectRequest request = RequestUtil.createPostJsonRequest(InternetUtil.smrz(),
                 JsonUtil.objectToString(map),
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -181,7 +185,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                         showProgress(false);
                         InterResult interResult = (InterResult) JsonUtil.stringToObject(response.toString(), InterResult.class);
                         if (interResult.isSuccessed()) {
-                            DialogUtil.showAskMessage(thisContext, "注册成功");
+                            Log.d(TAG, response.toString());
+                            DialogUtil.showAskMessage(thisContext, "提交成功");
                             finish();
                         } else {
                             DialogUtil.showErrorMessage(thisContext, interResult.getRetErr());
@@ -194,19 +199,16 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                         DialogUtil.showErrorMessage(thisContext, error.toString());
                     }
                 });
-        volleyUtil.addToRequestQueue(request, InternetUtil.reg());
-
+        volleyUtil.addToRequestQueue(request, InternetUtil.fpass());
     }
 
     private void showProgress(boolean show) {
         progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
         phone.setVisibility(show ? View.GONE : View.VISIBLE);
         securityCode.setVisibility(show ? View.GONE : View.VISIBLE);
-        password.setVisibility(show ? View.GONE : View.VISIBLE);
-        confirmPwd.setVisibility(show ? View.GONE : View.VISIBLE);
-        register.setVisibility(show ? View.GONE : View.VISIBLE);
-        alreadyRegist.setVisibility(show ? View.GONE : View.VISIBLE);
+        name.setVisibility(show ? View.GONE : View.VISIBLE);
+        identity.setVisibility(show ? View.GONE : View.VISIBLE);
+        submit.setVisibility(show ? View.GONE : View.VISIBLE);
         securityCodeView.setVisibility(show ? View.GONE : View.VISIBLE);
-        recommendCode.setVisibility(show ? View.GONE : View.VISIBLE);
     }
 }

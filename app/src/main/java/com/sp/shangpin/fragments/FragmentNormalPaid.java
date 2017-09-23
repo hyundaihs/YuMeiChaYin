@@ -133,7 +133,8 @@ public class FragmentNormalPaid extends BaseFragment {
                         DialogUtil.showErrorMessage(getActivity(), error.toString());
                     }
                 });
-        volleyUtil.addToRequestQueue(request, InternetUtil.reg());
+        volleyUtil.addToRequestQueue(request, orderType == NormalOrderType.GOLD
+                ? InternetUtil.ordersjflists() : InternetUtil.orderslists());
     }
 
 }

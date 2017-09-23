@@ -45,4 +45,5 @@ dependencies {
     compile 'com.mcxiaoke.volley:library:1.0.19'
     compile 'com.google.code.gson:gson:2.2.4'
     compile 'com.youth.banner:banner:1.4.10'
+    compile 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+'
 }

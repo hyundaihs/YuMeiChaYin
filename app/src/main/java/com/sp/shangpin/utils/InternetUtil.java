@@ -10,6 +10,10 @@ public class InternetUtil {
         System.loadLibrary("native-lib");
     }
 
+    public static native String getWChatSecret();
+
+    public static native String getWChatAppId();
+
     /**
      * URL
      *
@@ -269,4 +273,22 @@ public class InternetUtil {
      * @return
      */
     public static native String shordersjf();
+
+    /**
+     * 实名认证
+     * @return
+     */
+    public static native String smrz();
+
+    /**
+     * 实名认证状态
+     * @return
+     */
+    public static native String smrzstatus();
+
+    /**
+     * 余额提现申请	
+     * @return
+     */
+    public static native String txsq();
 }

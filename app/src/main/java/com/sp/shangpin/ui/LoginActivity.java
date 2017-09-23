@@ -48,7 +48,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private AutoCompleteTextView phone, password;
     private ProgressBar progressBar;
-    private Button login;
+    private Button login, forget;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +64,7 @@ public class LoginActivity extends AppCompatActivity {
         password = (AutoCompleteTextView) findViewById(R.id.login_password_input);
         progressBar = (ProgressBar) findViewById(R.id.login_progress);
         login = (Button) findViewById(R.id.login_login);
+        forget = (Button) findViewById(R.id.login_forget);
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -71,6 +72,12 @@ public class LoginActivity extends AppCompatActivity {
                     showProgress(true);
                     login(phone.getText().toString(), password.getText().toString());
                 }
+            }
+        });
+        forget.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(thisContext, FindPasswordActivity.class));
             }
         });
     }
@@ -142,7 +149,7 @@ public class LoginActivity extends AppCompatActivity {
                         DialogUtil.showErrorMessage(thisContext, error.toString());
                     }
                 });
-        volleyUtil.addToRequestQueue(request, InternetUtil.reg());
+        volleyUtil.addToRequestQueue(request, InternetUtil.login());
 
     }
 

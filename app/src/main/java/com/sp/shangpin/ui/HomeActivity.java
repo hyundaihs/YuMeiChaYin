@@ -141,7 +141,7 @@ public class HomeActivity extends AppCompatActivity {
                         DialogUtil.showErrorMessage(thisContext, error.toString());
                     }
                 });
-        volleyUtil.addToRequestQueue(request, InternetUtil.reg());
+        volleyUtil.addToRequestQueue(request, InternetUtil.userinfo());
     }
 
     private void loadFragment(Fragment fragment) {

@@ -125,7 +125,7 @@ public class FragmentLotto extends BaseFragment {
                         DialogUtil.showErrorMessage(getActivity(), error.toString());
                     }
                 });
-        volleyUtil.addToRequestQueue(request, InternetUtil.reg());
+        volleyUtil.addToRequestQueue(request, InternetUtil.goodssj());
     }
 
     private void initViews() {

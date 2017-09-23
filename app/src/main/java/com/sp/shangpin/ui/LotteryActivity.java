@@ -160,7 +160,7 @@ public class LotteryActivity extends AppCompatActivity implements View.OnClickLi
                         DialogUtil.showErrorMessage(thisContext, error.toString());
                     }
                 });
-        volleyUtil.addToRequestQueue(request, InternetUtil.reg());
+        volleyUtil.addToRequestQueue(request, InternetUtil.sjsj());
 
     }
 
@@ -193,7 +193,7 @@ public class LotteryActivity extends AppCompatActivity implements View.OnClickLi
                         swipeRefreshLayout.setRefreshing(false);
                     }
                 });
-        volleyUtil.addToRequestQueue(request, InternetUtil.reg());
+        volleyUtil.addToRequestQueue(request, InternetUtil.cpkj());
 
     }
 

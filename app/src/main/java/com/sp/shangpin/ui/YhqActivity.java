@@ -16,7 +16,7 @@ import android.widget.TextView;
 
 import com.sp.shangpin.R;
 import com.sp.shangpin.adapters.FragmentsAdapter;
-import com.sp.shangpin.entity.IntentUtil;
+import com.sp.shangpin.utils.IntentUtil;
 import com.sp.shangpin.fragments.BaseFragment;
 import com.sp.shangpin.fragments.FragmentYhq;
 

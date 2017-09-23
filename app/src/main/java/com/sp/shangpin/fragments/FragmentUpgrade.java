@@ -24,7 +24,7 @@ import com.sp.shangpin.adapters.OrdersAdapter;
 import com.sp.shangpin.entity.InterResult;
 import com.sp.shangpin.entity.OrderInfo;
 import com.sp.shangpin.entity.OrdersInfo_Sup;
-import com.sp.shangpin.entity.IntentUtil;
+import com.sp.shangpin.utils.IntentUtil;
 import com.sp.shangpin.utils.DialogUtil;
 import com.sp.shangpin.utils.InternetUtil;
 import com.sp.shangpin.utils.JsonUtil;
@@ -133,7 +133,7 @@ public class FragmentUpgrade extends BaseFragment {
                         DialogUtil.showErrorMessage(getActivity(), error.toString());
                     }
                 });
-        volleyUtil.addToRequestQueue(request, InternetUtil.reg());
+        volleyUtil.addToRequestQueue(request, InternetUtil.sjlists());
     }
 
     @Override
@@ -176,6 +176,6 @@ public class FragmentUpgrade extends BaseFragment {
                         DialogUtil.showErrorMessage(getActivity(), error.toString());
                     }
                 });
-        volleyUtil.addToRequestQueue(request, InternetUtil.reg());
+        volleyUtil.addToRequestQueue(request, InternetUtil.sjtihuo());
     }
 }

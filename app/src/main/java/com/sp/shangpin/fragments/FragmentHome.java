@@ -124,7 +124,7 @@ public class FragmentHome extends BaseFragment implements View.OnClickListener {
                         DialogUtil.showErrorMessage(getActivity(), error.toString());
                     }
                 });
-        volleyUtil.addToRequestQueue(request, InternetUtil.reg());
+        volleyUtil.addToRequestQueue(request, InternetUtil.indexdata());
     }
 
     private void refresh() {

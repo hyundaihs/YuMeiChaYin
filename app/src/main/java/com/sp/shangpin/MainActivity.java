@@ -24,6 +24,9 @@ import com.sp.shangpin.utils.JsonUtil;
 import com.sp.shangpin.utils.RequestUtil;
 import com.sp.shangpin.utils.SharedPreferencesUtil;
 import com.sp.shangpin.utils.VolleyUtil;
+import com.tencent.mm.opensdk.modelmsg.SendAuth;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
+import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
 import org.json.JSONObject;
 
@@ -51,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void isRemember() {
         if ((Boolean) SharedPreferencesUtil.getParam(thisContext, SharedKey.IS_REMEMBER, false)) {
-            Log.i(TAG,"自动登录验证");
+            Log.i(TAG, "自动登录验证");
             verfLogin((String) SharedPreferencesUtil.getParam(this, SharedKey.LOGIN_VERF, ""));
         }
     }
@@ -88,7 +91,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         });
                     }
                 });
-        volleyUtil.addToRequestQueue(request, InternetUtil.reg());
+        volleyUtil.addToRequestQueue(request, InternetUtil.verflogin());
 
     }
 
@@ -102,7 +105,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         InterResult interResult =
                                 (InterResult) JsonUtil.stringToObject(response.toString(), InterResult.class);
                         if (interResult.isSuccessed()) {
-                        SystemInfo_Sup systemInfoSup = (SystemInfo_Sup) JsonUtil.stringToObject(response.toString(), SystemInfo_Sup.class);
+                            SystemInfo_Sup systemInfoSup = (SystemInfo_Sup) JsonUtil.stringToObject(response.toString(), SystemInfo_Sup.class);
                             Log.i(TAG, "系统信息获取成功");
                             MyApplication.systemInfo = systemInfoSup.getRetRes();
                             isRemember();
@@ -128,7 +131,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         });
                     }
                 });
-        volleyUtil.addToRequestQueue(request, InternetUtil.reg());
+        volleyUtil.addToRequestQueue(request, InternetUtil.sysinfo());
     }
 
     private void init() {
@@ -147,7 +150,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(new Intent(thisContext, RegisterActivity.class));
                 break;
             case R.id.main_wchat_login_btn:
+                wchatLogin();
                 break;
         }
+    }
+
+    private void wchatLogin(){
+        Log.d(TAG,"send oauth request");
+        final SendAuth.Req req = new SendAuth.Req();
+        req.scope = "snsapi_userinfo";
+        req.state = "wechat_sdk_demo_test";
+        MyApplication.api.sendReq(req);
     }
 }

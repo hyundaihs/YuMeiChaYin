@@ -8,25 +8,23 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.ProgressBar;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.sp.shangpin.MyApplication;
 import com.sp.shangpin.R;
-import com.sp.shangpin.utils.IntentUtil;
 import com.sp.shangpin.entity.InterResult;
-import com.sp.shangpin.entity.SharedKey;
 import com.sp.shangpin.utils.DialogUtil;
 import com.sp.shangpin.utils.InternetUtil;
 import com.sp.shangpin.utils.JsonUtil;
+import com.sp.shangpin.utils.ReExpressUtil;
 import com.sp.shangpin.utils.RequestUtil;
-import com.sp.shangpin.utils.SharedPreferencesUtil;
 import com.sp.shangpin.utils.VolleyUtil;
 
 import org.json.JSONObject;
@@ -35,38 +33,38 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * YuMeiChaYin
- * Created by 蔡雨峰 on 2017/9/22.
+ * ChaYin
+ * Created by ${蔡雨峰} on 2017/9/23/023.
  */
 
-public class AlertPasswordActivity extends AppCompatActivity implements View.OnClickListener {
+public class GetCashActivity extends AppCompatActivity implements View.OnClickListener {
 
     private final String TAG = getClass().getSimpleName();
     private final Context thisContext = this;
-    private AutoCompleteTextView oPassword, nPassword, cPassword;
-    private ProgressBar progressBar;
+    private AutoCompleteTextView bankName, cardNumber, cashNumber, name, phone;
     private Button submit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         MyApplication.addActivity(this);
-        setContentView(R.layout.activity_alert_password);
+        setContentView(R.layout.activity_get_cash);
         init();
     }
 
     private void init() {
         initActionBar();
-        oPassword = (AutoCompleteTextView) findViewById(R.id.alert_pass_opassword);
-        nPassword = (AutoCompleteTextView) findViewById(R.id.alert_pass_npassword);
-        cPassword = (AutoCompleteTextView) findViewById(R.id.alert_pass_cpassword);
-        submit = (Button) findViewById(R.id.alert_pass_submit);
+        submit = (Button) findViewById(R.id.get_cash_submit);
         submit.setOnClickListener(this);
-        progressBar = (ProgressBar) findViewById(R.id.alert_pass_progress);
+        bankName = (AutoCompleteTextView) findViewById(R.id.get_cash_bank_name);
+        cardNumber = (AutoCompleteTextView) findViewById(R.id.get_cash_card_number);
+        cashNumber = (AutoCompleteTextView) findViewById(R.id.get_cash_cash_number);
+        phone = (AutoCompleteTextView) findViewById(R.id.get_cash_phone);
+        name = (AutoCompleteTextView) findViewById(R.id.get_cash_name);
     }
 
     public void initActionBar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.alert_pass_toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.get_cash_toolbar);
         setSupportActionBar(toolbar);
         setTitle("");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -88,7 +86,7 @@ public class AlertPasswordActivity extends AppCompatActivity implements View.OnC
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.alert_pass_submit:
+            case R.id.get_cash_submit:
                 if (attemptSubmit()) {
                     submit();
                 }
@@ -97,38 +95,42 @@ public class AlertPasswordActivity extends AppCompatActivity implements View.OnC
     }
 
     private boolean attemptSubmit() {
-        if (TextUtils.isEmpty(oPassword.getText())) {
-            oPassword.setError("原密码不能为空");
-        } else if (TextUtils.isEmpty(nPassword.getText())) {
-            nPassword.setError("新密码不能为空");
-        } else if (TextUtils.isEmpty(cPassword.getText())) {
-            cPassword.setError("确认密码不能为空");
-        } else if (!nPassword.getText().toString().equals(cPassword.getText().toString())) {
-            nPassword.setError("两次密码不一样");
+        if (TextUtils.isEmpty(bankName.getText())) {
+            bankName.setError("开户行不能为空");
+        } else if (TextUtils.isEmpty(cardNumber.getText())) {
+            cardNumber.setError("银行卡号不能为空");
+        } else if (TextUtils.isEmpty(cashNumber.getText())) {
+            cashNumber.setError("提现金额不能为空");
+        } else if (TextUtils.isEmpty(name.getText())) {
+            name.setError("姓名不能为空");
+        } else if (TextUtils.isEmpty(phone.getText())) {
+            phone.setError("手机号不能为空");
+        } else if (!ReExpressUtil.isMatcher(ReExpressUtil.PHONE, phone.getText().toString())) {
+            phone.setError("手机号格式不对");
         } else {
-            showProgress(true);
             return true;
         }
         return false;
     }
 
+
     private void submit() {
         Map<String, String> map = new HashMap<>();
-        map.put("oldpassword", oPassword.getText().toString());
-        map.put("password", nPassword.getText().toString());
+        map.put("bank_name", bankName.getText().toString());
+        map.put("card_numbers", cardNumber.getText().toString());
+        map.put("price", cashNumber.getText().toString());
+        map.put("title", name.getText().toString());
+        map.put("phone", phone.getText().toString());
         VolleyUtil volleyUtil = VolleyUtil.getInstance(this);
-        JsonObjectRequest request = RequestUtil.createPostJsonRequest(InternetUtil.repass(),
+        JsonObjectRequest request = RequestUtil.createPostJsonRequest(InternetUtil.txsq(),
                 JsonUtil.objectToString(map),
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        showProgress(false);
                         InterResult interResult = (InterResult) JsonUtil.stringToObject(response.toString(), InterResult.class);
                         if (interResult.isSuccessed()) {
-                            DialogUtil.showAskMessage(thisContext, "修改成功,请重新登录");
-                            SharedPreferencesUtil.setParam(thisContext, SharedKey.IS_REMEMBER, false);
-                            setResult(IntentUtil.RESULT_OK);
-                            finish();
+                            Log.d(TAG, response.toString());
+                            DialogUtil.showAskMessage(thisContext, "提交成功");
                         } else {
                             DialogUtil.showErrorMessage(thisContext, interResult.getRetErr());
                         }
@@ -136,15 +138,10 @@ public class AlertPasswordActivity extends AppCompatActivity implements View.OnC
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        showProgress(false);
                         DialogUtil.showErrorMessage(thisContext, error.toString());
                     }
                 });
-        volleyUtil.addToRequestQueue(request, InternetUtil.repass());
-
+        volleyUtil.addToRequestQueue(request, InternetUtil.fpass());
     }
 
-    private void showProgress(boolean show) {
-        progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
-    }
 }

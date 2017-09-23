@@ -137,7 +137,8 @@ public class NormalOrdersAdapter extends RecyclerView.Adapter<NormalOrdersAdapte
                         DialogUtil.showErrorMessage(mContext, error.toString());
                     }
                 });
-        volleyUtil.addToRequestQueue(request, InternetUtil.reg());
+        volleyUtil.addToRequestQueue(request, orderType == NormalOrderType.GOLD
+                ? InternetUtil.shordersjf() : InternetUtil.shorders());
     }
 
     private void returnGoods(final int position) {
@@ -164,7 +165,7 @@ public class NormalOrdersAdapter extends RecyclerView.Adapter<NormalOrdersAdapte
                         DialogUtil.showErrorMessage(mContext, error.toString());
                     }
                 });
-        volleyUtil.addToRequestQueue(request, InternetUtil.reg());
+        volleyUtil.addToRequestQueue(request, InternetUtil.unsetorders());
     }
 
     //重写onCreateViewHolder方法，返回一个自定义的ViewHolder

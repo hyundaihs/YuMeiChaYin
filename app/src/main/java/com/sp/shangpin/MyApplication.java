@@ -9,6 +9,12 @@ import com.android.volley.VolleyError;
 import com.sp.shangpin.entity.SystemInfo;
 import com.sp.shangpin.entity.UserInfo;
 import com.sp.shangpin.utils.DialogUtil;
+import com.sp.shangpin.utils.InternetUtil;
+import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
+import com.tencent.mm.opensdk.modelmsg.WXMediaMessage;
+import com.tencent.mm.opensdk.modelmsg.WXTextObject;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
+import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,5 +54,28 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        regToWx();
     }
+
+    public static IWXAPI api;
+
+    private void regToWx() {
+        api = WXAPIFactory.createWXAPI(this, InternetUtil.getWChatAppId(), true);
+        api.registerApp(InternetUtil.getWChatAppId());
+    }
+//
+//    private void te() {
+//        WXTextObject textObject = new WXTextObject();
+//        textObject.text = text;
+//
+//        WXMediaMessage msg = new WXMediaMessage();
+//        msg.mediaObject = textObject;
+//        msg.description = text;
+//
+//        SendMessageToWX.Req req = new SendMessageToWX.Req();
+//        req.transaction = String.valueOf(System.currentTimeMillis());//transaction用于唯一标识一个请求
+//        req.message = msg;
+//
+//        api.sendReq(req);
+//    }
 }

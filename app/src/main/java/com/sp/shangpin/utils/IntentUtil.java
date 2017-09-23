@@ -1,4 +1,4 @@
-package com.sp.shangpin.entity;
+package com.sp.shangpin.utils;
 
 /**
  * ChaYin

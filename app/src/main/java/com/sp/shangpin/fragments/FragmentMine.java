@@ -29,14 +29,19 @@ import com.sp.shangpin.MyApplication;
 import com.sp.shangpin.R;
 import com.sp.shangpin.adapters.FragmentHomeAdapter;
 import com.sp.shangpin.adapters.FragmentMineAdapter;
-import com.sp.shangpin.entity.IntentUtil;
+import com.sp.shangpin.utils.IntentUtil;
 import com.sp.shangpin.entity.InterResult;
 import com.sp.shangpin.entity.NormalOrderType;
+import com.sp.shangpin.entity.RealNameInfo;
+import com.sp.shangpin.entity.RealNameInfo_Sup;
 import com.sp.shangpin.entity.SharedKey;
 import com.sp.shangpin.entity.UserInfo_Sup;
 import com.sp.shangpin.ui.AlertPasswordActivity;
+import com.sp.shangpin.ui.GetCashActivity;
+import com.sp.shangpin.ui.NormalGoodsActivity;
 import com.sp.shangpin.ui.NormalOrdersActivity;
 import com.sp.shangpin.ui.OrdersActivity;
+import com.sp.shangpin.ui.RealNameActivity;
 import com.sp.shangpin.ui.TopUpActivity;
 import com.sp.shangpin.ui.YhqActivity;
 import com.sp.shangpin.utils.DialogUtil;
@@ -65,7 +70,7 @@ public class FragmentMine extends BaseFragment {
     private RecyclerView recyclerView;
     private FragmentMineAdapter adapter;
     private String[] MENUS = {"充值", "提现", "金币专区", "升级产品订单",
-            "金币商品订单", "精品商品订单", "促销商品订单", "修改密码", "我的代金券"};
+            "金币商品订单", "精品商品订单", "促销商品订单", "修改密码", "我的代金券", "实名认证", "实名认证状态"};
 
     public static BaseFragment getInstance() {
         if (null == baseFragment) {
@@ -112,14 +117,18 @@ public class FragmentMine extends BaseFragment {
                                 IntentUtil.REQUEST_FROM_FRAGMENT_MINE);
                         break;
                     case 1://提现
+                        startActivity(new Intent(getActivity(), GetCashActivity.class));
                         break;
                     case 2://金币专区
+                        Intent intent = new Intent(getActivity(), NormalGoodsActivity.class);
+                        intent.putExtra(NormalOrderType.KEY, NormalOrderType.GOLD);
+                        startActivity(intent);
                         break;
                     case 3://升级产品订单
                         startActivity(new Intent(getActivity(), OrdersActivity.class));
                         break;
                     case 4://金币商品订单
-                        Intent intent = new Intent(getActivity(), NormalOrdersActivity.class);
+                        intent = new Intent(getActivity(), NormalOrdersActivity.class);
                         intent.putExtra(NormalOrderType.KEY, NormalOrderType.GOLD);
                         startActivity(intent);
                         break;
@@ -139,6 +148,12 @@ public class FragmentMine extends BaseFragment {
                         break;
                     case 8://我的代金券
                         startActivity(new Intent(getActivity(), YhqActivity.class));
+                        break;
+                    case 9:
+                        startActivity(new Intent(getActivity(), RealNameActivity.class));
+                        break;
+                    case 10:
+                        getRealNameStatus();
                         break;
                 }
             }
@@ -221,7 +236,40 @@ public class FragmentMine extends BaseFragment {
                         DialogUtil.showErrorMessage(getActivity(), error.toString());
                     }
                 });
-        volleyUtil.addToRequestQueue(request, InternetUtil.reg());
+        volleyUtil.addToRequestQueue(request, InternetUtil.userinfo());
+    }
+
+    private void getRealNameStatus() {
+        Map<String, String> map = new HashMap<>();
+        VolleyUtil volleyUtil = VolleyUtil.getInstance(getActivity());
+        JsonObjectRequest request = RequestUtil.createPostJsonRequest(InternetUtil.smrzstatus(),
+                JsonUtil.objectToString(map),
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        InterResult interResult =
+                                (InterResult) JsonUtil.stringToObject(response.toString(), InterResult.class);
+                        if (interResult.isSuccessed()) {
+                            RealNameInfo_Sup realNameInfo_sup =
+                                    (RealNameInfo_Sup) JsonUtil.stringToObject(response.toString(), RealNameInfo_Sup.class);
+                            RealNameInfo realNameInfo = realNameInfo_sup.getRetRes();
+                            String status = realNameInfo.getStatus() == 1 ? "审核中" : realNameInfo.getStatus() == 2 ? "通过" : "拒绝";
+                            String text = "真实姓名：" + realNameInfo.getTrue_name() +
+                                    " 性别：" + realNameInfo.getSex() +
+                                    "\n身份证：" + realNameInfo.getId_numbers() +
+                                    "\n审核状态：" + status;
+                            DialogUtil.showTipMessage(getActivity(), text, null);
+                        } else {
+                            DialogUtil.showErrorMessage(getActivity(), interResult.getRetErr());
+                        }
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        DialogUtil.showErrorMessage(getActivity(), error.toString());
+                    }
+                });
+        volleyUtil.addToRequestQueue(request, InternetUtil.userinfo());
     }
 
     private void logout() {
@@ -248,6 +296,6 @@ public class FragmentMine extends BaseFragment {
                         DialogUtil.showErrorMessage(getActivity(), error.toString());
                     }
                 });
-        volleyUtil.addToRequestQueue(request, InternetUtil.reg());
+        volleyUtil.addToRequestQueue(request, InternetUtil.logout());
     }
 }
