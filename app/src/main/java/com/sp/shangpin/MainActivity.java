@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             startActivity(new Intent(MainActivity.this, HomeActivity.class));
                             MyApplication.cleanAllActivitys();
                         } else {
-                            Log.e(TAG, "自动登录失败," + interResult.getRetErr());
+                            Log.e(TAG, "自动登录失败," + response.toString());
                             SharedPreferencesUtil.setParam(MainActivity.this, SharedKey.IS_REMEMBER, false);
                         }
                     }
@@ -102,15 +102,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        InterResult interResult =
-                                (InterResult) JsonUtil.stringToObject(response.toString(), InterResult.class);
+                        InterResult interResult = (InterResult) JsonUtil.stringToObject(response.toString(), InterResult.class);
                         if (interResult.isSuccessed()) {
                             SystemInfo_Sup systemInfoSup = (SystemInfo_Sup) JsonUtil.stringToObject(response.toString(), SystemInfo_Sup.class);
                             Log.i(TAG, "系统信息获取成功");
                             MyApplication.systemInfo = systemInfoSup.getRetRes();
                             isRemember();
                         } else {
-                            Log.e(TAG, "系统信息获取失败," + interResult.getRetErr());
+                            Log.e(TAG, "系统信息获取失败," + response.toString());
                             DialogUtil.showErrorMessage(thisContext, interResult.getRetErr(), new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
@@ -150,16 +149,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(new Intent(thisContext, RegisterActivity.class));
                 break;
             case R.id.main_wchat_login_btn:
-                wchatLogin();
+//                wchatLogin();
                 break;
         }
     }
 
-    private void wchatLogin(){
-        Log.d(TAG,"send oauth request");
-        final SendAuth.Req req = new SendAuth.Req();
-        req.scope = "snsapi_userinfo";
-        req.state = "wechat_sdk_demo_test";
-        MyApplication.api.sendReq(req);
-    }
+//    private void wchatLogin(){
+//        Log.d(TAG,"send oauth request");
+//        final SendAuth.Req req = new SendAuth.Req();
+//        req.scope = "snsapi_userinfo";
+//        req.state = "wechat_sdk_demo_test";
+//        MyApplication.api.sendReq(req);
+//    }
 }

@@ -7,8 +7,8 @@ package com.sp.shangpin.entity;
 
 public class InterResult {
     protected int retInt;
-    protected int retCounts;
     protected String retErr;
+    protected int retCounts;
 
     public InterResult() {
         super();

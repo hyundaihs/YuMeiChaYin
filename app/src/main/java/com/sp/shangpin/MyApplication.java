@@ -54,15 +54,15 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        regToWx();
+//        regToWx();
     }
 
     public static IWXAPI api;
 
-    private void regToWx() {
-        api = WXAPIFactory.createWXAPI(this, InternetUtil.getWChatAppId(), true);
-        api.registerApp(InternetUtil.getWChatAppId());
-    }
+//    private void regToWx() {
+//        api = WXAPIFactory.createWXAPI(this, InternetUtil.getWChatAppId(), true);
+//        api.registerApp(InternetUtil.getWChatAppId());
+//    }
 //
 //    private void te() {
 //        WXTextObject textObject = new WXTextObject();

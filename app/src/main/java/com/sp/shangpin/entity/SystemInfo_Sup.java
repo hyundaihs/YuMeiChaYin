@@ -1,7 +1,8 @@
 package com.sp.shangpin.entity;
 
 /**
- * Created by Administrator on 2017/9/9/009.
+ * ChaYin
+ * Created by ${蔡雨峰} on 2017/9/9/009.
  */
 
 public class SystemInfo_Sup extends InterResult {
