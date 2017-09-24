@@ -24,3 +24,36 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 -keep class com.sp.shangpin.entity.** { *; }
+# glide 的混淆代码
+-keep public class * implements com.bumptech.glide.module.GlideModule
+-keep public enum com.bumptech.glide.load.resource.bitmap.ImageHeaderParser$** {
+  **[] $VALUES;
+  public *;
+}
+# banner 的混淆代码
+-keep class com.youth.banner.** {
+    *;
+ }
+ #微信混淆
+-keep class com.tencent.mm.opensdk.** {
+    *;
+}
+-keep class com.tencent.wxop.** {
+    *;
+}
+-keep class com.tencent.mm.sdk.** {
+    *;
+}
+-keep class com.mcxiaoke.volley.** {
+    *;
+}
+-keep class com.google.code.gson.** {
+    *;
+}
+-keep class com.android.support.** {
+    *;
+}
+-keepclassmembers class android.support.design.internal.BottomNavigationMenuView {
+    boolean mShiftingMode;
+}
+

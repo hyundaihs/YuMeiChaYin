@@ -23,6 +23,7 @@ import com.sp.shangpin.fragments.FragmentHome;
 import com.sp.shangpin.fragments.FragmentLotto;
 import com.sp.shangpin.fragments.FragmentMine;
 import com.sp.shangpin.fragments.FragmentStore;
+import com.sp.shangpin.utils.BottomNavigationViewHelper;
 import com.sp.shangpin.utils.DialogUtil;
 import com.sp.shangpin.utils.InternetUtil;
 import com.sp.shangpin.utils.JsonObjectPostRequest;
@@ -86,32 +87,13 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
-    public void disableShiftMode(BottomNavigationView view) {
-        BottomNavigationMenuView menuView = (BottomNavigationMenuView) view.getChildAt(0);
-        try {
-            Field shiftingMode = menuView.getClass().getDeclaredField("mShiftingMode");
-            shiftingMode.setAccessible(true);
-            shiftingMode.setBoolean(menuView, false);
-            shiftingMode.setAccessible(false);
-            for (int i = 0; i < menuView.getChildCount(); i++) {
-                BottomNavigationItemView item = (BottomNavigationItemView) menuView.getChildAt(i);
-                item.setShiftingMode(false);
-                item.setChecked(item.getItemData().isChecked());
-            }
-        } catch (NoSuchFieldException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        disableShiftMode(navigation);
+        BottomNavigationViewHelper.disableShiftMode(navigation);
         setTitle("");
         getUserInfo();
     }

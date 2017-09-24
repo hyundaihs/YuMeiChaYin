@@ -3,12 +3,16 @@ package com.sp.shangpin;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
+import android.util.Log;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.sp.shangpin.entity.SystemInfo;
 import com.sp.shangpin.entity.UserInfo;
+import com.sp.shangpin.utils.AppUtil;
+import com.sp.shangpin.utils.CrashHandler;
 import com.sp.shangpin.utils.DialogUtil;
+import com.sp.shangpin.utils.FileUtil;
 import com.sp.shangpin.utils.InternetUtil;
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
 import com.tencent.mm.opensdk.modelmsg.WXMediaMessage;
@@ -54,6 +58,16 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        // 初始化相关文件路径
+        if (FileUtil.initPath(AppUtil.ROOT)) {
+            Log.i("ZSApplication", "根路径初始化成功");
+        }
+        if (FileUtil.initPath(AppUtil.LOG_PATH)) {
+            Log.i("ZSApplication", "日志路径初始化成功");
+        }
+        // 实例化日志
+        CrashHandler crashHandler = CrashHandler.getInstance();
+        crashHandler.init(getApplicationContext(), AppUtil.LOG_PATH);
 //        regToWx();
     }
 
