@@ -161,8 +161,8 @@ public class NormalGoodsActivity extends AppCompatActivity implements PopupMenu.
                                     NormalGoodsInfoList_Sup.class);
                             NormalGoodsInfoList normalGoodsInfoList = normalGoodsInfoList_sup.getRetRes();
                             images.clear();
-                            for (int i = 0; i < normalGoodsInfoList.getInfo().size(); i++) {
-                                images.add(normalGoodsInfoList.getInfo().get(i).getBanner_file_url());
+                            for (int i = 0; i < normalGoodsInfoList.getBanner().size(); i++) {
+                                images.add(normalGoodsInfoList.getBanner().get(i).getFile_url());
                             }
                             data.clear();
                             data.addAll(normalGoodsInfoList.getLists());

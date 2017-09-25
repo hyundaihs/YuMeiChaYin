@@ -12,7 +12,8 @@ import com.sp.shangpin.utils.VolleyUtil;
 import com.youth.banner.loader.ImageLoader;
 
 /**
- * Created by Administrator on 2017/9/9/009.
+ * YuMeiChaYin
+ * Created by 蔡雨峰 on 2017/9/9/009.
  */
 
 public class GlideImageLoader extends ImageLoader {

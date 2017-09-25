@@ -8,24 +8,24 @@ import java.util.List;
  */
 
 public class NormalGoodsInfoList {
-    private List<Banner> info;
+    private List<Banner> banner;
     private List<NormalGoodsInfo> lists;
 
     public NormalGoodsInfoList() {
         super();
     }
 
-    public NormalGoodsInfoList(List<Banner> info, List<NormalGoodsInfo> lists) {
-        this.info = info;
+    public NormalGoodsInfoList(List<Banner> banner, List<NormalGoodsInfo> lists) {
+        this.banner = banner;
         this.lists = lists;
     }
 
-    public List<Banner> getInfo() {
-        return info;
+    public List<Banner> getBanner() {
+        return banner;
     }
 
-    public void setInfo(List<Banner> info) {
-        this.info = info;
+    public void setInfo(List<Banner> banner) {
+        this.banner = banner;
     }
 
     public List<NormalGoodsInfo> getLists() {
@@ -39,7 +39,7 @@ public class NormalGoodsInfoList {
     @Override
     public String toString() {
         return "NormalGoodsInfoList{" +
-                "info=" + info +
+                "banner=" + banner +
                 ", lists=" + lists +
                 '}';
     }

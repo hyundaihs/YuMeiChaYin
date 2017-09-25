@@ -1,7 +1,8 @@
 package com.sp.shangpin.entity;
 
 /**
- * Created by Administrator on 2017/9/10/010.
+ * YuMeiChaYin
+ * Created by 蔡雨峰 on 2017/9/10/010.
  */
 
 public class LottoInfo_Sup extends InterResult {
