@@ -2,10 +2,7 @@ package com.sp.shangpin.ui;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
@@ -83,9 +80,9 @@ public class NormalGoodsActivity extends AppCompatActivity implements PopupMenu.
     }
 
     public void initActionBar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.normal_goods_toolbar);
-        TextView title = (TextView) findViewById(R.id.normal_goods_toolbar_title);
-        btn = (TextView) findViewById(R.id.normal_goods_toolbar_btn);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        TextView title = (TextView) findViewById(R.id.toolbar_title);
+        btn = (TextView) findViewById(R.id.toolbar_btn);
         btn.setText("优惠券(" + currentYhq + ")");
         switch (orderType) {
             case NormalOrderType.ORIGINAL:
@@ -156,7 +153,7 @@ public class NormalGoodsActivity extends AppCompatActivity implements PopupMenu.
                         InterResult interResult =
                                 (InterResult) JsonUtil.stringToObject(response.toString(), InterResult.class);
                         if (interResult.isSuccessed()) {
-                            Log.d(TAG,response.toString());
+                            Log.d(TAG, response.toString());
                             NormalGoodsInfoList_Sup normalGoodsInfoList_sup = (NormalGoodsInfoList_Sup) JsonUtil.stringToObject(response.toString(),
                                     NormalGoodsInfoList_Sup.class);
                             NormalGoodsInfoList normalGoodsInfoList = normalGoodsInfoList_sup.getRetRes();

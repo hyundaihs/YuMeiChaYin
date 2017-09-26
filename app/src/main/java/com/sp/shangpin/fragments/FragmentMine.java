@@ -12,9 +12,6 @@ import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -65,7 +62,6 @@ public class FragmentMine extends BaseFragment {
     private final String TAG = getClass().getSimpleName();
     private ImageView imageBg, imagePhone;
     private TextView balance;
-    private Toolbar toolbar;
     private RecyclerView recyclerView;
     private FragmentMineAdapter adapter;
     private String[] MENUS = {"充值", "提现", "升级产品订单",
@@ -85,7 +81,6 @@ public class FragmentMine extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_mine, container, false);
-        toolbar = view.findViewById(R.id.fragment_mine_toolbar);
         imageBg = view.findViewById(R.id.fragment_mine_image_bg);
         imagePhone = view.findViewById(R.id.fragment_mine_image_photo);
         balance = view.findViewById(R.id.fragment_mine_image_balance);
@@ -169,32 +164,26 @@ public class FragmentMine extends BaseFragment {
     }
 
     public void initActionBar() {
+        Toolbar toolbar = getView().findViewById(R.id.toolbar);
+        TextView title = getView().findViewById(R.id.toolbar_title);
+        TextView btn = getView().findViewById(R.id.toolbar_btn);
+        title.setText("我的");
+        btn.setText("注销");
+        btn.setVisibility(View.VISIBLE);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
-        toolbar.inflateMenu(R.menu.menu_mine);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         toolbar.setTitle("");
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        menu.clear();
-        inflater.inflate(R.menu.menu_mine, menu);
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_mine_login_out:
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
                 DialogUtil.showAskMessage(getActivity(), "确定要退出登录吗?", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         logout();
                     }
                 });
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
+            }
+        });
     }
 
     @Override

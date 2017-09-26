@@ -11,6 +11,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.sp.shangpin.R;
 import com.sp.shangpin.entity.NormalOrderType;
@@ -24,7 +25,6 @@ import com.sp.shangpin.ui.RuleActivity;
 
 public class FragmentStore extends BaseFragment implements View.OnClickListener {
     private static BaseFragment baseFragment;
-    private Toolbar toolbar;
 
     public static BaseFragment getInstance() {
         if (null == baseFragment) {
@@ -37,7 +37,6 @@ public class FragmentStore extends BaseFragment implements View.OnClickListener 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_store, container, false);
-        toolbar = view.findViewById(R.id.fragment_store_toolbar);
         view.findViewById(R.id.fragment_store_store1).setOnClickListener(this);
         view.findViewById(R.id.fragment_store_store2).setOnClickListener(this);
         view.findViewById(R.id.fragment_store_store3).setOnClickListener(this);
@@ -52,26 +51,21 @@ public class FragmentStore extends BaseFragment implements View.OnClickListener 
     }
 
     public void initActionBar() {
+        Toolbar toolbar = getView().findViewById(R.id.toolbar);
+        TextView title = getView().findViewById(R.id.toolbar_title);
+        TextView btn = getView().findViewById(R.id.toolbar_btn);
+        title.setText("商城");
+        btn.setText("规则");
+        btn.setVisibility(View.VISIBLE);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
-        toolbar.inflateMenu(R.menu.menu_store);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         toolbar.setTitle("");
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        menu.clear();
-        inflater.inflate(R.menu.menu_store, menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_store_rule:
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
                 startActivity(new Intent(getActivity(), RuleActivity.class));
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
+            }
+        });
     }
 
     @Override

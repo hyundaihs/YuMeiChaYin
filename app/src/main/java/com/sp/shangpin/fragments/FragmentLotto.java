@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -57,7 +58,6 @@ import java.util.Map;
 public class FragmentLotto extends BaseFragment {
     private static BaseFragment baseFragment;
     private final String TAG = getClass().getSimpleName();
-    private Toolbar toolbar;
     private RecyclerView recyclerView;
     private RadioGroup radioGroup;
     private int currIndex = 1;
@@ -77,7 +77,6 @@ public class FragmentLotto extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_lotto, container, false);
-        toolbar = view.findViewById(R.id.fragment_lotto_toolbar);
         radioGroup = view.findViewById(R.id.fragment_lotto_model_radioGroup);
         typeImage = view.findViewById(R.id.fragment_lotto_type_image);
         recyclerView = view.findViewById(R.id.fragment_lotto_recyclerView);
@@ -184,25 +183,21 @@ public class FragmentLotto extends BaseFragment {
     }
 
     public void initActionBar() {
+        Toolbar toolbar = getView().findViewById(R.id.toolbar);
+        TextView title = getView().findViewById(R.id.toolbar_title);
+        TextView btn = getView().findViewById(R.id.toolbar_btn);
+        title.setText("升级商品");
+        btn.setText("规则");
+        btn.setVisibility(View.VISIBLE);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
-        toolbar.inflateMenu(R.menu.menu_lotto);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         toolbar.setTitle("");
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        menu.clear();
-        inflater.inflate(R.menu.menu_lotto, menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_lotto_rule:
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
                 startActivity(new Intent(getActivity(), RuleActivity.class));
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
+            }
+        });
     }
+
 }
