@@ -108,7 +108,7 @@ public class NormalGoodsActivity extends AppCompatActivity implements PopupMenu.
         }
         setSupportActionBar(toolbar);
         setTitle("");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
 
     }
 

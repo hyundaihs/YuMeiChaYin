@@ -5,23 +5,14 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <android.support.v7.widget.Toolbar
+    <include
         android:id="@+id/login_toolbar"
+        layout="@layout/layout_toolbar"
         android:layout_width="0dp"
-        android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
+        android:layout_height="wrap_content"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <TextView
-            android:id="@+id/login_toolbar_title"
-            style="@style/app_title_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/login" />
-    </android.support.v7.widget.Toolbar>
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <!-- Login progress -->
     <ProgressBar
@@ -83,18 +74,21 @@
 
     <Button
         android:id="@+id/login_login"
+        style="@style/color_primary_btn"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginTop="10dp"
         android:text="@string/login"
+        android:background="@drawable/color_primary_pressed_radius"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/login_password_layout" />
 
     <Button
         android:id="@+id/login_forget"
+        style="@style/color_gray_btn"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"

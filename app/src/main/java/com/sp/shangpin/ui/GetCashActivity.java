@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -64,10 +65,12 @@ public class GetCashActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     public void initActionBar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.get_cash_toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        TextView title = (TextView) findViewById(R.id.toolbar_title);
+        title.setText("提现");
         setSupportActionBar(toolbar);
         setTitle("");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
 
     }
 

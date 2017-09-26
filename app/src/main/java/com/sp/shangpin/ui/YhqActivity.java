@@ -56,7 +56,7 @@ public class YhqActivity extends AppCompatActivity {
         textView.setText("我的优惠券");
         setSupportActionBar(toolbar);
         setTitle("");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -63,10 +64,12 @@ public class TopUpActivity extends AppCompatActivity implements View.OnClickList
     }
 
     public void initActionBar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.top_up_toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        TextView title = (TextView) findViewById(R.id.toolbar_title);
+        title.setText("充值");
         setSupportActionBar(toolbar);
         setTitle("");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
 
     }
 

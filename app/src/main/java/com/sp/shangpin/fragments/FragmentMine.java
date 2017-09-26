@@ -29,7 +29,6 @@ import com.sp.shangpin.MyApplication;
 import com.sp.shangpin.R;
 import com.sp.shangpin.adapters.FragmentHomeAdapter;
 import com.sp.shangpin.adapters.FragmentMineAdapter;
-import com.sp.shangpin.utils.IntentUtil;
 import com.sp.shangpin.entity.InterResult;
 import com.sp.shangpin.entity.NormalOrderType;
 import com.sp.shangpin.entity.RealNameInfo;
@@ -38,13 +37,13 @@ import com.sp.shangpin.entity.SharedKey;
 import com.sp.shangpin.entity.UserInfo_Sup;
 import com.sp.shangpin.ui.AlertPasswordActivity;
 import com.sp.shangpin.ui.GetCashActivity;
-import com.sp.shangpin.ui.NormalGoodsActivity;
 import com.sp.shangpin.ui.NormalOrdersActivity;
 import com.sp.shangpin.ui.OrdersActivity;
 import com.sp.shangpin.ui.RealNameActivity;
 import com.sp.shangpin.ui.TopUpActivity;
 import com.sp.shangpin.ui.YhqActivity;
 import com.sp.shangpin.utils.DialogUtil;
+import com.sp.shangpin.utils.IntentUtil;
 import com.sp.shangpin.utils.InternetUtil;
 import com.sp.shangpin.utils.JsonUtil;
 import com.sp.shangpin.utils.RequestUtil;
@@ -69,8 +68,11 @@ public class FragmentMine extends BaseFragment {
     private Toolbar toolbar;
     private RecyclerView recyclerView;
     private FragmentMineAdapter adapter;
-    private String[] MENUS = {"充值", "提现", "金币专区", "升级产品订单",
-            "金币商品订单", "精品商品订单", "促销商品订单", "修改密码", "我的代金券", "实名认证", "实名认证状态"};
+    private String[] MENUS = {"充值", "提现", "升级产品订单",
+            "金币商品订单", "精品商品订单", "促销商品订单", "修改密码", "我的代金券", "实名认证", "升级方式", "我的返佣提现", "分享"};
+    private int[] IDS = {R.mipmap.ids_top_up, R.mipmap.ids_get_cash, R.mipmap.ids_upgrade_orders, R.mipmap.ids_gold_orders,
+            R.mipmap.ids_well_orders, R.mipmap.ids_on_sale_orders, R.mipmap.ids_alert_password, R.mipmap.ids_my_yhq,
+            R.mipmap.ids_real_name, R.mipmap.ids_my_upgrade_type, R.mipmap.ids_my_get_cash, R.mipmap.ids_share};
 
     public static BaseFragment getInstance() {
         if (null == baseFragment) {
@@ -104,7 +106,7 @@ public class FragmentMine extends BaseFragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
         layoutManager.setOrientation(OrientationHelper.VERTICAL);
-        adapter = new FragmentMineAdapter(getActivity(), MENUS);
+        adapter = new FragmentMineAdapter(getActivity(), MENUS, IDS);
         recyclerView.setAdapter(adapter);
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayout.VERTICAL));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -119,41 +121,47 @@ public class FragmentMine extends BaseFragment {
                     case 1://提现
                         startActivity(new Intent(getActivity(), GetCashActivity.class));
                         break;
-                    case 2://金币专区
-                        Intent intent = new Intent(getActivity(), NormalGoodsActivity.class);
-                        intent.putExtra(NormalOrderType.KEY, NormalOrderType.GOLD);
-                        startActivity(intent);
-                        break;
-                    case 3://升级产品订单
+//                    case 2://金币专区
+//                        Intent intent = new Intent(getActivity(), NormalGoodsActivity.class);
+//                        intent.putExtra(NormalOrderType.KEY, NormalOrderType.GOLD);
+//                        startActivity(intent);
+//                        break;
+                    case 2://升级产品订单
                         startActivity(new Intent(getActivity(), OrdersActivity.class));
                         break;
-                    case 4://金币商品订单
-                        intent = new Intent(getActivity(), NormalOrdersActivity.class);
+                    case 3://金币商品订单
+                        Intent intent = new Intent(getActivity(), NormalOrdersActivity.class);
                         intent.putExtra(NormalOrderType.KEY, NormalOrderType.GOLD);
                         startActivity(intent);
                         break;
-                    case 5://精品商品订单
+                    case 4://精品商品订单
                         intent = new Intent(getActivity(), NormalOrdersActivity.class);
                         intent.putExtra(NormalOrderType.KEY, NormalOrderType.ORIGINAL);
                         startActivity(intent);
                         break;
-                    case 6://促销商品订单
+                    case 5://促销商品订单
                         intent = new Intent(getActivity(), NormalOrdersActivity.class);
                         intent.putExtra(NormalOrderType.KEY, NormalOrderType.ON_SALE);
                         startActivity(intent);
                         break;
-                    case 7://修改密码
+                    case 6://修改密码
                         intent = new Intent(getActivity(), AlertPasswordActivity.class);
                         startActivityForResult(intent, IntentUtil.REQUEST_FROM_MINE_TO_ALERT_PASS);
                         break;
-                    case 8://我的代金券
+                    case 7://我的代金券
                         startActivity(new Intent(getActivity(), YhqActivity.class));
                         break;
-                    case 9:
-                        startActivity(new Intent(getActivity(), RealNameActivity.class));
-                        break;
-                    case 10:
+                    case 8://实名认证
                         getRealNameStatus();
+                        break;
+                    case 9://升级方式
+
+                        break;
+                    case 10://返佣提现
+
+                        break;
+                    case 11://分享
+
                         break;
                 }
             }
@@ -258,9 +266,19 @@ public class FragmentMine extends BaseFragment {
                                     " 性别：" + realNameInfo.getSex() +
                                     "\n身份证：" + realNameInfo.getId_numbers() +
                                     "\n审核状态：" + status;
-                            DialogUtil.showTipMessage(getActivity(), text, null);
+                            DialogUtil.showAskMessage(getActivity(), text, realNameInfo.getStatus() == 3 ? "重新认证" : "", realNameInfo.getStatus() == 3 ? new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    startActivity(new Intent(getActivity(), RealNameActivity.class));
+                                }
+                            } : null);
                         } else {
-                            DialogUtil.showErrorMessage(getActivity(), interResult.getRetErr());
+                            DialogUtil.showAskMessage(getActivity(), "您还没有进行过认证.", "去认证", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    startActivity(new Intent(getActivity(), RealNameActivity.class));
+                                }
+                            });
                         }
                     }
                 }, new Response.ErrorListener() {

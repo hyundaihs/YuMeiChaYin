@@ -26,7 +26,6 @@
                 android:layout_height="match_parent"
                 android:contentDescription="@null"
                 android:scaleType="fitXY"
-                android:src="@mipmap/test_1"
                 app:layout_collapseMode="parallax"
                 app:layout_collapseParallaxMultiplier="0.6"/>
 

@@ -84,10 +84,12 @@ public class RealNameActivity extends AppCompatActivity implements View.OnClickL
     }
 
     public void initActionBar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.real_name_toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        TextView title = (TextView) findViewById(R.id.toolbar_title);
+        title.setText("实名认证");
         setSupportActionBar(toolbar);
         setTitle("");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
 
     }
 

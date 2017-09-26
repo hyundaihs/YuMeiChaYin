@@ -16,8 +16,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -25,17 +23,14 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.sp.shangpin.MyApplication;
 import com.sp.shangpin.R;
 import com.sp.shangpin.adapters.FragmentHomeAdapter;
-import com.sp.shangpin.adapters.SpacesItemDecoration;
 import com.sp.shangpin.entity.HomeInfo;
 import com.sp.shangpin.entity.HomeInfo_Sup;
 import com.sp.shangpin.entity.InterResult;
 import com.sp.shangpin.entity.UpgradeGoods;
-import com.sp.shangpin.entity.UpgradeGoodsType;
 import com.sp.shangpin.ui.GoodsDetailsActivity;
 import com.sp.shangpin.ui.HomeActivity;
 import com.sp.shangpin.ui.RuleActivity;
 import com.sp.shangpin.utils.DialogUtil;
-import com.sp.shangpin.utils.DisplayUtil;
 import com.sp.shangpin.utils.InternetUtil;
 import com.sp.shangpin.utils.JsonUtil;
 import com.sp.shangpin.utils.RequestUtil;
@@ -63,8 +58,8 @@ public class FragmentHome extends BaseFragment implements View.OnClickListener {
     private Banner banner;
     private Toolbar toolbar;
     private HomeInfo homeInfo;
-    private ImageView[] imageViews = new ImageView[3];
-    private TextView[] textViews = new TextView[3];
+    //    private ImageView[] imageViews = new ImageView[3];
+//    private TextView[] textViews = new TextView[3];
     private List<UpgradeGoods> data;
     private FragmentHomeAdapter adapter;
 
@@ -81,12 +76,15 @@ public class FragmentHome extends BaseFragment implements View.OnClickListener {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         toolbar = view.findViewById(R.id.fragment_home_toolbar);
         banner = view.findViewById(R.id.fragment_home_banner);
-        imageViews[0] = view.findViewById(R.id.fragment_home_upgrade1);
-        imageViews[1] = view.findViewById(R.id.fragment_home_upgrade2);
-        imageViews[2] = view.findViewById(R.id.fragment_home_upgrade3);
-        textViews[0] = view.findViewById(R.id.fragment_home_upgrade1_title);
-        textViews[1] = view.findViewById(R.id.fragment_home_upgrade2_title);
-        textViews[2] = view.findViewById(R.id.fragment_home_upgrade3_title);
+//        imageViews[0] = view.findViewById(R.id.fragment_home_upgrade1);
+//        imageViews[1] = view.findViewById(R.id.fragment_home_upgrade2);
+//        imageViews[2] = view.findViewById(R.id.fragment_home_upgrade3);
+//        textViews[0] = view.findViewById(R.id.fragment_home_upgrade1_title);
+//        textViews[1] = view.findViewById(R.id.fragment_home_upgrade2_title);
+//        textViews[2] = view.findViewById(R.id.fragment_home_upgrade3_title);
+        view.findViewById(R.id.fragment_home_upgrade1).setOnClickListener(this);
+        view.findViewById(R.id.fragment_home_upgrade2).setOnClickListener(this);
+        view.findViewById(R.id.fragment_home_upgrade3).setOnClickListener(this);
         recyclerView = view.findViewById(R.id.fragment_home_recyclerView);
         return view;
     }
@@ -129,7 +127,7 @@ public class FragmentHome extends BaseFragment implements View.OnClickListener {
 
     private void refresh() {
         initBanner();
-        initViews();
+//        initViews();
         if (null != homeInfo && null != homeInfo.getSjcp()) {
             data.clear();
             data.addAll(homeInfo.getSjcp());
@@ -147,20 +145,20 @@ public class FragmentHome extends BaseFragment implements View.OnClickListener {
         }
     }
 
-    private void initViews() {
-        if (null != homeInfo && null != homeInfo.getSjfl()) {
-            for (int i = 0; i < homeInfo.getSjfl().size(); i++) {
-                if (i >= imageViews.length) {
-                    continue;
-                }
-                UpgradeGoodsType upgradeGoodsType = homeInfo.getSjfl().get(i);
-                VolleyUtil volleyUtil = VolleyUtil.getInstance(getActivity());
-                volleyUtil.getImage(imageViews[i], upgradeGoodsType.getFile_url());
-                textViews[i].setText(upgradeGoodsType.getTitle());
-                imageViews[i].setOnClickListener(this);
-            }
-        }
-    }
+//    private void initViews() {
+//        if (null != homeInfo && null != homeInfo.getSjfl()) {
+//            for (int i = 0; i < homeInfo.getSjfl().size(); i++) {
+//                if (i >= imageViews.length) {
+//                    continue;
+//                }
+//                UpgradeGoodsType upgradeGoodsType = homeInfo.getSjfl().get(i);
+//                VolleyUtil volleyUtil = VolleyUtil.getInstance(getActivity());
+//                volleyUtil.getImage(imageViews[i], upgradeGoodsType.getFile_url());
+//                textViews[i].setText(upgradeGoodsType.getTitle());
+//                imageViews[i].setOnClickListener(this);
+//            }
+//        }
+//    }
 
     private void initListView() {
         data = new ArrayList<>();

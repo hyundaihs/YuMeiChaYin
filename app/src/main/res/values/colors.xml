@@ -4,10 +4,15 @@
     <color name="colorPrimaryDark">#C08033</color>
     <color name="colorAccent">#FF4081</color>
 
+    <color name="colorGray">#DEDEDE</color>
+    <color name="colorGrayDark">#CCCCCC</color>
+
     <color name="small_circle_dark_gray">#c7c7c7</color>
     <color name="small_circle_light_gray">#f0f0f0</color>
     <!--Fragment Home-->
     <color name="fragment_content_bg">#DEDEDE</color>
     <color name="fragment_upgrade_text_bg">#55FFA45C</color>
     <color name="fragment_home_list_item_text_bg">#77ffffff</color>
+    <color name="right_top_background">#be985e</color>
+    <color name="right_top_solid">#b3894e</color>
 </resources>

@@ -26,12 +26,8 @@
     </style>
 
     <style name="fragment_home_upgrade_text">
-        <item name="android:textSize">18sp</item>
-        <item name="android:textColor">@android:color/white</item>
-        <item name="android:paddingTop">5dp</item>
-        <item name="android:paddingBottom">5dp</item>
-        <item name="android:layout_gravity">bottom</item>
-        <item name="android:background">@color/fragment_upgrade_text_bg</item>
+        <item name="android:layout_marginTop">5dp</item>
+        <item name="android:layout_marginBottom">5dp</item>
         <item name="android:gravity">center</item>
     </style>
 
@@ -87,6 +83,16 @@
         <item name="android:gravity">center</item>
         <item name="android:paddingTop">5dp</item>
         <item name="android:paddingBottom">5dp</item>
+    </style>
+
+    <style name="color_primary_btn">
+        <item name="android:background">@drawable/color_primary_pressed_radius</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="color_gray_btn">
+        <item name="android:background">@drawable/color_gray_pressed_radius</item>
+        <item name="android:textColor">@android:color/black</item>
     </style>
 
 </resources>

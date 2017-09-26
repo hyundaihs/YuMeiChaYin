@@ -2,17 +2,26 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_gravity="center_vertical"
     android:background="@android:color/white"
-    android:orientation="vertical">
+    android:orientation="horizontal">
+
+    <ImageView
+        android:id="@+id/fragment_mine_list_item_ic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:layout_gravity="center_vertical"
+        android:contentDescription="@null" />
 
     <TextView
         android:id="@+id/fragment_mine_list_item_title"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:paddingBottom="10dp"
         android:paddingLeft="5dp"
         android:paddingTop="10dp"
-        android:textColor="@android:color/black"
-        android:textSize="18sp" />
+        android:textSize="16sp" />
 
 </LinearLayout>

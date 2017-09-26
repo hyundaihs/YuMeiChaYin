@@ -61,7 +61,7 @@ public class NormalOrdersActivity extends AppCompatActivity {
         }
         setSupportActionBar(toolbar);
         setTitle("");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
 
     }
 

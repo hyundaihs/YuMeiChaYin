@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.sp.shangpin.R;
@@ -17,13 +18,15 @@ import com.sp.shangpin.R;
 public class FragmentMineAdapter extends RecyclerView.Adapter<FragmentMineAdapter.MyViewHolder> {
     private final String TAG = getClass().getSimpleName();
     private String[] mDatas;
+    private int[] ids;
     private Context mContext;
     private LayoutInflater inflater;
     private FragmentHomeAdapter.OnItemClickListener onItemClickListener;
 
-    public FragmentMineAdapter(Context context, String[] datas) {
+    public FragmentMineAdapter(Context context, String[] datas, int[] ids) {
         this.mContext = context;
         this.mDatas = datas;
+        this.ids = ids;
         inflater = LayoutInflater.from(mContext);
     }
 
@@ -40,6 +43,7 @@ public class FragmentMineAdapter extends RecyclerView.Adapter<FragmentMineAdapte
     @Override
     public void onBindViewHolder(FragmentMineAdapter.MyViewHolder holder, final int position) {
         holder.title.setText(mDatas[position]);
+        holder.ic.setImageResource(ids[position]);
         holder.rootView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -60,11 +64,13 @@ public class FragmentMineAdapter extends RecyclerView.Adapter<FragmentMineAdapte
     class MyViewHolder extends RecyclerView.ViewHolder {
 
         TextView title;
+        ImageView ic;
         View rootView;
 
         MyViewHolder(View view) {
             super(view);
             rootView = view;
+            ic = view.findViewById(R.id.fragment_mine_list_item_ic);
             title = view.findViewById(R.id.fragment_mine_list_item_title);
         }
     }

@@ -4,10 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Paint;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
@@ -21,7 +18,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.sp.shangpin.MyApplication;
 import com.sp.shangpin.R;
-import com.sp.shangpin.utils.IntentUtil;
 import com.sp.shangpin.entity.InterResult;
 import com.sp.shangpin.entity.NormalGoodsInfo;
 import com.sp.shangpin.entity.NormalGoodsInfo_Sup;
@@ -30,6 +26,7 @@ import com.sp.shangpin.entity.OrderInfo_Sup;
 import com.sp.shangpin.entity.UserInfo_Sup;
 import com.sp.shangpin.entity.YHQ;
 import com.sp.shangpin.utils.DialogUtil;
+import com.sp.shangpin.utils.IntentUtil;
 import com.sp.shangpin.utils.InternetUtil;
 import com.sp.shangpin.utils.JsonUtil;
 import com.sp.shangpin.utils.RequestUtil;
@@ -77,8 +74,8 @@ public class NormalGoodsDetailsActivity extends AppCompatActivity implements Vie
     }
 
     public void initActionBar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.goods_details_toolbar);
-        TextView title = (TextView) findViewById(R.id.goods_details_toolbar_title);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        TextView title = (TextView) findViewById(R.id.toolbar_title);
         switch (orderType) {
             case NormalOrderType.ORIGINAL:
                 title.setText("精品商品详情");
@@ -92,7 +89,7 @@ public class NormalGoodsDetailsActivity extends AppCompatActivity implements Vie
         }
         setSupportActionBar(toolbar);
         setTitle("");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
 
     }
 
@@ -126,10 +123,10 @@ public class NormalGoodsDetailsActivity extends AppCompatActivity implements Vie
         getUserInfo();
     }
 
-    private void setBalance(){
-        if(orderType == NormalOrderType.GOLD){
+    private void setBalance() {
+        if (orderType == NormalOrderType.GOLD) {
             balance.setText("金币:" + MyApplication.userInfo.getJf_price());
-        }else{
+        } else {
             balance.setText("余额:" + MyApplication.userInfo.getYe_price());
         }
     }
