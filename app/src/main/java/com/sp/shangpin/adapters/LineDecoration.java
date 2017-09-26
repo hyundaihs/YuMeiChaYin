@@ -16,8 +16,8 @@ import android.view.View;
 
 public class LineDecoration extends RecyclerView.ItemDecoration {
 
-    public static final int HORIZONTAL_LIST = LinearLayoutManager.HORIZONTAL;
-    public static final int VERTICAL_LIST = LinearLayoutManager.VERTICAL;
+    public static final int HORIZONTAL = LinearLayoutManager.HORIZONTAL;
+    public static final int VERTICAL = LinearLayoutManager.VERTICAL;
     //我们通过获取系统属性中的listDivider来添加，在系统中的AppTheme中设置
     public static final int[] ATRRS = new int[]{
             android.R.attr.listDivider
@@ -36,7 +36,7 @@ public class LineDecoration extends RecyclerView.ItemDecoration {
 
     //设置屏幕的方向
     public void setOrientation(int orientation) {
-        if (orientation != HORIZONTAL_LIST && orientation != VERTICAL_LIST) {
+        if (orientation != HORIZONTAL && orientation != VERTICAL) {
             throw new IllegalArgumentException("invalid orientation");
         }
         mOrientation = orientation;
@@ -44,7 +44,7 @@ public class LineDecoration extends RecyclerView.ItemDecoration {
 
     @Override
     public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
-        if (mOrientation == HORIZONTAL_LIST) {
+        if (mOrientation == HORIZONTAL) {
             drawVerticalLine(c, parent, state);
         } else {
             drawHorizontalLine(c, parent, state);
@@ -89,7 +89,7 @@ public class LineDecoration extends RecyclerView.ItemDecoration {
     //由于Divider也有长宽高，每一个Item需要向下或者向右偏移
     @Override
     public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
-        if (mOrientation == HORIZONTAL_LIST) {
+        if (mOrientation == HORIZONTAL) {
             //画横线，就是往下偏移一个分割线的高度
             outRect.set(0, 0, 0, mDivider.getIntrinsicHeight());
         } else {

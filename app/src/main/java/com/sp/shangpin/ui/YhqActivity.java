@@ -50,14 +50,12 @@ public class YhqActivity extends AppCompatActivity {
     }
 
     public void initActionBar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.orders_toolbar);
-        TextView textView = (TextView) findViewById(R.id.orders_toolbar_title);
-        button = (TextView) findViewById(R.id.orders_toolbar_btn);
-        textView.setText("我的优惠券");
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        TextView title = (TextView) findViewById(R.id.toolbar_title);
+        button = (TextView) findViewById(R.id.toolbar_btn);
+        title.setText("我的优惠券");
         setSupportActionBar(toolbar);
         setTitle("");
-
-
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

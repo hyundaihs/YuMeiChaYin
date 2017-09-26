@@ -80,7 +80,7 @@ public class FragmentPickUp extends BaseFragment {
         layoutManager.setOrientation(OrientationHelper.VERTICAL);
         adapter = new OrdersAdapter(getActivity(),this, data,3);
         recyclerView.setAdapter(adapter);
-        recyclerView.addItemDecoration(new LineDecoration(getActivity(), LineDecoration.VERTICAL_LIST));
+        recyclerView.addItemDecoration(new LineDecoration(getActivity(), LineDecoration.VERTICAL));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         endLessOnScrollListener = new EndLessOnScrollListener(layoutManager) {
             @Override

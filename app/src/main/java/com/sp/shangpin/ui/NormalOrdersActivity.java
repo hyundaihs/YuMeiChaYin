@@ -46,17 +46,19 @@ public class NormalOrdersActivity extends AppCompatActivity {
     }
 
     public void initActionBar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.orders_toolbar);
-        TextView textView = (TextView) findViewById(R.id.orders_toolbar_title);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        TextView title = (TextView) findViewById(R.id.toolbar_title);
+        setSupportActionBar(toolbar);
+        setTitle("");
         switch (orderType){
             case NormalOrderType.GOLD:
-                textView.setText("金币商品订单");
+                title.setText("金币商品订单");
                 break;
             case NormalOrderType.ORIGINAL:
-                textView.setText("精品商品订单");
+                title.setText("精品商品订单");
                 break;
             case NormalOrderType.ON_SALE:
-                textView.setText("促销商品订单");
+                title.setText("促销商品订单");
                 break;
         }
         setSupportActionBar(toolbar);

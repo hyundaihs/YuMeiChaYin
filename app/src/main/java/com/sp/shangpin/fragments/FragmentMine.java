@@ -26,6 +26,7 @@ import com.sp.shangpin.MyApplication;
 import com.sp.shangpin.R;
 import com.sp.shangpin.adapters.FragmentHomeAdapter;
 import com.sp.shangpin.adapters.FragmentMineAdapter;
+import com.sp.shangpin.adapters.LineDecoration;
 import com.sp.shangpin.entity.InterResult;
 import com.sp.shangpin.entity.NormalOrderType;
 import com.sp.shangpin.entity.RealNameInfo;

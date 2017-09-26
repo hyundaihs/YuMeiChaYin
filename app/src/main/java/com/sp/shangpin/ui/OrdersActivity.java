@@ -10,6 +10,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import com.sp.shangpin.R;
 import com.sp.shangpin.adapters.FragmentsAdapter;
@@ -44,10 +45,11 @@ public class OrdersActivity extends AppCompatActivity {
     }
 
     public void initActionBar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.orders_toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        TextView title = (TextView) findViewById(R.id.toolbar_title);
+        title.setText(R.string.setting_orders);
         setSupportActionBar(toolbar);
         setTitle("");
-
 
     }
 

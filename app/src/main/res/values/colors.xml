@@ -15,4 +15,5 @@
     <color name="fragment_home_list_item_text_bg">#77ffffff</color>
     <color name="right_top_background">#be985e</color>
     <color name="right_top_solid">#b3894e</color>
+    <color name="list_item_line">#dddddd</color>
 </resources>

@@ -78,7 +78,7 @@ public class FragmentNormalReturned extends BaseFragment {
         layoutManager.setOrientation(OrientationHelper.VERTICAL);
         adapter = new NormalOrdersAdapter(getActivity(), orderType, data, 1);
         recyclerView.setAdapter(adapter);
-        recyclerView.addItemDecoration(new LineDecoration(getActivity(), LineDecoration.VERTICAL_LIST));
+        recyclerView.addItemDecoration(new LineDecoration(getActivity(), LineDecoration.VERTICAL));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         endLessOnScrollListener = new EndLessOnScrollListener(layoutManager) {
             @Override

@@ -103,7 +103,7 @@ public class LotteryActivity extends AppCompatActivity implements View.OnClickLi
         layoutManager.setOrientation(OrientationHelper.VERTICAL);
         adapter = new LotteryAdapter(thisContext, data);
         recyclerView.setAdapter(adapter);
-        recyclerView.addItemDecoration(new LineDecoration(this, LineDecoration.VERTICAL_LIST));
+        recyclerView.addItemDecoration(new LineDecoration(this, LineDecoration.VERTICAL));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.addOnScrollListener(new EndLessOnScrollListener(layoutManager) {
             @Override
