@@ -69,7 +69,7 @@ public class FragmentMine extends BaseFragment {
             "金币商品订单", "精品商品订单", "促销商品订单", "修改密码", "我的代金券", "实名认证", "升级方式", "我的返佣提现", "分享"};
     private int[] IDS = {R.mipmap.ids_top_up, R.mipmap.ids_get_cash, R.mipmap.ids_upgrade_orders, R.mipmap.ids_gold_orders,
             R.mipmap.ids_well_orders, R.mipmap.ids_on_sale_orders, R.mipmap.ids_alert_password, R.mipmap.ids_my_yhq,
-            R.mipmap.ids_real_name, R.mipmap.ids_my_upgrade_type, R.mipmap.ids_my_get_cash, R.mipmap.ids_share};
+            R.mipmap.ids_real_name, R.mipmap.ids_upgrade_type, R.mipmap.ids_my_get_cash, R.mipmap.ids_share};
 
     public static BaseFragment getInstance() {
         if (null == baseFragment) {
