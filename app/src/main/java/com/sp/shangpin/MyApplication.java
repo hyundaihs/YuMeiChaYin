@@ -68,15 +68,17 @@ public class MyApplication extends Application {
         // 实例化日志
 //        CrashHandler crashHandler = CrashHandler.getInstance();
 //        crashHandler.init(getApplicationContext(), AppUtil.LOG_PATH);
-//        regToWx();
+        regToWx();
     }
 
     public static IWXAPI api;
 
-//    private void regToWx() {
-//        api = WXAPIFactory.createWXAPI(this, InternetUtil.getWChatAppId(), true);
-//        api.registerApp(InternetUtil.getWChatAppId());
-//    }
+    private void regToWx() {
+//        api = WXAPIFactory.createWXAPI(this, null);
+//
+        api = WXAPIFactory.createWXAPI(this, InternetUtil.getWChatAppId(), true);
+        api.registerApp(InternetUtil.getWChatAppId());
+    }
 //
 //    private void te() {
 //        WXTextObject textObject = new WXTextObject();

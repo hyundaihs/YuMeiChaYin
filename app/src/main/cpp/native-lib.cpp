@@ -5,12 +5,12 @@ extern "C"
 {
 JNIEXPORT jstring JNICALL
 Java_com_sp_shangpin_utils_InternetUtil_getWChatSecret(JNIEnv *env, jclass type) {
-    std::string text = "bf126cc683cb82fa285ccad2296cb7aa";
+    std::string text = "53a4d7d9d03b79bae1f8f7b5902141c1";
     return env->NewStringUTF(text.c_str());
 }
 JNIEXPORT jstring JNICALL
 Java_com_sp_shangpin_utils_InternetUtil_getWChatAppId(JNIEnv *env, jclass type) {
-    std::string text = "TODOwx0179f29873f7c069";
+    std::string text = "wx7dcec3a790cf5b81";
     return env->NewStringUTF(text.c_str());
 }
 

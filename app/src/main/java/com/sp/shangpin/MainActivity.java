@@ -21,6 +21,7 @@ import com.sp.shangpin.utils.DialogUtil;
 import com.sp.shangpin.utils.InternetUtil;
 import com.sp.shangpin.utils.JsonObjectPostRequest;
 import com.sp.shangpin.utils.JsonUtil;
+import com.sp.shangpin.utils.LoginUtil;
 import com.sp.shangpin.utils.RequestUtil;
 import com.sp.shangpin.utils.SharedPreferencesUtil;
 import com.sp.shangpin.utils.VolleyUtil;
@@ -42,12 +43,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private final String TAG = getClass().getSimpleName();
     private final Context thisContext = this;
+    // IWXAPI 是第三方app和微信通信的openapi接口
+    private IWXAPI api;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         MyApplication.addActivity(this);
         setContentView(R.layout.activity_main);
+        // 通过WXAPIFactory工厂，获取IWXAPI的实例
+        api = WXAPIFactory.createWXAPI(this, InternetUtil.getWChatAppId(), false);
         getSystemInfo();
         init();
     }
@@ -55,44 +60,38 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void isRemember() {
         if ((Boolean) SharedPreferencesUtil.getParam(thisContext, SharedKey.IS_REMEMBER, false)) {
             Log.i(TAG, "自动登录验证");
-            verfLogin((String) SharedPreferencesUtil.getParam(this, SharedKey.LOGIN_VERF, ""));
+            boolean isWx = (boolean) SharedPreferencesUtil.getParam(this, SharedKey.ISWX_LOGIN, false);
+            verfLogin(isWx, (String) SharedPreferencesUtil.getParam(this, isWx ? SharedKey.OPENID : SharedKey.LOGIN_VERF, ""));
         }
     }
 
-    private void verfLogin(final String verf) {
-        Map<String, String> map = new HashMap<>();
-        map.put("login_verf", verf);
-        VolleyUtil volleyUtil = VolleyUtil.getInstance(this);
-        JsonObjectRequest request = RequestUtil.createPostJsonRequest(InternetUtil.verflogin(),
-                JsonUtil.objectToString(map),
-                new Response.Listener<JSONObject>() {
+    private void verfLogin(boolean isWx, final String string) {
+        LoginUtil.verfLogin(thisContext, isWx, string, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                InterResult interResult = (InterResult) JsonUtil.stringToObject(response.toString(), InterResult.class);
+                if (interResult.isSuccessed()) {
+                    Log.i(TAG, "自动登录成功");
+                    DialogUtil.showAskMessage(thisContext, "登录成功");
+                    startActivity(new Intent(thisContext, HomeActivity.class));
+                    MyApplication.cleanAllActivitys();
+                } else {
+                    Log.e(TAG, "自动登录失败," + response.toString());
+                    SharedPreferencesUtil.setParam(thisContext, SharedKey.IS_REMEMBER, false);
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e(TAG, error.toString());
+                DialogUtil.showErrorMessage(thisContext, error.toString(), new DialogInterface.OnClickListener() {
                     @Override
-                    public void onResponse(JSONObject response) {
-                        InterResult interResult = (InterResult) JsonUtil.stringToObject(response.toString(), InterResult.class);
-                        if (interResult.isSuccessed()) {
-                            Log.i(TAG, "自动登录成功");
-                            DialogUtil.showAskMessage(thisContext, "登录成功");
-                            startActivity(new Intent(MainActivity.this, HomeActivity.class));
-                            MyApplication.cleanAllActivitys();
-                        } else {
-                            Log.e(TAG, "自动登录失败," + response.toString());
-                            SharedPreferencesUtil.setParam(MainActivity.this, SharedKey.IS_REMEMBER, false);
-                        }
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.e(TAG, error.toString());
-                        DialogUtil.showErrorMessage(thisContext, error.toString(), new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                finish();
-                            }
-                        });
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        finish();
                     }
                 });
-        volleyUtil.addToRequestQueue(request, InternetUtil.verflogin());
-
+            }
+        });
     }
 
     private void getSystemInfo() {
@@ -149,16 +148,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(new Intent(thisContext, RegisterActivity.class));
                 break;
             case R.id.main_wchat_login_btn:
-//                wchatLogin();
+                if (wchatLogin()) {
+                    Log.d(TAG, "微信登录接入成功");
+                } else {
+                    Log.d(TAG, "微信登录接入失败");
+                }
                 break;
         }
     }
 
-//    private void wchatLogin(){
-//        Log.d(TAG,"send oauth request");
-//        final SendAuth.Req req = new SendAuth.Req();
-//        req.scope = "snsapi_userinfo";
-//        req.state = "wechat_sdk_demo_test";
-//        MyApplication.api.sendReq(req);
-//    }
+    private boolean wchatLogin() {
+        Log.d(TAG, "send oauth request");
+        final SendAuth.Req req = new SendAuth.Req();
+        req.scope = "snsapi_userinfo";
+        req.state = "wechat_sdk_demo_test";
+        return MyApplication.api.sendReq(req);
+    }
 }
