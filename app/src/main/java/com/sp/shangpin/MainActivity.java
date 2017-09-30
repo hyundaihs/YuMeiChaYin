@@ -43,16 +43,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private final String TAG = getClass().getSimpleName();
     private final Context thisContext = this;
-    // IWXAPI 是第三方app和微信通信的openapi接口
-    private IWXAPI api;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         MyApplication.addActivity(this);
         setContentView(R.layout.activity_main);
-        // 通过WXAPIFactory工厂，获取IWXAPI的实例
-        api = WXAPIFactory.createWXAPI(this, InternetUtil.getWChatAppId(), false);
         getSystemInfo();
         init();
     }
