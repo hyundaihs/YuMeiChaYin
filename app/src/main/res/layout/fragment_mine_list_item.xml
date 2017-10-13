@@ -10,8 +10,8 @@
         android:id="@+id/fragment_mine_list_item_ic"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
         android:layout_gravity="center_vertical"
+        android:layout_margin="5dp"
         android:contentDescription="@null" />
 
     <TextView
@@ -23,5 +23,13 @@
         android:paddingLeft="5dp"
         android:paddingTop="10dp"
         android:textSize="16sp" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="5dp"
+        android:contentDescription="@null"
+        android:src="@mipmap/ids_more" />
 
 </LinearLayout>

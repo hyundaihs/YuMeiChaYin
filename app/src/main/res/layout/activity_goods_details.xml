@@ -27,7 +27,6 @@
                 android:layout_height="0dp"
                 android:background="@android:color/white"
                 android:contentDescription="@null"
-                android:src="@mipmap/ic_launcher"
                 app:layout_constraintDimensionRatio="3:1"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
@@ -49,7 +48,6 @@
                     android:layout_marginTop="5dp"
                     android:background="@android:color/white"
                     android:padding="10dp"
-                    android:text="福寿膏"
                     android:textColor="@android:color/black"
                     android:textSize="16sp"
                     android:textStyle="bold" />
@@ -66,7 +64,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="10dp"
-                        android:text="单价：¥50.00"
                         android:textColor="@android:color/black"
                         android:textSize="12sp" />
 
@@ -75,7 +72,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="10dp"
-                        android:text="单价：¥50.00"
                         android:textColor="@color/fragment_content_bg"
                         android:textSize="12sp"
                         android:visibility="gone" />
@@ -88,7 +84,6 @@
                     android:layout_marginBottom="5dp"
                     android:background="@android:color/white"
                     android:padding="10dp"
-                    android:text="邮费：¥15.00"
                     android:textColor="@android:color/black"
                     android:textSize="12sp" />
 
@@ -154,7 +149,6 @@
                     android:layout_height="wrap_content"
                     android:background="@android:color/white"
                     android:padding="5dp"
-                    android:text="范德萨范德萨范德萨范德萨范德萨"
                     android:textColor="@android:color/black"
                     android:textSize="12sp" />
             </LinearLayout>
@@ -170,7 +164,7 @@
             android:id="@+id/goods_details_balance"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="@android:color/holo_orange_dark"
+            android:background="@color/orange"
             android:gravity="center"
             android:paddingBottom="10dp"
             android:paddingTop="10dp"
@@ -185,7 +179,7 @@
             android:id="@+id/goods_details_buy"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="@android:color/holo_red_dark"
+            android:background="@color/maroon"
             android:gravity="center"
             android:paddingBottom="10dp"
             android:paddingTop="10dp"

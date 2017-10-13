@@ -65,6 +65,7 @@ public class FragmentYhqAdapter extends RecyclerView.Adapter<FragmentYhqAdapter.
     @Override
     public void onBindViewHolder(FragmentYhqAdapter.MyViewHolder holder, final int position) {
         holder.price.setText(mDatas.get(position).getPrice() + "");
+        holder.name.setText(mDatas.get(position).getTitle());
         if (isCheck) {
             holder.check.setVisibility(checked.contains(Integer.valueOf(position)) ? View.VISIBLE : View.GONE);
             holder.rootView.setOnClickListener(new View.OnClickListener() {
@@ -104,10 +105,12 @@ public class FragmentYhqAdapter extends RecyclerView.Adapter<FragmentYhqAdapter.
         TextView price;
         ImageView check;
         CardView rootView;
+        TextView name;
 
         MyViewHolder(View view) {
             super(view);
             rootView = (CardView) view;
+            name = view.findViewById(R.id.fragment_yhq_item_1);
             price = view.findViewById(R.id.fragment_yhq_item_price);
             check = view.findViewById(R.id.fragment_yhq_check);
         }

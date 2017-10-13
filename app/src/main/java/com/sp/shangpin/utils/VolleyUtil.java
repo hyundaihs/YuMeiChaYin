@@ -70,13 +70,19 @@ public class VolleyUtil {
         }
     }
 
+    public void getImageByIntact(ImageView imageView, String url) {
+        ImageLoader imageLoader = getImageLoader();
+        ImageLoader.ImageListener imageListener = ImageLoader.getImageListener(imageView, R.mipmap.ic_launcher, R.mipmap.ic_launcher);
+        imageLoader.get(url.substring(0, url.lastIndexOf("0")) + "132", imageListener);
+    }
+
     public void getImage(ImageView imageView, String url) {
         ImageLoader imageLoader = getImageLoader();
         ImageLoader.ImageListener imageListener = ImageLoader.getImageListener(imageView, R.mipmap.ic_launcher, R.mipmap.ic_launcher);
         imageLoader.get(MyApplication.systemInfo.getBase_href() + url, imageListener);
     }
 
-    public void getImageByNetwork(NetworkImageView imageView,String url){
+    public void getImageByNetwork(NetworkImageView imageView, String url) {
         ImageLoader imageLoader = getImageLoader();
         imageView.setDefaultImageResId(R.mipmap.ic_launcher);
         imageView.setErrorImageResId(R.mipmap.ic_launcher);

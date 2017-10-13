@@ -11,6 +11,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,7 +27,6 @@ import com.sp.shangpin.MyApplication;
 import com.sp.shangpin.R;
 import com.sp.shangpin.adapters.FragmentHomeAdapter;
 import com.sp.shangpin.adapters.FragmentMineAdapter;
-import com.sp.shangpin.adapters.LineDecoration;
 import com.sp.shangpin.entity.InterResult;
 import com.sp.shangpin.entity.NormalOrderType;
 import com.sp.shangpin.entity.RealNameInfo;
@@ -117,11 +117,6 @@ public class FragmentMine extends BaseFragment {
                     case 1://提现
                         startActivity(new Intent(getActivity(), GetCashActivity.class));
                         break;
-//                    case 2://金币专区
-//                        Intent intent = new Intent(getActivity(), NormalGoodsActivity.class);
-//                        intent.putExtra(NormalOrderType.KEY, NormalOrderType.GOLD);
-//                        startActivity(intent);
-//                        break;
                     case 2://升级产品订单
                         startActivity(new Intent(getActivity(), OrdersActivity.class));
                         break;
@@ -203,9 +198,11 @@ public class FragmentMine extends BaseFragment {
     private void refresh() {
         VolleyUtil volleyUtil = VolleyUtil.getInstance(getActivity());
         if (null != MyApplication.userInfo) {
-            volleyUtil.getImage(imagePhone, MyApplication.userInfo.getFile_url());
-            balance.setText("账户余额:¥" + MyApplication.userInfo.getYe_price()
-                    + "\n账户金币:" + MyApplication.userInfo.getJf_price());
+            Log.d("image", MyApplication.userInfo.getFile_url());
+            volleyUtil.getImageByIntact(imagePhone, MyApplication.userInfo.getFile_url());
+            String text = "金币：" + MyApplication.userInfo.getJf_price() +
+                    " 余额：" + MyApplication.userInfo.getYe_price();
+            balance.setText(text);
         }
     }
 

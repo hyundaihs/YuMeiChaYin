@@ -36,7 +36,6 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:maxLines="1"
-                android:text="那个啥那个蛇"
                 android:textColor="@android:color/black"
                 android:textSize="14sp"
                 app:layout_constraintVertical_chainStyle="spread"

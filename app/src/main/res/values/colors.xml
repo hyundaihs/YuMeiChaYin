@@ -10,12 +10,17 @@
     <color name="small_circle_dark_gray">#c7c7c7</color>
     <color name="small_circle_light_gray">#f0f0f0</color>
     <!--Fragment Home-->
-    <color name="fragment_content_bg">#DEDEDE</color>
+    <color name="fragment_content_bg">#E8E3E3</color>
     <color name="fragment_upgrade_text_bg">#55FFA45C</color>
     <color name="fragment_home_list_item_text_bg">#77ffffff</color>
     <color name="right_top_background">#be985e</color>
     <color name="right_top_solid">#b3894e</color>
-    <color name="list_item_line">#dddddd</color>
+    <color name="list_item_line">#DDDDDD</color>
 
     <color name="navpage">#FFE1E8EB</color>
+    <color name="black_text">#333333</color>
+    <color name="white_bg_f8">#f8f8f8</color>
+    <color name="orange">#FF8C00</color>
+    <color name="maroon">#8B0000</color>
+    <color name="details_gray">#999999</color>
 </resources>

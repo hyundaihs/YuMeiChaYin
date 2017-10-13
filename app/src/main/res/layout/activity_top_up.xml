@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+
     <include
         android:id="@+id/top_up_toolbar"
         layout="@layout/layout_toolbar"
@@ -11,7 +12,20 @@
         android:layout_height="wrap_content"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/top_up_price_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="10dp"
+        android:text="充值金额:"
+        android:textColor="@android:color/black"
+        android:textSize="16sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/top_up_toolbar" />
 
     <CheckBox
         android:id="@+id/top_up_price1"
@@ -24,7 +38,7 @@
         app:layout_constraintHorizontal_chainStyle="spread"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toLeftOf="@+id/top_up_price2"
-        app:layout_constraintTop_toBottomOf="@+id/top_up_toolbar" />
+        app:layout_constraintTop_toBottomOf="@+id/top_up_price_title" />
 
     <CheckBox
         android:id="@+id/top_up_price2"
@@ -121,40 +135,48 @@
 
     </android.support.design.widget.TextInputLayout>
 
+    <TextView
+        android:id="@+id/top_up_pay_type_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="10dp"
+        android:text="支付方式:"
+        android:textColor="@android:color/black"
+        android:textSize="16sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/top_up_else_price_layout" />
+
     <RadioGroup
         android:id="@+id/top_up_pay_type"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:orientation="horizontal"
         android:gravity="center_vertical"
+        android:orientation="horizontal"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/top_up_else_price_layout">
+        app:layout_constraintTop_toBottomOf="@+id/top_up_pay_type_title">
 
         <RadioButton
             android:id="@+id/top_up_wchat"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:background="@drawable/top_up_text_bg"
-            android:button="@mipmap/ic_launcher"
+            style="@style/top_up_check_radio"
             android:checked="true"
-            android:contentDescription="@null"
-            app:layout_constraintDimensionRatio="1:1"
-            app:layout_constraintLeft_toLeftOf="parent" />
+            android:drawableStart="@mipmap/ids_top_up"
+            android:text="微信支付" />
 
         <RadioButton
             android:id="@+id/top_up_alipay"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:background="@drawable/top_up_text_bg"
-            android:button="@mipmap/ic_launcher"
-            android:contentDescription="@null"
-            app:layout_constraintDimensionRatio="1:1"
-            app:layout_constraintLeft_toRightOf="@+id/top_up_wchat"
-            app:layout_constraintTop_toTopOf="@+id/top_up_wchat" />
+            style="@style/top_up_check_radio"
+            android:drawableStart="@mipmap/ids_top_up"
+            android:text="支付宝支付" />
+
+        <RadioButton
+            android:id="@+id/top_up_bank_card"
+            style="@style/top_up_check_radio"
+            android:drawableStart="@mipmap/ids_top_up"
+            android:text="银联支付" />
     </RadioGroup>
 
     <Button
@@ -164,8 +186,9 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginTop="20dp"
-        android:background="@drawable/black_bold"
-        android:text="@string/top_up"
+        android:background="@drawable/color_primary_pressed_radius"
+        android:text="立即支付"
+        android:textColor="@color/white_bg_f8"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/top_up_pay_type" />

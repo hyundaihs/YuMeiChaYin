@@ -33,7 +33,6 @@ public class MyApplication extends Application {
     public static SystemInfo systemInfo;//系统信息
     public static UserInfo userInfo;//用户信息
     private static List<Activity> activityList = new ArrayList<>();
-    public static int lottoCurrIndex = -1;
 
     public static void addActivity(Activity activity) {
         if (!activityList.contains(activity)) {

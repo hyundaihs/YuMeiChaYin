@@ -112,6 +112,7 @@
 
 
     <Button
+        style="@style/color_primary_btn"
         android:id="@+id/get_cash_submit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

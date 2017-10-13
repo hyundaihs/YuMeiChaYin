@@ -51,6 +51,7 @@
         <activity android:name=".ui.RealNameActivity" />
         <activity android:name=".ui.GetCashActivity" />
         <activity android:name=".ui.BindPhoneActivity" />
+        <activity android:name=".TestActivity" />
         <activity
             android:name=".wxapi.WXEntryActivity"
             android:exported="true" />

@@ -58,8 +58,8 @@
 
     <style name="top_up_text_bg">
         <item name="android:textSize">14sp</item>
-        <item name="android:background">@drawable/top_up_text_bg</item>
-        <item name="android:textColor">@android:color/black</item>
+        <item name="android:background">@drawable/color_primary_check_radius</item>
+        <item name="android:textColor">@color/black_white</item>
         <item name="android:gravity">center</item>
         <item name="android:paddingTop">5dp</item>
         <item name="android:paddingBottom">5dp</item>
@@ -130,6 +130,21 @@
         <item name="android:gravity">center_horizontal</item>
         <!-- <item name="android:background">@drawable/nav_page</item> -->
         <item name="android:background">@color/navpage</item>
+    </style>
+
+    <style name="top_up_check_radio">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_marginLeft">5dp</item>
+        <item name="android:layout_marginRight">5dp</item>
+        <item name="android:background">@drawable/color_primary_check_radius</item>
+        <item name="android:button">@null</item>
+        <item name="android:drawablePadding">0dp</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:textColor">@color/black_white</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:gravity">center</item>
     </style>
 
 

@@ -24,8 +24,7 @@ import com.sp.shangpin.R;
 
 public class CountNumberView extends LinearLayout implements View.OnClickListener {
 
-    private TextView num;
-    private ImageView del, add;
+    private TextView num,del, add;
     private int currNum = 1;
     private int max = -1;
     private OnNumberChangerListener onNumberChangerListener;

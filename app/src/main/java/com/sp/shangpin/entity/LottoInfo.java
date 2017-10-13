@@ -8,24 +8,24 @@ import java.util.List;
  */
 
 public class LottoInfo {
-    private Banner info; // 分类信息
+    private List<Banner> banner; // 分类信息
     private List<UpgradeGoods> lists; // 产品列表
 
     public LottoInfo() {
         super();
     }
 
-    public LottoInfo(Banner info, List<UpgradeGoods> lists) {
-        this.info = info;
+    public LottoInfo(List<Banner> banner, List<UpgradeGoods> lists) {
+        this.banner = banner;
         this.lists = lists;
     }
 
-    public Banner getInfo() {
-        return info;
+    public List<Banner> getBanner() {
+        return banner;
     }
 
-    public void setInfo(Banner info) {
-        this.info = info;
+    public void setBanner(List<Banner> banner) {
+        this.banner = banner;
     }
 
     public List<UpgradeGoods> getLists() {
@@ -39,8 +39,8 @@ public class LottoInfo {
     @Override
     public String toString() {
         return "LottoInfo{" +
-                "info=" + info.toString() +
-                ", lists=" + lists.toString() +
+                "banner=" + banner +
+                ", lists=" + lists +
                 '}';
     }
 }

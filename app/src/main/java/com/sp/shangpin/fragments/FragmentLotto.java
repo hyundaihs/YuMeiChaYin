@@ -2,52 +2,23 @@ package com.sp.shangpin.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.OrientationHelper;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.sp.shangpin.MyApplication;
 import com.sp.shangpin.R;
-import com.sp.shangpin.adapters.FragmentHomeAdapter;
-import com.sp.shangpin.adapters.FragmentLottoAdapter;
-import com.sp.shangpin.adapters.SpacesItemDecoration;
-import com.sp.shangpin.entity.InterResult;
-import com.sp.shangpin.entity.LottoInfo;
-import com.sp.shangpin.entity.LottoInfo_Sup;
-import com.sp.shangpin.entity.UpgradeGoods;
-import com.sp.shangpin.ui.GoodsDetailsActivity;
+import com.sp.shangpin.adapters.FragmentsAdapter;
 import com.sp.shangpin.ui.RuleActivity;
-import com.sp.shangpin.utils.DialogUtil;
-import com.sp.shangpin.utils.DisplayUtil;
-import com.sp.shangpin.utils.InternetUtil;
-import com.sp.shangpin.utils.JsonUtil;
-import com.sp.shangpin.utils.RequestUtil;
-import com.sp.shangpin.utils.VolleyUtil;
-
-import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * ChaYin
@@ -58,17 +29,16 @@ import java.util.Map;
 public class FragmentLotto extends BaseFragment {
     private static BaseFragment baseFragment;
     private final String TAG = getClass().getSimpleName();
-    private RecyclerView recyclerView;
-    private RadioGroup radioGroup;
-    private int currIndex = 1;
-    private ImageView typeImage;
-    private LottoInfo lottoInfo;
-    private FragmentLottoAdapter adapter;
-    private List<UpgradeGoods> data;
+    private List<BaseFragment> list;
+    private String[] titles = {"茶类型", "红酒类型", "精品类型"};
+    private int index;
 
-    public static BaseFragment getInstance() {
-        if (null == baseFragment) {
+    public static BaseFragment getInstance(int index) {
+        if (index >= 0) {
             baseFragment = new FragmentLotto();
+            Bundle bundle = new Bundle();
+            bundle.putInt("index", index);
+            baseFragment.setArguments(bundle);
         }
         return baseFragment;
     }
@@ -76,116 +46,34 @@ public class FragmentLotto extends BaseFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_lotto, container, false);
-        radioGroup = view.findViewById(R.id.fragment_lotto_model_radioGroup);
-        typeImage = view.findViewById(R.id.fragment_lotto_type_image);
-        recyclerView = view.findViewById(R.id.fragment_lotto_recyclerView);
+        View view = inflater.inflate(R.layout.activity_orders, container, false);
+        initActionBar(view);
+        initViews(view);
+        index = getArguments().getInt("index", 0);
+        Log.d(TAG, "获取index" + index);
         return view;
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        initActionBar();
-        initViews();
-        initListView();
-        if (MyApplication.lottoCurrIndex > 0 && MyApplication.lottoCurrIndex < 4) {
-            radioGroup.check(MyApplication.lottoCurrIndex == 1 ? R.id.fragment_lotto_model_flag1 :
-                    MyApplication.lottoCurrIndex == 2 ? R.id.fragment_lotto_model_flag2 : R.id.fragment_lotto_model_flag3);
-            currIndex = MyApplication.lottoCurrIndex;
-            MyApplication.lottoCurrIndex = -1;
-        }
-        getDataInfo();
+    private void initViews(View view) {
+        list = new ArrayList<>();
+        list.add(FragmentLottoContent.getInstance(1));
+        list.add(FragmentLottoContent.getInstance(2));
+        list.add(FragmentLottoContent.getInstance(3));
+        ViewPager viewPager = view.findViewById(R.id.orders_content);
+        TabLayout tabLayout = view.findViewById(R.id.orders_model_tab_layout);
+        //ViewPager的适配器
+        FragmentsAdapter adapter = new FragmentsAdapter(getChildFragmentManager(), list, titles);
+        viewPager.setAdapter(adapter);
+        //绑定
+        tabLayout.setupWithViewPager(viewPager);
+        tabLayout.getTabAt(index).select();
+//        viewPager.setCurrentItem(index);
     }
 
-    private void getDataInfo() {
-        Map<String, String> map = new HashMap<>();
-        map.put("type_id", String.valueOf(currIndex));
-        VolleyUtil volleyUtil = VolleyUtil.getInstance(getActivity());
-        JsonObjectRequest request = RequestUtil.createPostJsonRequest(InternetUtil.goodssj(),
-                JsonUtil.objectToString(map),
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        InterResult interResult =
-                                (InterResult) JsonUtil.stringToObject(response.toString(), InterResult.class);
-                        if (interResult.isSuccessed()) {
-                            LottoInfo_Sup lottoInfo_sup = (LottoInfo_Sup) JsonUtil.stringToObject(response.toString(), LottoInfo_Sup.class);
-                            Log.i(TAG, "抽奖信息获取成功");
-                            lottoInfo = lottoInfo_sup.getRetRes();
-                            refresh();
-                        } else {
-                            DialogUtil.showErrorMessage(getActivity(), interResult.getRetErr());
-                        }
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        DialogUtil.showErrorMessage(getActivity(), error.toString());
-                    }
-                });
-        volleyUtil.addToRequestQueue(request, InternetUtil.goodssj());
-    }
-
-    private void initViews() {
-        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup radioGroup, @IdRes int i) {
-                switch (i) {
-                    case R.id.fragment_lotto_model_flag1:
-                        currIndex = 1;
-                        break;
-                    case R.id.fragment_lotto_model_flag2:
-                        currIndex = 2;
-                        break;
-                    case R.id.fragment_lotto_model_flag3:
-                        currIndex = 3;
-                        break;
-                    default:
-                        break;
-                }
-                getDataInfo();
-            }
-        });
-    }
-
-    private void refresh() {
-        if (null != lottoInfo) {
-            if (null != lottoInfo.getInfo()) {
-                VolleyUtil volleyUtil = VolleyUtil.getInstance(getActivity());
-                volleyUtil.getImage(typeImage, lottoInfo.getInfo().getBanner_file_url());
-            }
-            if (null != lottoInfo.getLists()) {
-                data.clear();
-                data.addAll(lottoInfo.getLists());
-                adapter.notifyDataSetChanged();
-            }
-        }
-    }
-
-    private void initListView() {
-        data = new ArrayList<>();
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        recyclerView.setLayoutManager(layoutManager);
-        layoutManager.setOrientation(OrientationHelper.VERTICAL);
-        adapter = new FragmentLottoAdapter(getActivity(), data);
-        recyclerView.setAdapter(adapter);
-        recyclerView.addItemDecoration(new SpacesItemDecoration(DisplayUtil.dp2px(getActivity(), 10)));
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        adapter.setOnItemClickListener(new FragmentHomeAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                Intent intent = new Intent(getActivity(), GoodsDetailsActivity.class);
-                intent.putExtra("id", data.get(position).getId());
-                startActivity(intent);
-            }
-        });
-    }
-
-    public void initActionBar() {
-        Toolbar toolbar = getView().findViewById(R.id.toolbar);
-        TextView title = getView().findViewById(R.id.toolbar_title);
-        TextView btn = getView().findViewById(R.id.toolbar_btn);
+    public void initActionBar(View view) {
+        Toolbar toolbar = view.findViewById(R.id.toolbar);
+        TextView title = view.findViewById(R.id.toolbar_title);
+        TextView btn = view.findViewById(R.id.toolbar_btn);
         title.setText("升级商品");
         btn.setText("规则");
         btn.setVisibility(View.VISIBLE);

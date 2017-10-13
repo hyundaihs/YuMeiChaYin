@@ -39,29 +39,31 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent" />
 
+            <TextView
+                android:id="@+id/fragment_mine_image_balance"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@color/fragment_home_list_item_text_bg"
+                android:gravity="right"
+                android:paddingBottom="5dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="5dp"
+                android:text="金币：7259 余额：9527"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="@+id/fragment_mine_image_bg"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="@+id/fragment_mine_image_bg" />
+
             <ImageView
                 android:id="@+id/fragment_mine_image_photo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
                 android:contentDescription="@null"
                 android:src="@mipmap/ic_launcher"
                 app:layout_constraintBottom_toBottomOf="@+id/fragment_mine_image_bg"
                 app:layout_constraintDimensionRatio="1:1"
                 app:layout_constraintLeft_toLeftOf="@+id/fragment_mine_image_bg" />
-
-
-            <TextView
-                android:id="@+id/fragment_mine_image_balance"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@color/fragment_upgrade_text_bg"
-                android:paddingBottom="5dp"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:paddingTop="5dp"
-                android:text="账户余额：¥9527\n账户金币：7259"
-                app:layout_constraintBottom_toBottomOf="@+id/fragment_mine_image_bg"
-                app:layout_constraintRight_toRightOf="@+id/fragment_mine_image_bg" />
 
         </android.support.constraint.ConstraintLayout>
 

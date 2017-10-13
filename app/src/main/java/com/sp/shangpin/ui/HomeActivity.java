@@ -3,13 +3,10 @@ package com.sp.shangpin.ui;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.internal.BottomNavigationItemView;
-import android.support.design.internal.BottomNavigationMenuView;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.MenuItem;
 
 import com.android.volley.Response;
@@ -26,14 +23,12 @@ import com.sp.shangpin.fragments.FragmentStore;
 import com.sp.shangpin.utils.BottomNavigationViewHelper;
 import com.sp.shangpin.utils.DialogUtil;
 import com.sp.shangpin.utils.InternetUtil;
-import com.sp.shangpin.utils.JsonObjectPostRequest;
 import com.sp.shangpin.utils.JsonUtil;
 import com.sp.shangpin.utils.RequestUtil;
 import com.sp.shangpin.utils.VolleyUtil;
 
 import org.json.JSONObject;
 
-import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -53,7 +48,7 @@ public class HomeActivity extends AppCompatActivity {
                     loadFragment(FragmentHome.getInstance());
                     return true;
                 case R.id.navigation_lotto:
-                    loadFragment(FragmentLotto.getInstance());
+                    loadFragment(FragmentLotto.getInstance(0));
                     return true;
                 case R.id.navigation_store:
                     loadFragment(FragmentStore.getInstance());
@@ -67,7 +62,7 @@ public class HomeActivity extends AppCompatActivity {
 
     };
 
-    public void checkTab(int index) {
+    public void checkTab(int index, int arg) {
         if (index >= 0 && index <= 3) {
             navigation.getMenu().getItem(index).setChecked(true);
             switch (index) {
@@ -75,7 +70,7 @@ public class HomeActivity extends AppCompatActivity {
                     loadFragment(FragmentHome.getInstance());
                     break;
                 case 1:
-                    loadFragment(FragmentLotto.getInstance());
+                    loadFragment(FragmentLotto.getInstance(arg));
                     break;
                 case 2:
                     loadFragment(FragmentStore.getInstance());

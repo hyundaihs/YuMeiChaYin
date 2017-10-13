@@ -94,7 +94,11 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.MyViewHold
         holder.returnG.setOnClickListener(new MyOnClickListener(position));
         holder.pickUp.setOnClickListener(new MyOnClickListener(position));
         holder.upgrade.setOnClickListener(new MyOnClickListener(position));
-        holder.details.setOnClickListener(new MyOnClickListener(position));
+        holder.addrName.setText("收货人:" + orderInfo.getTitle());
+        holder.addrPhone.setText("手机:" + orderInfo.getPhone());
+        holder.addrArea.setText("收货地址" + orderInfo.getPca());
+        holder.addrAddr.setText("详细地址" + orderInfo.getAddress());
+        holder.addrContent.setText("备注:" + orderInfo.getContents());
         switch (index) {
             case 0:
                 holder.goldCoin.setVisibility(View.GONE);
@@ -102,6 +106,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.MyViewHold
                 holder.returnG.setVisibility(View.VISIBLE);
                 holder.pickUp.setVisibility(View.VISIBLE);
                 holder.upgrade.setVisibility(View.VISIBLE);
+                holder.addrLayout.setVisibility(View.GONE);
                 break;
             case 1:
                 holder.goldCoin.setVisibility(View.VISIBLE);
@@ -109,6 +114,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.MyViewHold
                 holder.returnG.setVisibility(View.GONE);
                 holder.pickUp.setVisibility(View.VISIBLE);
                 holder.upgrade.setVisibility(View.GONE);
+                holder.addrLayout.setVisibility(View.GONE);
                 break;
             case 2:
                 holder.goldCoin.setVisibility(View.GONE);
@@ -116,6 +122,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.MyViewHold
                 holder.lotteryTime.setText("");
                 holder.pickUp.setVisibility(View.GONE);
                 holder.upgrade.setVisibility(View.GONE);
+                holder.addrLayout.setVisibility(View.GONE);
                 break;
             case 3:
                 holder.goldCoin.setVisibility(View.GONE);
@@ -123,6 +130,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.MyViewHold
                 holder.lotteryTime.setText("");
                 holder.pickUp.setVisibility(View.GONE);
                 holder.upgrade.setVisibility(View.GONE);
+                holder.addrLayout.setVisibility(View.VISIBLE);
                 break;
             default:
                 holder.goldCoin.setVisibility(View.GONE);
@@ -216,17 +224,17 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.MyViewHold
                 case R.id.orders_list_item_upgrade:
                     goLottery(position);
                     break;
-                case R.id.orders_list_item_details:
-                    break;
             }
         }
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder {
 
-        View rootView;
+        View rootView,addrLayout;
         ImageView image;
-        TextView orderTime, orderId, name, number, status, lotteryTime, goldCoin, returnG, pickUp, upgrade, price, totalPrice, details;
+        TextView orderTime, orderId, name, number, status, lotteryTime,
+                goldCoin, returnG, pickUp, upgrade, price, totalPrice,
+                addrName, addrPhone, addrArea, addrAddr, addrContent;
 
         MyViewHolder(View view) {
             super(view);
@@ -244,7 +252,12 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.MyViewHold
             upgrade = view.findViewById(R.id.orders_list_item_upgrade);
             price = view.findViewById(R.id.orders_list_item_price);
             totalPrice = view.findViewById(R.id.orders_list_item_total_price);
-            details = view.findViewById(R.id.orders_list_item_details);
+            addrName = view.findViewById(R.id.orders_list_item_addr_name);
+            addrPhone = view.findViewById(R.id.orders_list_item_addr_phone);
+            addrArea = view.findViewById(R.id.orders_list_item_addr_area);
+            addrAddr = view.findViewById(R.id.orders_list_item_addr_addr);
+            addrContent = view.findViewById(R.id.orders_list_item_addr_content);
+            addrLayout = view.findViewById(R.id.orders_list_item_addr_layout);
         }
     }
 }

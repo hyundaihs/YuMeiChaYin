@@ -76,8 +76,6 @@ public class NormalOrdersAdapter extends RecyclerView.Adapter<NormalOrdersAdapte
         holder.price.setText("¥" + normalOrderInfo.getGoods_lists().get(0).getPrice());
         holder.totalPrice.setText("¥" + normalOrderInfo.getPrice());
         holder.returnG.setOnClickListener(new NormalOrdersAdapter.MyOnClickListener(position));
-        holder.details.setOnClickListener(new NormalOrdersAdapter.MyOnClickListener(position));
-        holder.details.setVisibility(View.GONE);
         holder.goodsFlag.setVisibility(normalOrderInfo.getCx() == 1 ? View.VISIBLE : View.GONE);
         holder.addrName.setText("收货人:" + normalOrderInfo.getTitle());
         holder.addrPhone.setText("手机:" + normalOrderInfo.getPhone());
@@ -202,17 +200,15 @@ public class NormalOrdersAdapter extends RecyclerView.Adapter<NormalOrdersAdapte
                         });
                     }
                     break;
-                case R.id.normal_orders_list_item_details:
-                    break;
             }
         }
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder {
 
-        View rootView;
+        View rootView, addrLayout;
         ImageView image, goodsFlag;
-        TextView orderTime, orderId, name, number, status, returnG, price, totalPrice, details,
+        TextView orderTime, orderId, name, number, status, returnG, price, totalPrice,
                 addrName, addrPhone, addrArea, addrAddr, addrContent;
 
         MyViewHolder(View view) {
@@ -228,12 +224,12 @@ public class NormalOrdersAdapter extends RecyclerView.Adapter<NormalOrdersAdapte
             returnG = view.findViewById(R.id.normal_orders_list_item_return);
             price = view.findViewById(R.id.normal_orders_list_item_price);
             totalPrice = view.findViewById(R.id.normal_orders_list_item_total_price);
-            details = view.findViewById(R.id.normal_orders_list_item_details);
             addrName = view.findViewById(R.id.normal_orders_list_item_addr_name);
             addrPhone = view.findViewById(R.id.normal_orders_list_item_addr_phone);
             addrArea = view.findViewById(R.id.normal_orders_list_item_addr_area);
             addrAddr = view.findViewById(R.id.normal_orders_list_item_addr_addr);
             addrContent = view.findViewById(R.id.normal_orders_list_item_addr_content);
+            addrLayout = view.findViewById(R.id.normal_orders_list_item_addr_layout);
         }
     }
 }

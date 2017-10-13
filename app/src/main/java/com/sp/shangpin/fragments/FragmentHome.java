@@ -11,18 +11,13 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.sp.shangpin.MyApplication;
 import com.sp.shangpin.R;
 import com.sp.shangpin.adapters.FragmentHomeAdapter;
 import com.sp.shangpin.entity.HomeInfo;
@@ -200,16 +195,13 @@ public class FragmentHome extends BaseFragment implements View.OnClickListener {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.fragment_home_upgrade1:
-                MyApplication.lottoCurrIndex = 1;
-                ((HomeActivity) getActivity()).checkTab(1);
+                ((HomeActivity) getActivity()).checkTab(1, 0);
                 break;
             case R.id.fragment_home_upgrade2:
-                MyApplication.lottoCurrIndex = 2;
-                ((HomeActivity) getActivity()).checkTab(1);
+                ((HomeActivity) getActivity()).checkTab(1, 1);
                 break;
             case R.id.fragment_home_upgrade3:
-                MyApplication.lottoCurrIndex = 3;
-                ((HomeActivity) getActivity()).checkTab(1);
+                ((HomeActivity) getActivity()).checkTab(1, 2);
                 break;
         }
     }
