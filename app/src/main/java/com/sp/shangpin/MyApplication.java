@@ -65,8 +65,10 @@ public class MyApplication extends Application {
             Log.i("ZSApplication", "日志路径初始化成功");
         }
         // 实例化日志
-//        CrashHandler crashHandler = CrashHandler.getInstance();
-//        crashHandler.init(getApplicationContext(), AppUtil.LOG_PATH);
+        if(!BuildConfig.DEBUG){
+            CrashHandler crashHandler = CrashHandler.getInstance();
+            crashHandler.init(getApplicationContext(), AppUtil.LOG_PATH);
+        }
         regToWx();
     }
 
