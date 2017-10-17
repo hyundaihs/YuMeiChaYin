@@ -24,7 +24,7 @@
     <string name="login_lost_pwd">Lost password</string>
     <string name="login">Login</string>
     <string name="login_remember_pwd">Remember password</string>
-    <string name="main_wchat_login">Login by wchat</string>
+    <string name="wx_login">Login by wchat</string>
     <string name="upgrade_text">upgrade</string>
     <string name="goods_details">Goods Details</string>
     <string name="top_up">Top Up</string>

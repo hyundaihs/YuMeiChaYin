@@ -163,19 +163,19 @@
             android:id="@+id/top_up_wchat"
             style="@style/top_up_check_radio"
             android:checked="true"
-            android:drawableStart="@mipmap/ids_top_up"
+            android:drawableStart="@drawable/wx_pay"
             android:text="微信支付" />
 
         <RadioButton
             android:id="@+id/top_up_alipay"
             style="@style/top_up_check_radio"
-            android:drawableStart="@mipmap/ids_top_up"
+            android:drawableStart="@drawable/ali_pay"
             android:text="支付宝支付" />
 
         <RadioButton
             android:id="@+id/top_up_bank_card"
             style="@style/top_up_check_radio"
-            android:drawableStart="@mipmap/ids_top_up"
+            android:drawableStart="@drawable/bank_pay"
             android:text="银联支付" />
     </RadioGroup>
 

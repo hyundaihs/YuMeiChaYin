@@ -5,7 +5,7 @@ android {
         release {
             keyAlias 'chayin'
             keyPassword '558600'
-            storeFile file('C:/Users/Administrator/Desktop/茶饮/ChaYinImage/chayin_keystore.jks')
+            storeFile file('E:/GitHub/ChaYinImage/chayin_keystore.jks')
             storePassword '558600'
         }
     }

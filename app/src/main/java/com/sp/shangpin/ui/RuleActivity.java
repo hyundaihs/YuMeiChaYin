@@ -1,13 +1,10 @@
 package com.sp.shangpin.ui;
 
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.Html;
 import android.view.MenuItem;
+import android.webkit.WebView;
 import android.widget.TextView;
 
 import com.sp.shangpin.MyApplication;
@@ -20,7 +17,7 @@ import com.sp.shangpin.R;
 
 public class RuleActivity extends AppCompatActivity {
 
-    private TextView ruleContent;
+    private WebView ruleContent;
 
 
     @Override
@@ -28,8 +25,8 @@ public class RuleActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rule);
         initActionBar();
-        ruleContent = (TextView) findViewById(R.id.rule_content);
-        ruleContent.setText(Html.fromHtml(MyApplication.systemInfo.getGz_contents()));
+        ruleContent = (WebView) findViewById(R.id.rule_content);
+        ruleContent.loadData(MyApplication.systemInfo.getGz_contents(), "text/html; charset=UTF-8", null);
     }
 
     public void initActionBar() {
