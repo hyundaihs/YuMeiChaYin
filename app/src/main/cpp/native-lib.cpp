@@ -16,13 +16,13 @@ Java_com_sp_shangpin_utils_InternetUtil_getWChatAppId(JNIEnv *env, jclass type) 
 
 JNIEXPORT jstring JNICALL
 Java_com_sp_shangpin_utils_InternetUtil_urlHome(JNIEnv *env, jclass type) {
-    std::string text = "http://chayin.hyk001.com/";
+    std::string text = "http://weixin.mingpinyahui.com/";
     return env->NewStringUTF(text.c_str());
 }
 
 JNIEXPORT jstring JNICALL
 Java_com_sp_shangpin_utils_InternetUtil_urlApi(JNIEnv *env, jclass type) {
-    std::string text = "http://chayin.hyk001.com/api.php/Index/";
+    std::string text = "http://weixin.mingpinyahui.com/api.php/Index/";
     return env->NewStringUTF(text.c_str());
 }
 
