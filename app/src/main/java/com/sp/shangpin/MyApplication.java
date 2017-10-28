@@ -75,8 +75,6 @@ public class MyApplication extends Application {
     public static IWXAPI api;
 
     private void regToWx() {
-//        api = WXAPIFactory.createWXAPI(this, null);
-//
         api = WXAPIFactory.createWXAPI(this, InternetUtil.getWChatAppId(), true);
         api.registerApp(InternetUtil.getWChatAppId());
     }

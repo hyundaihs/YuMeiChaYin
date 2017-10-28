@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/popup_window"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom|center"
+    android:background="@android:color/white"
+    android:orientation="horizontal"
+    android:padding="10dp">
+
+    <ImageView
+        android:id="@+id/share_friend_are"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:contentDescription="@null"
+        android:drawablePadding="15dp"
+        android:src="@mipmap/ic_launcher"
+        android:gravity="center_vertical"
+        android:padding="15dp"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <ImageView
+        android:id="@+id/share_wx_friend"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:contentDescription="@null"
+        android:drawablePadding="15dp"
+        android:src="@mipmap/ic_launcher"
+        android:gravity="center_vertical"
+        android:padding="15dp"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <ImageView
+        android:id="@+id/share_weibo"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:contentDescription="@null"
+        android:drawablePadding="15dp"
+        android:src="@mipmap/ic_launcher"
+        android:gravity="center_vertical"
+        android:padding="15dp"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+</LinearLayout>

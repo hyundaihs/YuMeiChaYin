@@ -153,6 +153,13 @@ Java_com_sp_shangpin_utils_InternetUtil_cz(JNIEnv *env, jclass type) {
     return env->NewStringUTF(text.c_str());
 }
 
+
+JNIEXPORT jstring JNICALL
+Java_com_sp_shangpin_utils_InternetUtil_pay(JNIEnv *env, jclass type) {
+    std::string text = "pay";
+    return env->NewStringUTF(text.c_str());
+}
+
 JNIEXPORT jstring JNICALL
 Java_com_sp_shangpin_utils_InternetUtil_czlists(JNIEnv *env, jclass type) {
     std::string text = "czlists";

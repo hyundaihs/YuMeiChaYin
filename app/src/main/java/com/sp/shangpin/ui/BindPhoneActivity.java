@@ -28,6 +28,7 @@ import com.sp.shangpin.utils.LoginUtil;
 import com.sp.shangpin.utils.ReExpressUtil;
 import com.sp.shangpin.utils.RequestUtil;
 import com.sp.shangpin.utils.SharedPreferencesUtil;
+import com.sp.shangpin.utils.ToastUtil;
 import com.sp.shangpin.utils.VolleyUtil;
 import com.sp.shangpin.widget.SecurityCodeView;
 
@@ -164,7 +165,7 @@ public class BindPhoneActivity extends AppCompatActivity implements View.OnClick
                     public void onResponse(JSONObject response) {
                         InterResult interResult = (InterResult) JsonUtil.stringToObject(response.toString(), InterResult.class);
                         if (interResult.isSuccessed()) {
-                            DialogUtil.showAskMessage(thisContext, "绑定成功");
+                            ToastUtil.show(thisContext, "绑定成功");
                             login(wxUserInfo.getOpenid());
                         } else {
                             DialogUtil.showErrorMessage(thisContext, interResult.getRetErr());
@@ -185,12 +186,13 @@ public class BindPhoneActivity extends AppCompatActivity implements View.OnClick
             public void onResponse(JSONObject response) {
                 InterResult interResult = (InterResult) JsonUtil.stringToObject(response.toString(), InterResult.class);
                 if (interResult.isSuccessed()) {
-                    DialogUtil.showAskMessage(thisContext, "登录成功");
+                    ToastUtil.show(thisContext, "登录成功");
                     SharedPreferencesUtil.setParam(thisContext, SharedKey.IS_REMEMBER, true);
                     SharedPreferencesUtil.setParam(thisContext, SharedKey.ISWX_LOGIN, true);
                     SharedPreferencesUtil.setParam(thisContext, SharedKey.OPENID, openid);
                     startActivity(new Intent(thisContext, HomeActivity.class));
                     MyApplication.cleanAllActivitys();
+                    finish();
                 } else {
                     SharedPreferencesUtil.setParam(thisContext, SharedKey.IS_REMEMBER, false);
                 }

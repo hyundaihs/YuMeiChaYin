@@ -193,6 +193,12 @@ public class InternetUtil {
     public static native String cz();
 
     /**
+     * 微信支付
+     * @return
+     */
+    public static native String pay();
+
+    /**
      * 充值记录
      *
      * @return

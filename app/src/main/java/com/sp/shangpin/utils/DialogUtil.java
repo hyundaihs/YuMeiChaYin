@@ -1,8 +1,19 @@
 package com.sp.shangpin.utils;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.text.Layout;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.sp.shangpin.R;
 
 /**
  * ShangPin
@@ -57,5 +68,41 @@ public class DialogUtil {
         builder.create();
         AlertDialog alertDialog = builder.show();
         return alertDialog;
+    }
+
+    public static void createShareDialog(final Context context, final View.OnClickListener onClickListener){
+        View view = LayoutInflater.from(context).inflate(R.layout.bottom_dialog, null);
+        ImageView friendArea =  view.findViewById(R.id.share_friend_are);
+        ImageView wxFriend = view.findViewById(R.id.share_wx_friend);
+        ImageView weiBo = view.findViewById(R.id.share_weibo);
+
+        final Dialog mBottomSheetDialog = new Dialog(context, R.style.MaterialDialogSheet);
+        mBottomSheetDialog.setContentView(view);
+        mBottomSheetDialog.setCancelable(true);
+        mBottomSheetDialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        mBottomSheetDialog.getWindow().setGravity(Gravity.BOTTOM);
+        mBottomSheetDialog.show();
+
+        friendArea.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onClickListener.onClick(view);
+                mBottomSheetDialog.dismiss();
+            }
+        });
+        wxFriend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onClickListener.onClick(view);
+                mBottomSheetDialog.dismiss();
+            }
+        });
+        weiBo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onClickListener.onClick(view);
+                mBottomSheetDialog.dismiss();
+            }
+        });
     }
 }

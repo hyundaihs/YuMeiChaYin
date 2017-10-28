@@ -2,8 +2,11 @@ package com.sp.shangpin.fragments;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
@@ -46,10 +49,16 @@ import com.sp.shangpin.utils.InternetUtil;
 import com.sp.shangpin.utils.JsonUtil;
 import com.sp.shangpin.utils.RequestUtil;
 import com.sp.shangpin.utils.SharedPreferencesUtil;
+import com.sp.shangpin.utils.ToastUtil;
 import com.sp.shangpin.utils.VolleyUtil;
+import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
+import com.tencent.mm.opensdk.modelmsg.WXMediaMessage;
+import com.tencent.mm.opensdk.modelmsg.WXTextObject;
+import com.tencent.mm.opensdk.modelmsg.WXWebpageObject;
 
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -66,10 +75,14 @@ public class FragmentMine extends BaseFragment {
     private RecyclerView recyclerView;
     private FragmentMineAdapter adapter;
     private String[] MENUS = {"充值", "提现", "升级产品订单",
-            "金币商品订单", "精品商品订单", "促销商品订单", "修改密码", "我的代金券", "实名认证", "升级方式", "我的返佣提现", "分享"};
+            "金币商品订单", "精品商品订单", "促销商品订单", "修改密码", "我的代金券", "实名认证", "升级方式",
+//            "我的返佣提现",
+            "分享"};
     private int[] IDS = {R.mipmap.ids_top_up, R.mipmap.ids_get_cash, R.mipmap.ids_upgrade_orders, R.mipmap.ids_gold_orders,
             R.mipmap.ids_well_orders, R.mipmap.ids_on_sale_orders, R.mipmap.ids_alert_password, R.mipmap.ids_my_yhq,
-            R.mipmap.ids_real_name, R.mipmap.ids_upgrade_type, R.mipmap.ids_my_get_cash, R.mipmap.ids_share};
+            R.mipmap.ids_real_name, R.mipmap.ids_upgrade_type,
+//            R.mipmap.ids_my_get_cash,
+            R.mipmap.ids_share};
 
     public static BaseFragment getInstance() {
         if (null == baseFragment) {
@@ -95,7 +108,12 @@ public class FragmentMine extends BaseFragment {
         initActionBar();
         initListView();
         refresh();
+    }
+
+    @Override
+    public void onResume() {
         getUserInfo();
+        super.onResume();
     }
 
     private void initListView() {
@@ -148,15 +166,49 @@ public class FragmentMine extends BaseFragment {
                     case 9://升级方式
 
                         break;
-                    case 10://返佣提现
-
-                        break;
-                    case 11://分享
-
+//                    case 10://返佣提现
+//
+//                        break;
+                    case 10://分享
+                        DialogUtil.createShareDialog(getActivity(), new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                switch (view.getId()) {
+                                    case R.id.share_friend_are:
+                                        shareToWx(true);
+                                        break;
+                                    case R.id.share_wx_friend:
+                                        shareToWx(false);
+                                        break;
+                                    case R.id.share_weibo:
+                                        ToastUtil.show(getActivity(), "分享到微博");
+                                        break;
+                                }
+                            }
+                        });
                         break;
                 }
             }
         });
+    }
+
+    private void shareToWx(boolean isFriendArea) {
+        WXWebpageObject wxWebpageObject = new WXWebpageObject();
+        wxWebpageObject.webpageUrl = "https://fir.im/sd4w";
+        WXMediaMessage wxMediaMessage = new WXMediaMessage(wxWebpageObject);
+        wxMediaMessage.mediaObject = wxWebpageObject;
+        wxMediaMessage.title = "茗品雅汇";
+        wxMediaMessage.description = "我们不仅仅是商城，更是游戏把玩的福地，购买即可中大奖！";
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        BitmapFactory.decodeResource(getResources(), R.mipmap.app_icon)
+                .compress(Bitmap.CompressFormat.JPEG, 40, baos);
+        byte[] datas = baos.toByteArray();
+        wxMediaMessage.thumbData = datas;
+        SendMessageToWX.Req req = new SendMessageToWX.Req();
+        req.transaction = String.valueOf(System.currentTimeMillis());
+        req.message = wxMediaMessage;
+        req.scene = isFriendArea ? SendMessageToWX.Req.WXSceneTimeline : SendMessageToWX.Req.WXSceneSession;
+        MyApplication.api.sendReq(req);
     }
 
     public void initActionBar() {

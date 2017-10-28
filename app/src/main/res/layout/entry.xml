@@ -5,12 +5,6 @@
     android:background="@android:color/white"
     android:orientation="vertical">
 
-    <include
-        android:id="@+id/entry_toolbar"
-        layout="@layout/layout_toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
     <TextView
         android:id="@+id/wx_result"
         android:layout_width="match_parent"

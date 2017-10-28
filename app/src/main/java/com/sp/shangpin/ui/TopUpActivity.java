@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
@@ -18,15 +19,19 @@ import android.widget.TextView;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.sp.shangpin.MyApplication;
 import com.sp.shangpin.R;
 import com.sp.shangpin.entity.InterResult;
 import com.sp.shangpin.entity.SharedKey;
+import com.sp.shangpin.entity.WxPayOrder;
+import com.sp.shangpin.entity.WxPayOrder_Sup;
 import com.sp.shangpin.utils.DialogUtil;
 import com.sp.shangpin.utils.IntentUtil;
 import com.sp.shangpin.utils.InternetUtil;
 import com.sp.shangpin.utils.JsonUtil;
 import com.sp.shangpin.utils.RequestUtil;
 import com.sp.shangpin.utils.VolleyUtil;
+import com.tencent.mm.opensdk.modelpay.PayReq;
 
 import org.json.JSONObject;
 
@@ -116,13 +121,9 @@ public class TopUpActivity extends AppCompatActivity implements View.OnClickList
                         InterResult interResult =
                                 (InterResult) JsonUtil.stringToObject(response.toString(), InterResult.class);
                         if (interResult.isSuccessed()) {
-                            DialogUtil.showTipMessage(thisContext, "充值成功", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    setResult(IntentUtil.RESULT_OK);
-                                    finish();
-                                }
-                            });
+                            WxPayOrder_Sup wxPayOrder_sup = (WxPayOrder_Sup) JsonUtil.stringToObject(response.toString(), WxPayOrder_Sup.class);
+                            Log.d("WxPayOrder_Sup", wxPayOrder_sup.toString());
+                            pay(wxPayOrder_sup.getRetRes().getOrders_id());
                         } else {
                             DialogUtil.showErrorMessage(thisContext, interResult.getRetErr());
                         }
@@ -135,6 +136,46 @@ public class TopUpActivity extends AppCompatActivity implements View.OnClickList
                 });
         volleyUtil.addToRequestQueue(request, InternetUtil.cz());
 
+    }
+
+    private void pay(int orders_id) {
+        Map<String, String> map = new HashMap<>();
+        map.put("id", String.valueOf(orders_id));
+        VolleyUtil volleyUtil = VolleyUtil.getInstance(this);
+        JsonObjectRequest request = RequestUtil.createPostJsonRequest(InternetUtil.pay(),
+                JsonUtil.objectToString(map),
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        InterResult interResult =
+                                (InterResult) JsonUtil.stringToObject(response.toString(), InterResult.class);
+                        if (interResult.isSuccessed()) {
+                            WxPayOrder_Sup wxPayOrder_sup = (WxPayOrder_Sup) JsonUtil.stringToObject(response.toString(), WxPayOrder_Sup.class);
+                            Log.d("WxPayOrder", wxPayOrder_sup.toString());
+                            wxPay(wxPayOrder_sup.getRetRes());
+                        } else {
+                            DialogUtil.showErrorMessage(thisContext, interResult.getRetErr());
+                        }
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        DialogUtil.showErrorMessage(thisContext, error.toString());
+                    }
+                });
+        volleyUtil.addToRequestQueue(request, InternetUtil.pay());
+    }
+
+    private void wxPay(WxPayOrder wxPayOrder){
+        PayReq request = new PayReq();
+        request.appId = InternetUtil.getWChatAppId();
+        request.partnerId = wxPayOrder.getPartnerid();
+        request.prepayId= wxPayOrder.getPrepayid();
+        request.packageValue = wxPayOrder.getPackages();
+        request.nonceStr= wxPayOrder.getNoncestr();
+        request.timeStamp= wxPayOrder.getTimestamp();
+        request.sign= wxPayOrder.getSign();
+        MyApplication.api.sendReq(request);
     }
 
     @Override
