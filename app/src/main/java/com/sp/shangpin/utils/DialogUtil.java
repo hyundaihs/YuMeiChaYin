@@ -72,9 +72,9 @@ public class DialogUtil {
 
     public static void createShareDialog(final Context context, final View.OnClickListener onClickListener){
         View view = LayoutInflater.from(context).inflate(R.layout.bottom_dialog, null);
-        ImageView friendArea =  view.findViewById(R.id.share_friend_are);
-        ImageView wxFriend = view.findViewById(R.id.share_wx_friend);
-        ImageView weiBo = view.findViewById(R.id.share_weibo);
+        TextView friendArea =  view.findViewById(R.id.share_friend_are);
+        TextView wxFriend = view.findViewById(R.id.share_wx_friend);
+        TextView weiBo = view.findViewById(R.id.share_weibo);
 
         final Dialog mBottomSheetDialog = new Dialog(context, R.style.MaterialDialogSheet);
         mBottomSheetDialog.setContentView(view);

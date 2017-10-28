@@ -8,39 +8,45 @@
     android:orientation="horizontal"
     android:padding="10dp">
 
-    <ImageView
+    <TextView
         android:id="@+id/share_friend_are"
         android:layout_width="0dp"
-        android:layout_weight="1"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:contentDescription="@null"
         android:drawablePadding="15dp"
-        android:src="@mipmap/ic_launcher"
-        android:gravity="center_vertical"
+        android:drawableTop="@mipmap/share_friend_area"
+        android:gravity="center"
         android:padding="15dp"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:text="微信朋友圈"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textSize="14sp" />
 
-    <ImageView
+    <TextView
         android:id="@+id/share_wx_friend"
         android:layout_width="0dp"
-        android:layout_weight="1"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:contentDescription="@null"
         android:drawablePadding="15dp"
-        android:src="@mipmap/ic_launcher"
-        android:gravity="center_vertical"
+        android:drawableTop="@mipmap/share_wx_friend"
+        android:gravity="center"
         android:padding="15dp"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:text="微信好友"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textSize="14sp" />
 
-    <ImageView
+    <TextView
         android:id="@+id/share_weibo"
         android:layout_width="0dp"
-        android:layout_weight="1"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:contentDescription="@null"
         android:drawablePadding="15dp"
-        android:src="@mipmap/ic_launcher"
-        android:gravity="center_vertical"
+        android:drawableTop="@mipmap/share_weibo"
+        android:gravity="center"
         android:padding="15dp"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:text="新浪微博"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textSize="14sp" />
 </LinearLayout>
