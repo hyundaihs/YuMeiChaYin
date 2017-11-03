@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.OverScroller;
 
 import com.sp.shangpin.R;
+import com.sp.shangpin.utils.DisplayUtil;
 
 /**
  * NestedScrollingDemo
@@ -21,21 +22,18 @@ import com.sp.shangpin.R;
  */
 
 public class MyNestedScrollView extends LinearLayout implements NestedScrollingParent {
-    private static final String TAG = "StickyNavLayout";
     private int TOP_CHILD_FLING_THRESHOLD = 3;
     private View mTop;
     private View mNav;
     private RecyclerView mViewPager;
     private int mTopViewHeight;
+    private int mViewPagerHeight;
+    private int maxScrollHeight;
     private OverScroller mScroller;
     private ValueAnimator mOffsetAnimator;
-    //    private VelocityTracker mVelocityTracker;
-//    private Interpolator mInterpolator;
-//    private int mTouchSlop;
-//    private int mMaximumVelocity, mMinimumVelocity;
-//    private float mLastY;
-//    private boolean mDragging;
     private int topId = 0, middleId = 0, listChildId = 0;
+    private int colum = 1;
+    private int viewPagerFirstHeight = 0;
 
     public MyNestedScrollView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -44,41 +42,31 @@ public class MyNestedScrollView extends LinearLayout implements NestedScrollingP
         topId = ta.getResourceId(R.styleable.MyNestedScrollView_NestedTop, 0);
         middleId = ta.getResourceId(R.styleable.MyNestedScrollView_NestedMiddle, 0);
         listChildId = ta.getResourceId(R.styleable.MyNestedScrollView_NestedList, 0);
+        colum = ta.getInt(R.styleable.MyNestedScrollView_NestedColum, 1);
         ta.recycle();
         mScroller = new OverScroller(context);
-//        mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
-//        mMaximumVelocity = ViewConfiguration.get(context)
-//                .getScaledMaximumFlingVelocity();
-//        mMinimumVelocity = ViewConfiguration.get(context)
-//                .getScaledMinimumFlingVelocity();
-
     }
 
     @Override
     public boolean onStartNestedScroll(View child, View target, int nestedScrollAxes) {
-        Log.i(TAG, "onStartNestedScroll");
         return true;
     }
 
     @Override
     public void onNestedScrollAccepted(View child, View target, int nestedScrollAxes) {
-        Log.i(TAG, "onNestedScrollAccepted");
     }
 
     @Override
     public void onStopNestedScroll(View target) {
-        Log.i(TAG, "onStopNestedScroll");
     }
 
     @Override
     public void onNestedScroll(View target, int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed) {
-        Log.i(TAG, "onNestedScroll");
     }
 
     @Override
     public void onNestedPreScroll(View target, int dx, int dy, int[] consumed) {
-        Log.i(TAG, "onNestedPreScroll");
-        boolean hiddenTop = dy > 0 && getScrollY() < mTopViewHeight;
+        boolean hiddenTop = dy > 0 && getScrollY() < maxScrollHeight;
         boolean showTop = dy < 0 && getScrollY() >= 0 && !ViewCompat.canScrollVertically(target, -1);
 
         if (hiddenTop || showTop) {
@@ -114,7 +102,6 @@ public class MyNestedScrollView extends LinearLayout implements NestedScrollingP
 
     @Override
     public int getNestedScrollAxes() {
-        Log.i(TAG, "getNestedScrollAxes");
         return 0;
     }
 
@@ -191,15 +178,33 @@ public class MyNestedScrollView extends LinearLayout implements NestedScrollingP
         mViewPager = (RecyclerView) view;
     }
 
+    private int viewHeight = 0;
+
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         //不限制顶部的高度
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        ViewGroup.LayoutParams params = mViewPager.getLayoutParams();
-        params.height = getMeasuredHeight() - (mNav != null ? mNav.getMeasuredHeight() : 0);
-        measureChild(mViewPager, widthMeasureSpec, heightMeasureSpec);
-        setMeasuredDimension(getMeasuredWidth(), mTop.getMeasuredHeight() +
-                (mNav != null ? mNav.getMeasuredHeight() : 0) + mViewPager.getMeasuredHeight());
+        if(viewHeight == 0){
+            viewHeight = getMeasuredHeight();
+        }
+        int count = mViewPager.getChildCount();
+        if (count > 0) {
+            View view = mViewPager.getChildAt(0);
+            int row = count / colum + count % colum;
+            int height = row * view.getMeasuredHeight() + DisplayUtil.dp2px(getContext(), 5) * (row + 1);
+            ViewGroup.LayoutParams params = mViewPager.getLayoutParams();
+            if (viewPagerFirstHeight == 0) {
+                viewPagerFirstHeight = mViewPager.getMeasuredHeight();
+            }
+            int height2 = viewHeight - (mNav != null ? mNav.getMeasuredHeight() : 0);
+            params.height = height > height2 ? height2 : height;
+            measureChild(mViewPager, widthMeasureSpec, heightMeasureSpec);
+        }
+        mViewPagerHeight = mViewPager.getMeasuredHeight();
+        maxScrollHeight = mViewPagerHeight - viewPagerFirstHeight;
+        maxScrollHeight = maxScrollHeight < mTopViewHeight ? maxScrollHeight : mTopViewHeight;
+        setMeasuredDimension(getMeasuredWidth(), mTop.getMeasuredHeight() + mViewPager.getMeasuredHeight() +
+                (mNav != null ? mNav.getMeasuredHeight() : 0));
     }
 
     @Override
@@ -210,7 +215,7 @@ public class MyNestedScrollView extends LinearLayout implements NestedScrollingP
 
 
     public void fling(int velocityY) {
-        mScroller.fling(0, getScrollY(), 0, velocityY, 0, 0, 0, mTopViewHeight);
+        mScroller.fling(0, getScrollY(), 0, velocityY, 0, 0, 0, maxScrollHeight);
         invalidate();
     }
 
@@ -219,8 +224,8 @@ public class MyNestedScrollView extends LinearLayout implements NestedScrollingP
         if (y < 0) {
             y = 0;
         }
-        if (y > mTopViewHeight) {
-            y = mTopViewHeight;
+        if (y > maxScrollHeight) {
+            y = maxScrollHeight;
         }
         if (y != getScrollY()) {
             super.scrollTo(x, y);

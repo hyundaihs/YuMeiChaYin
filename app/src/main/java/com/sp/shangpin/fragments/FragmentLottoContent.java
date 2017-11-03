@@ -133,7 +133,7 @@ public class FragmentLottoContent extends BaseFragment {
         layoutManager.setOrientation(OrientationHelper.VERTICAL);
         adapter = new FragmentLottoAdapter(getActivity(), data);
         recyclerView.setAdapter(adapter);
-        recyclerView.addItemDecoration(new SpacesItemDecoration(DisplayUtil.dp2px(getActivity(), 5)));
+        recyclerView.addItemDecoration(new SpacesItemDecoration(DisplayUtil.dp2px(getActivity(), 5), 1));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         adapter.setOnItemClickListener(new FragmentHomeAdapter.OnItemClickListener() {
             @Override

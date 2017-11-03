@@ -1,12 +1,8 @@
 package com.sp.shangpin.adapters;
 
-import android.content.Context;
-import android.content.res.TypedArray;
-import android.graphics.Canvas;
 import android.graphics.Rect;
-import android.graphics.drawable.Drawable;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 
 /**
@@ -16,21 +12,33 @@ import android.view.View;
 
 public class SpacesItemDecoration extends RecyclerView.ItemDecoration {
     private int space;
+    private int colum;
 
-    public SpacesItemDecoration(int space) {
+    public SpacesItemDecoration(int space, int colum) {
+        this.colum = colum;
         this.space = space;
     }
 
     @Override
     public void getItemOffsets(Rect outRect, View view,
                                RecyclerView parent, RecyclerView.State state) {
-        outRect.left = space;
+        int count = parent.getAdapter().getItemCount();
+        int rows = count / colum + count % colum;
+        int firstInLastrow = (rows - 1) * colum;
+        int position = parent.getChildLayoutPosition(view);
+        //不是第一个的格子都设一个上边和右边的间距
+        outRect.top = space;
         outRect.right = space;
-        outRect.bottom = space;
-
-        // Add top margin only for the first item to avoid double space between items
-        if (parent.getChildPosition(view) == 0)
-            outRect.top = space;
+        outRect.left = 0;
+        outRect.bottom = 0;
+        //左边的设一个左边距
+        if (position % colum == 0) {
+            outRect.left = space;
+        }
+        //最后一排设下边距
+        if (position >= firstInLastrow) {
+            outRect.bottom = space;
+        }
     }
 }
 

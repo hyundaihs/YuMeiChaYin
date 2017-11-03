@@ -10,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -50,7 +51,8 @@ public class NormalGoodsDetailsActivity extends AppCompatActivity implements Vie
 
     private NormalGoodsInfo normalGoodsInfo;
     private ImageView goodsImage;
-    private TextView goodsName, goodsPrice, goodsFreight, goodsIntroduce, yuanPrice;
+    private TextView goodsName, goodsPrice, goodsFreight,  yuanPrice;
+    private WebView goodsIntroduce;
     private TextView balance, buy;
     private CountNumberView countView;
     private TextView yhq;
@@ -100,7 +102,7 @@ public class NormalGoodsDetailsActivity extends AppCompatActivity implements Vie
         goodsPrice = (TextView) findViewById(R.id.goods_details_price);
         yuanPrice = (TextView) findViewById(R.id.goods_details_yuan_price);
         goodsFreight = (TextView) findViewById(R.id.goods_details_freight);
-        goodsIntroduce = (TextView) findViewById(R.id.goods_details_introduce);
+        goodsIntroduce = (WebView) findViewById(R.id.goods_details_introduce);
         balance = (TextView) findViewById(R.id.goods_details_balance);
         buy = (TextView) findViewById(R.id.goods_details_buy);
         countView = (CountNumberView) findViewById(R.id.goods_details_number);
@@ -139,7 +141,7 @@ public class NormalGoodsDetailsActivity extends AppCompatActivity implements Vie
         goodsFreight.setText("邮费：¥" + normalGoodsInfo.getYf() +
                 "(运费首件" + normalGoodsInfo.getYf() + "元，此后每件依次加" + normalGoodsInfo.getYf_one() + "元)");
         if (null != normalGoodsInfo.getApp_contents()) {
-            goodsIntroduce.setText(Html.fromHtml(normalGoodsInfo.getApp_contents()));
+            goodsIntroduce.loadData(normalGoodsInfo.getApp_contents(), "text/html; charset=UTF-8", null);
         }
         if (orderType == NormalOrderType.ORIGINAL) {
             yhq.setText("您有" + normalGoodsInfo.getYhq_num() + "张优惠券可以使用,点击使用");

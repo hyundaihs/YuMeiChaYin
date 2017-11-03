@@ -23,4 +23,10 @@
     <color name="orange">#FF8C00</color>
     <color name="maroon">#8B0000</color>
     <color name="details_gray">#999999</color>
+    <color name="login_title_bg">#888888</color>
+    <!--商城圆形背景颜色-->
+    <color name="circle_gray_bold">#79726C</color>
+    <color name="circle_gray_bg">#A8A39F</color>
+    <color name="circle_red_bold">#B71A15</color>
+    <color name="circle_yellow_bg">#D6C565</color>
 </resources>

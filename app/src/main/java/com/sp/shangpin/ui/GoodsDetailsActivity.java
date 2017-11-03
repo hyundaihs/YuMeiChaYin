@@ -12,6 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -51,7 +52,8 @@ public class GoodsDetailsActivity extends AppCompatActivity implements View.OnCl
 
     private UpgradeGoods upgradeGoods;
     private ImageView goodsImage;
-    private TextView goodsName, goodsPrice, goodsFreight, goodsIntroduce;
+    private TextView goodsName, goodsPrice, goodsFreight;
+    private WebView goodsIntroduce;
     private TextView balance, buy;
     private CountNumberView countView;
     private int goodsId;
@@ -84,7 +86,7 @@ public class GoodsDetailsActivity extends AppCompatActivity implements View.OnCl
         goodsName = (TextView) findViewById(R.id.goods_details_name);
         goodsPrice = (TextView) findViewById(R.id.goods_details_price);
         goodsFreight = (TextView) findViewById(R.id.goods_details_freight);
-        goodsIntroduce = (TextView) findViewById(R.id.goods_details_introduce);
+        goodsIntroduce = (WebView) findViewById(R.id.goods_details_introduce);
         balance = (TextView) findViewById(R.id.goods_details_balance);
         buy = (TextView) findViewById(R.id.goods_details_buy);
         countView = (CountNumberView) findViewById(R.id.goods_details_number);
@@ -109,7 +111,7 @@ public class GoodsDetailsActivity extends AppCompatActivity implements View.OnCl
         goodsPrice.setText("单价：¥" + upgradeGoods.getPrice());
         goodsFreight.setText("邮费：¥" + upgradeGoods.getYf() +
                 "(运费首件" + upgradeGoods.getYf() + "元，此后每件依次加" + upgradeGoods.getYf_one() + "元)");
-        goodsIntroduce.setText(Html.fromHtml(upgradeGoods.getApp_contents()));
+        goodsIntroduce.loadData(upgradeGoods.getApp_contents(), "text/html; charset=UTF-8", null);
     }
 
     @Override

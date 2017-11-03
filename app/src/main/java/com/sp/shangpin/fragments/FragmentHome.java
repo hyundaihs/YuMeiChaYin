@@ -20,6 +20,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.sp.shangpin.R;
 import com.sp.shangpin.adapters.FragmentHomeAdapter;
+import com.sp.shangpin.adapters.SpacesItemDecoration;
 import com.sp.shangpin.entity.HomeInfo;
 import com.sp.shangpin.entity.HomeInfo_Sup;
 import com.sp.shangpin.entity.InterResult;
@@ -28,6 +29,7 @@ import com.sp.shangpin.ui.GoodsDetailsActivity;
 import com.sp.shangpin.ui.HomeActivity;
 import com.sp.shangpin.ui.RuleActivity;
 import com.sp.shangpin.utils.DialogUtil;
+import com.sp.shangpin.utils.DisplayUtil;
 import com.sp.shangpin.utils.InternetUtil;
 import com.sp.shangpin.utils.JsonUtil;
 import com.sp.shangpin.utils.RequestUtil;
@@ -71,12 +73,6 @@ public class FragmentHome extends BaseFragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         banner = view.findViewById(R.id.fragment_home_banner);
-//        imageViews[0] = view.findViewById(R.id.fragment_home_upgrade1);
-//        imageViews[1] = view.findViewById(R.id.fragment_home_upgrade2);
-//        imageViews[2] = view.findViewById(R.id.fragment_home_upgrade3);
-//        textViews[0] = view.findViewById(R.id.fragment_home_upgrade1_title);
-//        textViews[1] = view.findViewById(R.id.fragment_home_upgrade2_title);
-//        textViews[2] = view.findViewById(R.id.fragment_home_upgrade3_title);
         view.findViewById(R.id.fragment_home_upgrade1).setOnClickListener(this);
         view.findViewById(R.id.fragment_home_upgrade2).setOnClickListener(this);
         view.findViewById(R.id.fragment_home_upgrade3).setOnClickListener(this);
@@ -163,6 +159,7 @@ public class FragmentHome extends BaseFragment implements View.OnClickListener {
         adapter = new FragmentHomeAdapter(getActivity(), data);
         recyclerView.setAdapter(adapter);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.addItemDecoration(new SpacesItemDecoration(DisplayUtil.dp2px(getActivity(), 5), 2));
         adapter.setOnItemClickListener(new FragmentHomeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {

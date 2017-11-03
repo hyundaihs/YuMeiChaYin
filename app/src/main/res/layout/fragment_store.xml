@@ -1,94 +1,127 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@mipmap/bbg"
+    android:orientation="vertical">
 
     <include
         android:id="@+id/fragment_store_toolbar"
         layout="@layout/layout_toolbar"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintRight_toRightOf="parent" />
 
-    <android.support.constraint.Guideline
-        android:id="@+id/fragment_store_guideline"
+    <ImageView
+        android:id="@+id/main_logo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.5" />
+        android:layout_marginTop="40dp"
+        android:layout_gravity="center_horizontal"
+        android:contentDescription="@null"
+        android:src="@mipmap/logo2" />
 
     <LinearLayout
-        android:id="@+id/fragment_store_store1"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:background="@mipmap/ddbb"
         android:gravity="center"
-        app:layout_constraintBottom_toTopOf="@+id/fragment_store_store3"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="@+id/fragment_store_guideline"
-        app:layout_constraintTop_toBottomOf="@+id/fragment_store_toolbar">
+        android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@mipmap/jb"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:gravity="center"
-            android:text="精品商品" />
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/fragment_store_store1"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:background="@drawable/yellow_red_circle"
+                    android:gravity="center"
+                    android:text="精品\n商品"
+                    android:textStyle="bold"
+                    android:textColor="@color/circle_red_bold"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/fragment_store_store3"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:textStyle="bold"
+                    android:textColor="@color/circle_red_bold"
+                    android:background="@drawable/yellow_red_circle"
+                    android:gravity="center"
+                    android:text="促销\n商品" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/fragment_store_store2"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:textStyle="bold"
+                    android:textColor="@color/circle_red_bold"
+                    android:background="@drawable/yellow_red_circle"
+                    android:gravity="center"
+                    android:text="金币\n商品" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/fragment_store_store4"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:textStyle="bold"
+                    android:textColor="@android:color/white"
+                    android:background="@drawable/gray_gray_circle"
+                    android:gravity="center"
+                    android:text="敬请\n期待" />
+
+            </LinearLayout>
+
+        </LinearLayout>
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/fragment_store_store2"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:gravity="center"
-        app:layout_constraintBottom_toTopOf="@+id/fragment_store_store4"
-        app:layout_constraintLeft_toLeftOf="@+id/fragment_store_guideline"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fragment_store_toolbar">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@mipmap/jb"
-            android:gravity="center"
-            android:text="金币商品" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/fragment_store_store3"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:gravity="center"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="@+id/fragment_store_guideline"
-        app:layout_constraintTop_toBottomOf="@+id/fragment_store_store1">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@mipmap/jb"
-            android:gravity="center"
-            android:text="促销商品" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/fragment_store_store4"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:gravity="center"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="@+id/fragment_store_guideline"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fragment_store_store2">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@mipmap/yb"
-            android:gravity="center"
-            android:text="敬请期待" />
-    </LinearLayout>
-</android.support.constraint.ConstraintLayout>
+</LinearLayout>

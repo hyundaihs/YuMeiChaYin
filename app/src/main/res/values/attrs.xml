@@ -4,5 +4,6 @@
         <attr name="NestedTop" format="reference" />
         <attr name="NestedMiddle" format="reference" />
         <attr name="NestedList" format="reference" />
+        <attr name="NestedColum" format="integer" />
     </declare-styleable>
 </resources>

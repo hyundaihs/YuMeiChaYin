@@ -23,12 +23,14 @@ import com.sp.shangpin.MyApplication;
 import com.sp.shangpin.R;
 import com.sp.shangpin.adapters.FragmentHomeAdapter;
 import com.sp.shangpin.adapters.NormalGoodsAdapter;
+import com.sp.shangpin.adapters.SpacesItemDecoration;
 import com.sp.shangpin.entity.InterResult;
 import com.sp.shangpin.entity.NormalGoodsInfo;
 import com.sp.shangpin.entity.NormalGoodsInfoList;
 import com.sp.shangpin.entity.NormalGoodsInfoList_Sup;
 import com.sp.shangpin.entity.NormalOrderType;
 import com.sp.shangpin.utils.DialogUtil;
+import com.sp.shangpin.utils.DisplayUtil;
 import com.sp.shangpin.utils.InternetUtil;
 import com.sp.shangpin.utils.JsonUtil;
 import com.sp.shangpin.utils.RequestUtil;
@@ -121,6 +123,7 @@ public class NormalGoodsActivity extends AppCompatActivity implements PopupMenu.
         adapter = new NormalGoodsAdapter(thisContext, data);
         recyclerView.setAdapter(adapter);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.addItemDecoration(new SpacesItemDecoration(DisplayUtil.dp2px(this, 5), 2));
         adapter.setOnItemClickListener(new FragmentHomeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {

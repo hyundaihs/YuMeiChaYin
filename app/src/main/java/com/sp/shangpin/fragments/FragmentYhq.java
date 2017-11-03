@@ -82,7 +82,7 @@ public class FragmentYhq extends BaseFragment {
         layoutManager.setOrientation(OrientationHelper.VERTICAL);
         adapter = new FragmentYhqAdapter(getActivity(), data, isCheck, maxNum);
         recyclerView.setAdapter(adapter);
-        recyclerView.addItemDecoration(new SpacesItemDecoration(DisplayUtil.dp2px(getActivity(), 10)));
+        recyclerView.addItemDecoration(new SpacesItemDecoration(DisplayUtil.dp2px(getActivity(), 10), 1));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             public void onRefresh() {
