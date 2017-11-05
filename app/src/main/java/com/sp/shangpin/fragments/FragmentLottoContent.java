@@ -69,6 +69,7 @@ public class FragmentLottoContent extends BaseFragment {
         View view = inflater.inflate(R.layout.fragment_lotto, container, false);
         typeImage = view.findViewById(R.id.fragment_lotto_type_image);
         recyclerView = view.findViewById(R.id.fragment_lotto_recyclerView);
+        recyclerView.setNestedScrollingEnabled(false);
         return view;
     }
 

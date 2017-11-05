@@ -2,6 +2,8 @@ package com.sp.shangpin.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -24,6 +26,8 @@ import com.sp.shangpin.adapters.SpacesItemDecoration;
 import com.sp.shangpin.entity.HomeInfo;
 import com.sp.shangpin.entity.HomeInfo_Sup;
 import com.sp.shangpin.entity.InterResult;
+import com.sp.shangpin.entity.NotificationInfo;
+import com.sp.shangpin.entity.NotificationInfo_Sup;
 import com.sp.shangpin.entity.UpgradeGoods;
 import com.sp.shangpin.ui.GoodsDetailsActivity;
 import com.sp.shangpin.ui.HomeActivity;
@@ -33,6 +37,7 @@ import com.sp.shangpin.utils.DisplayUtil;
 import com.sp.shangpin.utils.InternetUtil;
 import com.sp.shangpin.utils.JsonUtil;
 import com.sp.shangpin.utils.RequestUtil;
+import com.sp.shangpin.utils.ToastUtil;
 import com.sp.shangpin.utils.VolleyUtil;
 import com.sp.shangpin.widget.GlideImageLoader;
 import com.youth.banner.Banner;
@@ -43,6 +48,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * ChaYin
@@ -60,6 +67,10 @@ public class FragmentHome extends BaseFragment implements View.OnClickListener {
 //    private TextView[] textViews = new TextView[3];
     private List<UpgradeGoods> data;
     private FragmentHomeAdapter adapter;
+    private NotificationInfo_Sup notificationInfo_sup = new NotificationInfo_Sup();
+    private List<NotificationInfo> notificationInfo = new ArrayList<>();
+    private int index = 0;
+    private Timer timer;
 
     public static BaseFragment getInstance() {
         if (null == baseFragment) {
@@ -77,6 +88,7 @@ public class FragmentHome extends BaseFragment implements View.OnClickListener {
         view.findViewById(R.id.fragment_home_upgrade2).setOnClickListener(this);
         view.findViewById(R.id.fragment_home_upgrade3).setOnClickListener(this);
         recyclerView = view.findViewById(R.id.fragment_home_recyclerView);
+        recyclerView.setNestedScrollingEnabled(false);
         return view;
     }
 
@@ -86,7 +98,68 @@ public class FragmentHome extends BaseFragment implements View.OnClickListener {
         initActionBar();
         initListView();
         getHomeInfo();
+        getNotification();
+        timer = new Timer();
+        timer.schedule(new MyTimerTask(), 5000, 5000);
     }
+
+    private void getNotification() {
+        Map<String, String> map = new HashMap<>();
+        VolleyUtil volleyUtil = VolleyUtil.getInstance(getActivity());
+        JsonObjectRequest request = RequestUtil.createPostJsonRequest(InternetUtil.tz(),
+                JsonUtil.objectToString(map),
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        InterResult interResult =
+                                (InterResult) JsonUtil.stringToObject(response.toString(), InterResult.class);
+                        if (interResult.isSuccessed()) {
+                            notificationInfo_sup = (NotificationInfo_Sup) JsonUtil.stringToObject(response.toString(), NotificationInfo_Sup.class);
+                        } else {
+                            DialogUtil.showErrorMessage(getActivity(), interResult.getRetErr());
+                        }
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        DialogUtil.showErrorMessage(getActivity(), error.toString());
+                    }
+                });
+        volleyUtil.addToRequestQueue(request, InternetUtil.indexdata());
+    }
+
+    private class MyTimerTask extends TimerTask {
+
+        @Override
+        public void run() {
+            handler.sendEmptyMessage(0);
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        timer.cancel();
+        super.onDestroy();
+    }
+
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            if (index == notificationInfo.size()) {
+                index = 0;
+                if (null != notificationInfo_sup.getRetRes()) {
+                    notificationInfo = notificationInfo_sup.getRetRes();
+                }
+            }
+            if (notificationInfo.size() > 0 && index < notificationInfo.size()) {
+                ToastUtil.show(getActivity(), notificationInfo.get(index).getTitle(), notificationInfo.get(index).getFile_url(), 1);
+                index++;
+                if (index == notificationInfo.size() - 2) {
+                    getNotification();
+                }
+            }
+        }
+    };
 
     private void getHomeInfo() {
         Map<String, String> map = new HashMap<>();

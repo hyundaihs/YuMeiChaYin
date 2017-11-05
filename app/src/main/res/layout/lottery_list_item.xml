@@ -3,6 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/colorPrimary"
+    android:paddingTop="5dp"
+    android:paddingBottom="5dp"
     android:orientation="vertical">
 
     <TextView
@@ -44,6 +47,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="开奖结果"
+        android:layout_marginRight="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toRightOf="@+id/lottery_list_item_codes"
         app:layout_constraintRight_toRightOf="parent"

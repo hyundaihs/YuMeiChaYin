@@ -99,6 +99,7 @@ public class FragmentMine extends BaseFragment {
         imagePhone = view.findViewById(R.id.fragment_mine_image_photo);
         balance = view.findViewById(R.id.fragment_mine_image_balance);
         recyclerView = view.findViewById(R.id.fragment_mine_recyclerView);
+        recyclerView.setNestedScrollingEnabled(false);
         return view;
     }
 

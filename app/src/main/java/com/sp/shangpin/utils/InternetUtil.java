@@ -344,4 +344,10 @@ public class InternetUtil {
      * @return
      */
     public static native String txsq();
+
+    /**
+     * 升级订单页面数据
+     * @return
+     */
+    public static native String sjdata();
 }

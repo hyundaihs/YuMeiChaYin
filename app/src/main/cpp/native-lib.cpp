@@ -1,6 +1,7 @@
 #include <jni.h>
 #include <string>
 
+
 extern "C"
 {
 JNIEXPORT jstring JNICALL
@@ -284,6 +285,13 @@ Java_com_sp_shangpin_utils_InternetUtil_smrzstatus(JNIEnv *env, jclass type) {
 JNIEXPORT jstring JNICALL
 Java_com_sp_shangpin_utils_InternetUtil_txsq(JNIEnv *env, jclass type) {
     std::string text = "txsq";
+    return env->NewStringUTF(text.c_str());
+}
+
+
+JNIEXPORT jstring JNICALL
+Java_com_sp_shangpin_utils_InternetUtil_sjdata(JNIEnv *env, jclass type) {
+    std::string text = "sjdata";
     return env->NewStringUTF(text.c_str());
 }
 

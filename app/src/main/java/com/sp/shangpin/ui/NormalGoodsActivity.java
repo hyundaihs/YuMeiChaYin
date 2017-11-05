@@ -113,6 +113,7 @@ public class NormalGoodsActivity extends AppCompatActivity implements PopupMenu.
 
     private void initViews() {
         recyclerView = (RecyclerView) findViewById(R.id.normal_goods_recyclerView);
+        recyclerView.setNestedScrollingEnabled(false);
         banner = (Banner) findViewById(R.id.normal_goods_banner);
         images = new ArrayList<>();
         banner.setImages(images).setImageLoader(new GlideImageLoader()).start();

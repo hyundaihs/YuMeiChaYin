@@ -1,6 +1,7 @@
 package com.sp.shangpin.adapters;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -47,6 +48,8 @@ public class LotteryAdapter extends RecyclerView.Adapter<LotteryAdapter.MyViewHo
         holder.numbers.setText(lotteryInfo.getNumbers());
         holder.codes.setText(lotteryInfo.getCodes());
         holder.jiou.setText(lotteryInfo.getJo() == 1 ? "奇" : "偶");
+        holder.jiou.setBackgroundResource(lotteryInfo.getJo() == 1 ? R.drawable.maroon_corner : R.drawable.orange_corner);
+        holder.rootView.setBackgroundResource(lotteryInfo.getJo() == 1 ? R.color.fragment_content_bg : android.R.color.white);
         if (null != onItemClickListener) {
             holder.rootView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -76,6 +79,9 @@ public class LotteryAdapter extends RecyclerView.Adapter<LotteryAdapter.MyViewHo
             numbers = view.findViewById(R.id.lottery_list_item_numbers);
             codes = view.findViewById(R.id.lottery_list_item_codes);
             jiou = view.findViewById(R.id.lottery_list_item_jiou);
+            date.setTextColor(Color.BLACK);
+            numbers.setTextColor(Color.BLACK);
+            codes.setTextColor(Color.BLACK);
         }
     }
 }

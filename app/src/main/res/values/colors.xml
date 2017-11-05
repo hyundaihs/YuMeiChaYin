@@ -29,4 +29,6 @@
     <color name="circle_gray_bg">#A8A39F</color>
     <color name="circle_red_bold">#B71A15</color>
     <color name="circle_yellow_bg">#D6C565</color>
+    <!--黑色透明背景-->
+    <color name="black_tou_ming">#99000000</color>
 </resources>

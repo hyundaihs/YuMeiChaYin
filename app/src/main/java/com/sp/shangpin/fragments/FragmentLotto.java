@@ -47,9 +47,9 @@ public class FragmentLotto extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_orders, container, false);
+        index = getArguments().getInt("index", 0);
         initActionBar(view);
         initViews(view);
-        index = getArguments().getInt("index", 0);
         Log.d(TAG, "获取index" + index);
         return view;
     }
@@ -67,7 +67,7 @@ public class FragmentLotto extends BaseFragment {
         //绑定
         tabLayout.setupWithViewPager(viewPager);
         tabLayout.getTabAt(index).select();
-//        viewPager.setCurrentItem(index);
+        //viewPager.setCurrentItem(index);
     }
 
     public void initActionBar(View view) {

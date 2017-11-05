@@ -2,10 +2,10 @@ package com.sp.shangpin.ui;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
+import android.os.Handler;
+import android.os.Message;
+import android.support.annotation.IdRes;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -16,6 +16,9 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.android.volley.Response;
@@ -27,7 +30,11 @@ import com.sp.shangpin.adapters.LineDecoration;
 import com.sp.shangpin.adapters.LotteryAdapter;
 import com.sp.shangpin.entity.InterResult;
 import com.sp.shangpin.entity.LotteryInfo;
-import com.sp.shangpin.entity.LotteryInfo_Sup;
+import com.sp.shangpin.entity.SystemInfo;
+import com.sp.shangpin.entity.UpgradeOrderInfo;
+import com.sp.shangpin.entity.UpgradeOrderPageInfo;
+import com.sp.shangpin.entity.UpgradeOrderPageInfo_Sup;
+import com.sp.shangpin.utils.CalendarUtil;
 import com.sp.shangpin.utils.DialogUtil;
 import com.sp.shangpin.utils.InternetUtil;
 import com.sp.shangpin.utils.JsonUtil;
@@ -40,6 +47,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * ChaYin
@@ -47,16 +56,25 @@ import java.util.Map;
  * 开奖页面
  */
 
-public class LotteryActivity extends AppCompatActivity implements View.OnClickListener {
+public class LotteryActivity extends AppCompatActivity {
     private final String TAG = getClass().getSimpleName();
     private final Context thisContext = this;
 
-    private TextView ji, ou;
+    private RadioGroup jiAndOu;
     private RecyclerView recyclerView;
     private LotteryAdapter adapter;
     private List<LotteryInfo> data = new ArrayList<>();
-    private SwipeRefreshLayout swipeRefreshLayout;
+    //    private SwipeRefreshLayout swipeRefreshLayout;
     private int orderId;
+    private View goodsInfo;
+    private int reslut = 1;
+    private Button submit;
+    private ImageView notUpgradeImage, upgradeImage;
+    private TextView notUpgradeName, upgradeName, notUpgradePrice, upgradePrice;
+    private UpgradeOrderPageInfo upgradeOrderPageInfo;
+    private UpgradeOrderInfo upgradeOrderInfo;
+    private TextView nextTime;
+    private Timer timer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,11 +84,20 @@ public class LotteryActivity extends AppCompatActivity implements View.OnClickLi
         init();
     }
 
+    private class MyTimerTask extends TimerTask {
+
+        @Override
+        public void run() {
+            getLotteryInfos();
+        }
+    }
+
     private void init() {
         initActionBar();
         initViews();
         initListViews();
-        getLotteryInfos();
+        timer = new Timer();
+        timer.schedule(new MyTimerTask(), 0, 10000);
     }
 
     public void initActionBar() {
@@ -79,20 +106,43 @@ public class LotteryActivity extends AppCompatActivity implements View.OnClickLi
         title.setText("活动抽奖");
         setSupportActionBar(toolbar);
         setTitle("");
-
-
     }
 
     private void initViews() {
-        ji = (TextView) findViewById(R.id.lottery_ji);
-        ou = (TextView) findViewById(R.id.lottery_ou);
-        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.lottery_swipe_layout);
+        jiAndOu = (RadioGroup) findViewById(R.id.lottery_ji_ou);
+        goodsInfo = findViewById(R.id.lottery_goods_info);
+        submit = (Button) findViewById(R.id.lottery_submit);
+        nextTime = (TextView) findViewById(R.id.lottery_next_time);
+        notUpgradeImage = (ImageView) findViewById(R.id.fragment_lotto_list_item_not_upgrade_image);
+        upgradeImage = (ImageView) findViewById(R.id.fragment_lotto_list_item_upgrade_image);
+        notUpgradeName = (TextView) findViewById(R.id.fragment_lotto_list_item_not_upgrade_name);
+        upgradeName = (TextView) findViewById(R.id.fragment_lotto_list_item_upgrade_name);
+        notUpgradePrice = (TextView) findViewById(R.id.fragment_lotto_list_item_not_upgrade_price);
+        upgradePrice = (TextView) findViewById(R.id.fragment_lotto_list_item_upgrade_price);
+//        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.lottery_swipe_layout);
         recyclerView = (RecyclerView) findViewById(R.id.lottery_list);
-        ji.setOnClickListener(this);
-        ou.setOnClickListener(this);
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            public void onRefresh() {
-                getLotteryInfos();
+        recyclerView.setNestedScrollingEnabled(false);
+//        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+//            public void onRefresh() {
+//                getLotteryInfos();
+//            }
+//        });
+        jiAndOu.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, @IdRes int i) {
+                if (i == R.id.lottery_ji) {
+                    reslut = 1;
+                } else if (i == R.id.lottery_ou) {
+                    reslut = 2;
+                } else {
+                    reslut = 1;
+                }
+            }
+        });
+        submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getCaiJiOu(reslut);
             }
         });
     }
@@ -105,19 +155,29 @@ public class LotteryActivity extends AppCompatActivity implements View.OnClickLi
         recyclerView.setAdapter(adapter);
         recyclerView.addItemDecoration(new LineDecoration(this, LineDecoration.VERTICAL));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.addOnScrollListener(new EndLessOnScrollListener(layoutManager) {
-            @Override
-            public void onLoadMore(int currentPage) {
-                /**
-                 * 加载更多
-                 */
-                Log.i(TAG, "加载更多" + currentPage);
-            }
-        });
+//        recyclerView.addOnScrollListener(new EndLessOnScrollListener(layoutManager) {
+//            @Override
+//            public void onLoadMore(int currentPage) {
+//                /**
+//                 * 加载更多
+//                 */
+//                Log.i(TAG, "加载更多" + currentPage);
+//            }
+//        });
     }
 
     private void refresh() {
         adapter.notifyDataSetChanged();
+        VolleyUtil volleyUtil = VolleyUtil.getInstance(this);
+        volleyUtil.getImage(notUpgradeImage, upgradeOrderInfo.getGoodssj_file_url());
+        volleyUtil.getImage(upgradeImage, upgradeOrderInfo.getGoodssj_file_url_2());
+        notUpgradeName.setText(upgradeOrderInfo.getGoodssj_title());
+        upgradeName.setText(upgradeOrderInfo.getGoodssj_title_2());
+        notUpgradePrice.setText("¥" + upgradeOrderInfo.getDanjia());
+        upgradePrice.setText("¥" + upgradeOrderInfo.getGoodssj_price_2());
+        goodsInfo.setVisibility(View.VISIBLE);
+        nextTime.setText("下次开奖时间:" + new CalendarUtil(upgradeOrderPageInfo.getNext_time(), true).format(CalendarUtil.YYYY_MM_DD_HH_MM));
+        nextTime.setVisibility(View.VISIBLE);
     }
 
 
@@ -129,6 +189,12 @@ public class LotteryActivity extends AppCompatActivity implements View.OnClickLi
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onDestroy() {
+        timer.cancel();
+        super.onDestroy();
     }
 
     private void getCaiJiOu(int index) {
@@ -144,7 +210,10 @@ public class LotteryActivity extends AppCompatActivity implements View.OnClickLi
                         InterResult interResult =
                                 (InterResult) JsonUtil.stringToObject(response.toString(), InterResult.class);
                         if (interResult.isSuccessed()) {
-                            DialogUtil.createDialog(thisContext, "提示", "还有多久开奖", "再逛逛", new DialogInterface.OnClickListener() {
+                            long time = upgradeOrderPageInfo.getNext_time() * 1000;
+                            long curr = System.currentTimeMillis();
+                            int minute = (int) ((time - curr) / (1000 * 60));
+                            DialogUtil.createDialog(thisContext, "提示", "还有" + minute + "分钟开奖", "再逛逛", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
                                     finish();
@@ -166,8 +235,9 @@ public class LotteryActivity extends AppCompatActivity implements View.OnClickLi
 
     private void getLotteryInfos() {
         Map<String, String> map = new HashMap<>();
+        map.put("orderssj_id", String.valueOf(orderId));
         VolleyUtil volleyUtil = VolleyUtil.getInstance(this);
-        JsonObjectRequest request = RequestUtil.createPostJsonRequest(InternetUtil.cpkj(),
+        JsonObjectRequest request = RequestUtil.createPostJsonRequest(InternetUtil.sjdata(),
                 JsonUtil.objectToString(map),
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -175,48 +245,28 @@ public class LotteryActivity extends AppCompatActivity implements View.OnClickLi
                         InterResult interResult =
                                 (InterResult) JsonUtil.stringToObject(response.toString(), InterResult.class);
                         if (interResult.isSuccessed()) {
-                            LotteryInfo_Sup lotteryInfo_sup = (LotteryInfo_Sup)
-                                    JsonUtil.stringToObject(response.toString(), LotteryInfo_Sup.class);
+                            UpgradeOrderPageInfo_Sup upgradeOrderPageInfo_sup = (UpgradeOrderPageInfo_Sup)
+                                    JsonUtil.stringToObject(response.toString(), UpgradeOrderPageInfo_Sup.class);
+                            upgradeOrderPageInfo = upgradeOrderPageInfo_sup.getRetRes();
                             data.clear();
-                            data.addAll(lotteryInfo_sup.getRetRes());
+                            data.addAll(upgradeOrderPageInfo.getLists());
+                            upgradeOrderInfo = upgradeOrderPageInfo.getInfo();
                             refresh();
-                            swipeRefreshLayout.setRefreshing(false);
+//                            swipeRefreshLayout.setRefreshing(false);
                         } else {
                             DialogUtil.showErrorMessage(thisContext, interResult.getRetErr());
-                            swipeRefreshLayout.setRefreshing(false);
+//                            swipeRefreshLayout.setRefreshing(false);
                         }
                     }
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         DialogUtil.showErrorMessage(thisContext, error.toString());
-                        swipeRefreshLayout.setRefreshing(false);
+//                        swipeRefreshLayout.setRefreshing(false);
                     }
                 });
         volleyUtil.addToRequestQueue(request, InternetUtil.cpkj());
 
-    }
-
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.lottery_ji:
-                DialogUtil.showAskMessage(thisContext, "确定选择\"奇\"吗?", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        getCaiJiOu(1);
-                    }
-                });
-                break;
-            case R.id.lottery_ou:
-                DialogUtil.showAskMessage(thisContext, "确定选择\"偶\"吗?", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        getCaiJiOu(2);
-                    }
-                });
-                break;
-        }
     }
 
 }
