@@ -26,7 +26,7 @@ public class RuleActivity extends AppCompatActivity {
         setContentView(R.layout.activity_rule);
         initActionBar();
         ruleContent = (WebView) findViewById(R.id.rule_content);
-        ruleContent.loadData(MyApplication.systemInfo.getGz_contents(), "text/html; charset=UTF-8", null);
+        ruleContent.loadData(MyApplication.getSystemInfo().getGz_contents(), "text/html; charset=UTF-8", null);
     }
 
     public void initActionBar() {

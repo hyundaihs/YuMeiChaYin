@@ -3,6 +3,7 @@ package com.sp.shangpin.ui;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.PorterDuff;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -19,6 +20,7 @@ import android.widget.TextView;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.sp.shangpin.MyApplication;
 import com.sp.shangpin.R;
@@ -46,9 +48,9 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     private final String TAG = getClass().getSimpleName();
     private final Context thisContext = this;
     private AutoCompleteTextView phone, securityCode, password, confirmPwd, recommendCode;
-    private ProgressBar progressBar;
     private Button register, alreadyRegist;
     private SecurityCodeView securityCodeView;
+    private View content;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,13 +62,26 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
     private void init() {
         initActionBar();
+        content = findViewById(R.id.register_content);
+        VolleyUtil volleyUtil = VolleyUtil.getInstance(this);
+        volleyUtil.getBitmap(MyApplication.getSystemInfo().getZc_file_url(), new ImageLoader.ImageListener() {
+            @Override
+            public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
+                BitmapDrawable bitmapDrawable = new BitmapDrawable(response.getBitmap());
+                content.setBackground(bitmapDrawable);
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
         register = (Button) findViewById(R.id.register_register);
         register.setOnClickListener(this);
         alreadyRegist = (Button) findViewById(R.id.register_already_registered);
         alreadyRegist.setOnClickListener(this);
         securityCodeView = (SecurityCodeView) findViewById(R.id.register_security_code);
         securityCodeView.setOnClickListener(this);
-        progressBar = (ProgressBar) findViewById(R.id.register_progress);
         phone = (AutoCompleteTextView) findViewById(R.id.register_phone_num);
         securityCode = (AutoCompleteTextView) findViewById(R.id.register_security_code_input);
         password = (AutoCompleteTextView) findViewById(R.id.register_password_input);
@@ -133,7 +148,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         } else if (!password.getText().toString().equals(confirmPwd.getText().toString())) {
             confirmPwd.setError("两次密码不一样");
         } else {
-            showProgress(true);
             return true;
         }
         return false;
@@ -179,7 +193,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        showProgress(false);
                         InterResult interResult = (InterResult) JsonUtil.stringToObject(response.toString(), InterResult.class);
                         if (interResult.isSuccessed()) {
                             DialogUtil.showAskMessage(thisContext, "注册成功");
@@ -191,7 +204,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        showProgress(false);
                         DialogUtil.showErrorMessage(thisContext, error.toString());
                     }
                 });
@@ -199,15 +211,4 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
     }
 
-    private void showProgress(boolean show) {
-        progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
-        phone.setVisibility(show ? View.GONE : View.VISIBLE);
-        securityCode.setVisibility(show ? View.GONE : View.VISIBLE);
-        password.setVisibility(show ? View.GONE : View.VISIBLE);
-        confirmPwd.setVisibility(show ? View.GONE : View.VISIBLE);
-        register.setVisibility(show ? View.GONE : View.VISIBLE);
-        alreadyRegist.setVisibility(show ? View.GONE : View.VISIBLE);
-        securityCodeView.setVisibility(show ? View.GONE : View.VISIBLE);
-        recommendCode.setVisibility(show ? View.GONE : View.VISIBLE);
-    }
 }

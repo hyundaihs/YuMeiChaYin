@@ -1,6 +1,7 @@
 package com.sp.shangpin.fragments;
 
 import android.content.Intent;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -13,10 +14,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageLoader;
+import com.sp.shangpin.MyApplication;
 import com.sp.shangpin.R;
 import com.sp.shangpin.entity.NormalOrderType;
 import com.sp.shangpin.ui.NormalGoodsActivity;
 import com.sp.shangpin.ui.RuleActivity;
+import com.sp.shangpin.utils.VolleyUtil;
 
 /**
  * ChaYin
@@ -51,6 +56,20 @@ public class FragmentStore extends BaseFragment implements View.OnClickListener 
     }
 
     public void initActionBar() {
+        final View content = getView().findViewById(R.id.fragment_store_content);
+        VolleyUtil volleyUtil = VolleyUtil.getInstance(getActivity());
+        volleyUtil.getBitmap(MyApplication.getSystemInfo().getSjsc_file_url(), new ImageLoader.ImageListener() {
+            @Override
+            public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
+                BitmapDrawable bitmapDrawable = new BitmapDrawable(response.getBitmap());
+                content.setBackground(bitmapDrawable);
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
         Toolbar toolbar = getView().findViewById(R.id.toolbar);
         TextView title = getView().findViewById(R.id.toolbar_title);
         TextView btn = getView().findViewById(R.id.toolbar_btn);

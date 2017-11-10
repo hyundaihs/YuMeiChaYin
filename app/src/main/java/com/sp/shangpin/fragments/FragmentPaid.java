@@ -148,11 +148,11 @@ public class FragmentPaid extends BaseFragment {
     private void pickUp(final int position) {
         Map<String, String> map = new HashMap<>();
         map.put("orderssj_id", String.valueOf(data.get(position).getId()));
-        map.put("title", MyApplication.userInfo.getWl_title());
-        map.put("phone", MyApplication.userInfo.getWl_phone());
-        map.put("pca", MyApplication.userInfo.getWl_pca());
-        map.put("address", MyApplication.userInfo.getWl_address());
-        map.put("contents", MyApplication.userInfo.getWl_content());
+        map.put("title", MyApplication.getUserInfo().getWl_title());
+        map.put("phone", MyApplication.getUserInfo().getWl_phone());
+        map.put("pca", MyApplication.getUserInfo().getWl_pca());
+        map.put("address", MyApplication.getUserInfo().getWl_address());
+        map.put("contents", MyApplication.getUserInfo().getWl_content());
         VolleyUtil volleyUtil = VolleyUtil.getInstance(getActivity());
         JsonObjectRequest request = RequestUtil.createPostJsonRequest(InternetUtil.sjtihuo(),
                 JsonUtil.objectToString(map),

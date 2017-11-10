@@ -209,7 +209,7 @@ public class FragmentMine extends BaseFragment {
         req.transaction = String.valueOf(System.currentTimeMillis());
         req.message = wxMediaMessage;
         req.scene = isFriendArea ? SendMessageToWX.Req.WXSceneTimeline : SendMessageToWX.Req.WXSceneSession;
-        MyApplication.api.sendReq(req);
+        MyApplication.getApi().sendReq(req);
     }
 
     public void initActionBar() {
@@ -250,11 +250,11 @@ public class FragmentMine extends BaseFragment {
 
     private void refresh() {
         VolleyUtil volleyUtil = VolleyUtil.getInstance(getActivity());
-        if (null != MyApplication.userInfo) {
-            Log.d("image", MyApplication.userInfo.getFile_url());
-            volleyUtil.getImageByIntact(imagePhone, MyApplication.userInfo.getFile_url());
-            String text = "金币：" + MyApplication.userInfo.getJf_price() +
-                    " 余额：" + MyApplication.userInfo.getYe_price();
+        if (null != MyApplication.getUserInfo()) {
+            Log.d("image", MyApplication.getUserInfo().getFile_url());
+            volleyUtil.getImageByIntact(imagePhone, MyApplication.getUserInfo().getFile_url());
+            String text = "金币：" + MyApplication.getUserInfo().getJf_price() +
+                    " 余额：" + MyApplication.getUserInfo().getYe_price();
             balance.setText(text);
         }
     }
@@ -272,7 +272,7 @@ public class FragmentMine extends BaseFragment {
                         if (interResult.isSuccessed()) {
                             UserInfo_Sup userInfo_sup =
                                     (UserInfo_Sup) JsonUtil.stringToObject(response.toString(), UserInfo_Sup.class);
-                            MyApplication.userInfo = userInfo_sup.getRetRes();
+                            MyApplication.setUserInfo(userInfo_sup.getRetRes());
                             refresh();
                         } else {
                             DialogUtil.showErrorMessage(getActivity(), interResult.getRetErr());

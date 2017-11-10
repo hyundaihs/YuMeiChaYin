@@ -3,6 +3,7 @@ package com.sp.shangpin.ui;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.PorterDuff;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -18,6 +19,7 @@ import android.widget.TextView;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.sp.shangpin.MyApplication;
 import com.sp.shangpin.R;
@@ -49,8 +51,8 @@ public class LoginActivity extends AppCompatActivity {
     private final Context thisContext = this;
 
     private AutoCompleteTextView phone, password;
-    private ProgressBar progressBar;
     private Button login, forget;
+    private View content;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,16 +64,28 @@ public class LoginActivity extends AppCompatActivity {
 
     private void init() {
         initActionBar();
+        content = findViewById(R.id.login_content);
+        VolleyUtil volleyUtil = VolleyUtil.getInstance(this);
+        volleyUtil.getBitmap(MyApplication.getSystemInfo().getDl_file_url(), new ImageLoader.ImageListener() {
+            @Override
+            public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
+                BitmapDrawable bitmapDrawable = new BitmapDrawable(response.getBitmap());
+                content.setBackground(bitmapDrawable);
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
         phone = (AutoCompleteTextView) findViewById(R.id.login_phone_num);
         password = (AutoCompleteTextView) findViewById(R.id.login_password_input);
-        progressBar = (ProgressBar) findViewById(R.id.login_progress);
         login = (Button) findViewById(R.id.login_login);
         forget = (Button) findViewById(R.id.login_forget);
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (attemptLogin()) {
-                    showProgress(true);
                     login(phone.getText().toString(), password.getText().toString());
                 }
             }
@@ -123,7 +137,6 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onResponse(JSONObject response) {
                 //从服务器响应response中的jsonObject中取出cookie的值，存到本地sharePreference
-                showProgress(false);
                 InterResult interResult =
                         (InterResult) JsonUtil.stringToObject(response.toString(), InterResult.class);
                 if (interResult.isSuccessed()) {
@@ -142,16 +155,9 @@ public class LoginActivity extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                showProgress(false);
                 DialogUtil.showErrorMessage(thisContext, error.toString());
             }
         });
     }
 
-    private void showProgress(boolean show) {
-        progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
-        phone.setVisibility(show ? View.GONE : View.VISIBLE);
-        password.setVisibility(show ? View.GONE : View.VISIBLE);
-        login.setVisibility(show ? View.GONE : View.VISIBLE);
-    }
 }

@@ -19,7 +19,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity
+            android:name=".MainActivity"
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -27,37 +29,75 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.LoginActivity" />
+        <activity
+            android:name=".ui.LoginActivity"
+            android:launchMode="singleTop" />
 
-        <activity android:name=".ui.RegisterActivity" />
+        <activity
+            android:name=".ui.RegisterActivity"
+            android:launchMode="singleTop" />
 
-        <activity android:name=".ui.HomeActivity" />
+        <activity
+            android:name=".ui.HomeActivity"
+            android:launchMode="singleTop" />
 
-        <activity android:name=".ui.GoodsDetailsActivity" />
+        <activity
+            android:name=".ui.GoodsDetailsActivity"
+            android:launchMode="singleTop" />
 
-        <activity android:name=".ui.TopUpActivity" />
+        <activity
+            android:name=".ui.TopUpActivity"
+            android:launchMode="singleTop" />
 
-        <activity android:name=".ui.LotteryActivity" />
+        <activity
+            android:name=".ui.LotteryActivity"
+            android:launchMode="singleTop" />
 
-        <activity android:name=".ui.RuleActivity" />
-        <activity android:name=".ui.OrdersActivity" />
-        <activity android:name=".ui.InputAddrActivity" />
-        <activity android:name=".ui.NormalGoodsActivity" />
-        <activity android:name=".ui.NormalGoodsDetailsActivity" />
-        <activity android:name=".ui.NormalOrdersActivity" />
-        <activity android:name=".ui.YhqActivity" />
-        <activity android:name=".ui.AlertPasswordActivity" />
-        <activity android:name=".ui.FindPasswordActivity" />
-        <activity android:name=".ui.RealNameActivity" />
-        <activity android:name=".ui.GetCashActivity" />
-        <activity android:name=".ui.BindPhoneActivity" />
-        <activity android:name=".TestActivity" />
+        <activity
+            android:name=".ui.RuleActivity"
+            android:launchMode="singleTop" />
+        <activity
+            android:name=".ui.OrdersActivity"
+            android:launchMode="singleTop" />
+        <activity
+            android:name=".ui.InputAddrActivity"
+            android:launchMode="singleTop" />
+        <activity
+            android:name=".ui.NormalGoodsActivity"
+            android:launchMode="singleTop" />
+        <activity
+            android:name=".ui.NormalGoodsDetailsActivity"
+            android:launchMode="singleTop" />
+        <activity
+            android:name=".ui.NormalOrdersActivity"
+            android:launchMode="singleTop" />
+        <activity
+            android:name=".ui.YhqActivity"
+            android:launchMode="singleTop" />
+        <activity
+            android:name=".ui.AlertPasswordActivity"
+            android:launchMode="singleTop" />
+        <activity
+            android:name=".ui.FindPasswordActivity"
+            android:launchMode="singleTop" />
+        <activity
+            android:name=".ui.RealNameActivity"
+            android:launchMode="singleTop" />
+        <activity
+            android:name=".ui.GetCashActivity"
+            android:launchMode="singleTop" />
+        <activity
+            android:name=".ui.BindPhoneActivity"
+            android:launchMode="singleTop" />
+        <activity
+            android:name=".TestActivity"
+            android:launchMode="singleTop" />
         <activity
             android:name=".wxapi.WXPayEntryActivity"
-            android:exported="true"/>
+            android:exported="true" />
         <activity
             android:name=".wxapi.WXEntryActivity"
-            android:exported="true"/>
+            android:exported="true" />
     </application>
 
 </manifest>

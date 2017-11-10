@@ -11,7 +11,6 @@ import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.android.volley.toolbox.Volley;
 import com.sp.shangpin.MyApplication;
-import com.sp.shangpin.R;
 
 /**
  * ShangPin
@@ -22,11 +21,11 @@ public class VolleyUtil {
 
     private static VolleyUtil volleyUtil;
     private final String TAG = getClass().getSimpleName();
+    private final int defaultImageResId = 0;
+    private final int errorImageResId = 0;
     private RequestQueue mRequestQueue;
     private ImageLoader mImageLoader;
     private Context context;
-    private final int defaultImageResId = 0;
-    private final int errorImageResId = 0;
 
     private VolleyUtil(Context context) {
         this.context = context;
@@ -77,10 +76,9 @@ public class VolleyUtil {
     }
 
     /**
-     *
      * @param imageView
      * @param url
-     * @param scale 有0、46、64、96、132数值可选，0代表640*640正方形头像
+     * @param scale     有0、46、64、96、132数值可选，0代表640*640正方形头像
      */
     public void getImageByIntact(ImageView imageView, String url, int scale) {
         ImageLoader imageLoader = getImageLoader();
@@ -91,14 +89,19 @@ public class VolleyUtil {
     public void getImage(ImageView imageView, String url) {
         ImageLoader imageLoader = getImageLoader();
         ImageLoader.ImageListener imageListener = ImageLoader.getImageListener(imageView, defaultImageResId, errorImageResId);
-        imageLoader.get(MyApplication.systemInfo.getBase_href() + url, imageListener);
+        imageLoader.get(MyApplication.getSystemInfo().getBase_href() + url, imageListener);
+    }
+
+    public void getBitmap(String url, ImageLoader.ImageListener imageListener) {
+        ImageLoader imageLoader = getImageLoader();
+        imageLoader.get(MyApplication.getSystemInfo().getBase_href() + url, imageListener);
     }
 
     public void getImageByNetwork(NetworkImageView imageView, String url) {
         ImageLoader imageLoader = getImageLoader();
         imageView.setDefaultImageResId(defaultImageResId);
         imageView.setErrorImageResId(errorImageResId);
-        imageView.setImageUrl(MyApplication.systemInfo.getBase_href() + url, imageLoader);
+        imageView.setImageUrl(MyApplication.getSystemInfo().getBase_href() + url, imageLoader);
     }
 
 }

@@ -30,8 +30,8 @@ import java.util.List;
 
 public class MyApplication extends Application {
 
-    public static SystemInfo systemInfo;//系统信息
-    public static UserInfo userInfo;//用户信息
+    private static SystemInfo systemInfo;//系统信息
+    private static UserInfo userInfo;//用户信息
     private static List<Activity> activityList = new ArrayList<>();
 
     public static void addActivity(Activity activity) {
@@ -78,19 +78,29 @@ public class MyApplication extends Application {
         api = WXAPIFactory.createWXAPI(this, InternetUtil.getWChatAppId(), true);
         api.registerApp(InternetUtil.getWChatAppId());
     }
-//
-//    private void te() {
-//        WXTextObject textObject = new WXTextObject();
-//        textObject.text = text;
-//
-//        WXMediaMessage msg = new WXMediaMessage();
-//        msg.mediaObject = textObject;
-//        msg.description = text;
-//
-//        SendMessageToWX.Req req = new SendMessageToWX.Req();
-//        req.transaction = String.valueOf(System.currentTimeMillis());//transaction用于唯一标识一个请求
-//        req.message = msg;
-//
-//        api.sendReq(req);
-//    }
+
+    public static SystemInfo getSystemInfo() {
+        return systemInfo;
+    }
+
+    public static void setSystemInfo(SystemInfo systemInfo) {
+        MyApplication.systemInfo = systemInfo;
+    }
+
+    public static UserInfo getUserInfo() {
+        return userInfo;
+    }
+
+    public static void setUserInfo(UserInfo userInfo) {
+        MyApplication.userInfo = userInfo;
+    }
+
+    public static IWXAPI getApi() {
+        return api;
+    }
+
+    public static void setApi(IWXAPI api) {
+        MyApplication.api = api;
+    }
+
 }

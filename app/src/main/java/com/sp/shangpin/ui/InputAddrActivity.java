@@ -69,11 +69,11 @@ public class InputAddrActivity extends AppCompatActivity {
                 });
             }
         });
-        if (null != MyApplication.userInfo && !TextUtils.isEmpty(MyApplication.userInfo.getWl_title())) {
-            name.setText(MyApplication.userInfo.getWl_title());
-            phone.setText(MyApplication.userInfo.getWl_phone());
-            area.setText(MyApplication.userInfo.getWl_pca());
-            addr.setText(MyApplication.userInfo.getWl_address());
+        if (null != MyApplication.getUserInfo() && !TextUtils.isEmpty(MyApplication.getUserInfo().getWl_title())) {
+            name.setText(MyApplication.getUserInfo().getWl_title());
+            phone.setText(MyApplication.getUserInfo().getWl_phone());
+            area.setText(MyApplication.getUserInfo().getWl_pca());
+            addr.setText(MyApplication.getUserInfo().getWl_address());
         }
     }
 
@@ -98,11 +98,11 @@ public class InputAddrActivity extends AppCompatActivity {
         /**
          * 提交给服务器,成功后关闭页面   返回OK  并返回地址信息
          */
-        MyApplication.userInfo.setWl_title(name.getText().toString());
-        MyApplication.userInfo.setWl_phone(phone.getText().toString());
-        MyApplication.userInfo.setWl_pca(area.getText().toString());
-        MyApplication.userInfo.setWl_address(addr.getText().toString());
-        MyApplication.userInfo.setWl_content(content.getText().toString());
+        MyApplication.getUserInfo().setWl_title(name.getText().toString());
+        MyApplication.getUserInfo().setWl_phone(phone.getText().toString());
+        MyApplication.getUserInfo().setWl_pca(area.getText().toString());
+        MyApplication.getUserInfo().setWl_address(addr.getText().toString());
+        MyApplication.getUserInfo().setWl_content(content.getText().toString());
         Intent intent = new Intent();
         intent.putExtra("position", getIntent().getIntExtra("position", -1));
         setResult(IntentUtil.RESULT_OK, intent);

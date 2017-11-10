@@ -106,7 +106,7 @@ public class HomeActivity extends AppCompatActivity {
                         if (interResult.isSuccessed()) {
                             UserInfo_Sup userInfo_sup =
                                     (UserInfo_Sup) JsonUtil.stringToObject(response.toString(), UserInfo_Sup.class);
-                            MyApplication.userInfo = userInfo_sup.getRetRes();
+                            MyApplication.setUserInfo(userInfo_sup.getRetRes());
                             loadFragment(FragmentHome.getInstance());
                         } else {
                             DialogUtil.showErrorMessage(thisContext, interResult.getRetErr());

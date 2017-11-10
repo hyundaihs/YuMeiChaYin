@@ -3,6 +3,7 @@ package com.sp.shangpin;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -10,6 +11,7 @@ import android.view.View;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.sp.shangpin.entity.InterResult;
 import com.sp.shangpin.entity.SharedKey;
@@ -59,6 +61,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             boolean isWx = (boolean) SharedPreferencesUtil.getParam(this, SharedKey.ISWX_LOGIN, false);
             verfLogin(isWx, (String) SharedPreferencesUtil.getParam(this, isWx ? SharedKey.OPENID : SharedKey.LOGIN_VERF, ""));
         }
+        final View content = findViewById(R.id.main_content);
+        VolleyUtil volleyUtil = VolleyUtil.getInstance(this);
+        volleyUtil.getBitmap(MyApplication.getSystemInfo().getDl_file_url(), new ImageLoader.ImageListener() {
+            @Override
+            public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
+                BitmapDrawable bitmapDrawable = new BitmapDrawable(response.getBitmap());
+                content.setBackground(bitmapDrawable);
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
     }
 
     private void verfLogin(boolean isWx, final String string) {
@@ -101,7 +117,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         if (interResult.isSuccessed()) {
                             SystemInfo_Sup systemInfoSup = (SystemInfo_Sup) JsonUtil.stringToObject(response.toString(), SystemInfo_Sup.class);
                             Log.i(TAG, "系统信息获取成功");
-                            MyApplication.systemInfo = systemInfoSup.getRetRes();
+                            MyApplication.setSystemInfo(systemInfoSup.getRetRes());
                             isRemember();
                         } else {
                             Log.e(TAG, "系统信息获取失败," + response.toString());
@@ -132,6 +148,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         findViewById(R.id.main_login).setOnClickListener(this);
         findViewById(R.id.main_register).setOnClickListener(this);
         findViewById(R.id.main_wchat_login_btn).setOnClickListener(this);
+
     }
 
     @Override
@@ -158,6 +175,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         final SendAuth.Req req = new SendAuth.Req();
         req.scope = "snsapi_userinfo";
         req.state = "wechat_sdk_demo_test";
-        return MyApplication.api.sendReq(req);
+        return MyApplication.getApi().sendReq(req);
     }
 }

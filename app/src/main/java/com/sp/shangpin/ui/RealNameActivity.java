@@ -66,7 +66,7 @@ public class RealNameActivity extends AppCompatActivity implements View.OnClickL
         submit = (Button) findViewById(R.id.real_name_register);
         submit.setOnClickListener(this);
         nickName = (TextView) findViewById(R.id.real_name_nick_name);
-        nickName.setText(MyApplication.userInfo.getTitle());
+        nickName.setText(MyApplication.getUserInfo().getTitle());
         securityCodeView = (SecurityCodeView) findViewById(R.id.real_name_security_code);
         securityCodeView.setOnClickListener(this);
         progressBar = (ProgressBar) findViewById(R.id.real_name_progress);

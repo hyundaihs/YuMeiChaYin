@@ -71,7 +71,7 @@ public class NormalGoodsActivity extends AppCompatActivity implements PopupMenu.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_normal_goods);
         orderType = getIntent().getIntExtra(NormalOrderType.KEY, NormalOrderType.ORIGINAL);
-        int max = MyApplication.systemInfo.getYhq_max();
+        int max = MyApplication.getSystemInfo().getYhq_max();
         if (max <= 0) {
             yhq = new int[4];
         } else {

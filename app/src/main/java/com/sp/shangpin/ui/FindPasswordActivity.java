@@ -2,6 +2,7 @@ package com.sp.shangpin.ui;
 
 import android.content.Context;
 import android.graphics.PorterDuff;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -18,6 +19,7 @@ import android.widget.TextView;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.sp.shangpin.MyApplication;
 import com.sp.shangpin.R;
@@ -45,9 +47,9 @@ public class FindPasswordActivity extends AppCompatActivity implements View.OnCl
     private final String TAG = getClass().getSimpleName();
     private final Context thisContext = this;
     private AutoCompleteTextView phone, securityCode, password, confirmPwd;
-    private ProgressBar progressBar;
     private Button submit;
     private SecurityCodeView securityCodeView;
+    private View content;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,11 +61,24 @@ public class FindPasswordActivity extends AppCompatActivity implements View.OnCl
 
     private void init() {
         initActionBar();
+        content = findViewById(R.id.find_pass_content);
+        VolleyUtil volleyUtil = VolleyUtil.getInstance(this);
+        volleyUtil.getBitmap(MyApplication.getSystemInfo().getWjmm_file_url(), new ImageLoader.ImageListener() {
+            @Override
+            public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
+                BitmapDrawable bitmapDrawable = new BitmapDrawable(response.getBitmap());
+                content.setBackground(bitmapDrawable);
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
         submit = (Button) findViewById(R.id.find_pass_register);
         submit.setOnClickListener(this);
         securityCodeView = (SecurityCodeView) findViewById(R.id.find_pass_security_code);
         securityCodeView.setOnClickListener(this);
-        progressBar = (ProgressBar) findViewById(R.id.find_pass_progress);
         phone = (AutoCompleteTextView) findViewById(R.id.find_pass_phone_num);
         securityCode = (AutoCompleteTextView) findViewById(R.id.find_pass_security_code_input);
         password = (AutoCompleteTextView) findViewById(R.id.find_pass_password_input);
@@ -125,7 +140,7 @@ public class FindPasswordActivity extends AppCompatActivity implements View.OnCl
         } else if (!password.getText().toString().equals(confirmPwd.getText().toString())) {
             confirmPwd.setError("两次密码不一样");
         } else {
-            showProgress(true);
+//            showProgress(true);
             return true;
         }
         return false;
@@ -168,7 +183,7 @@ public class FindPasswordActivity extends AppCompatActivity implements View.OnCl
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        showProgress(false);
+//                        showProgress(false);
                         InterResult interResult = (InterResult) JsonUtil.stringToObject(response.toString(), InterResult.class);
                         if (interResult.isSuccessed()) {
                             Log.d(TAG,response.toString());
@@ -181,20 +196,19 @@ public class FindPasswordActivity extends AppCompatActivity implements View.OnCl
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        showProgress(false);
+//                        showProgress(false);
                         DialogUtil.showErrorMessage(thisContext, error.toString());
                     }
                 });
         volleyUtil.addToRequestQueue(request, InternetUtil.fpass());
     }
 
-    private void showProgress(boolean show) {
-        progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
-        phone.setVisibility(show ? View.GONE : View.VISIBLE);
-        securityCode.setVisibility(show ? View.GONE : View.VISIBLE);
-        password.setVisibility(show ? View.GONE : View.VISIBLE);
-        confirmPwd.setVisibility(show ? View.GONE : View.VISIBLE);
-        submit.setVisibility(show ? View.GONE : View.VISIBLE);
-        securityCodeView.setVisibility(show ? View.GONE : View.VISIBLE);
-    }
+//    private void showProgress(boolean show) {
+//        phone.setVisibility(show ? View.GONE : View.VISIBLE);
+//        securityCode.setVisibility(show ? View.GONE : View.VISIBLE);
+//        password.setVisibility(show ? View.GONE : View.VISIBLE);
+//        confirmPwd.setVisibility(show ? View.GONE : View.VISIBLE);
+//        submit.setVisibility(show ? View.GONE : View.VISIBLE);
+//        securityCodeView.setVisibility(show ? View.GONE : View.VISIBLE);
+//    }
 }

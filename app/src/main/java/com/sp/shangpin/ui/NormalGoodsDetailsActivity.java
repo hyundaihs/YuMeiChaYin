@@ -127,9 +127,9 @@ public class NormalGoodsDetailsActivity extends AppCompatActivity implements Vie
 
     private void setBalance() {
         if (orderType == NormalOrderType.GOLD) {
-            balance.setText("金币:" + MyApplication.userInfo.getJf_price());
+            balance.setText("金币:" + MyApplication.getUserInfo().getJf_price());
         } else {
-            balance.setText("余额:" + MyApplication.userInfo.getYe_price());
+            balance.setText("余额:" + MyApplication.getUserInfo().getYe_price());
         }
     }
 
@@ -218,7 +218,7 @@ public class NormalGoodsDetailsActivity extends AppCompatActivity implements Vie
         double yufei = normalGoodsInfo.getYf() + 5 * (countView.getCurrNum() - 1);
         double total = normalGoodsInfo.getPrice() * countView.getCurrNum() +
                 normalGoodsInfo.getYf() + 5 * countView.getCurrNum() - youhui;
-        if (total <= MyApplication.userInfo.getYe_price()) {
+        if (total <= MyApplication.getUserInfo().getYe_price()) {
             DialogUtil.showAskMessage(thisContext, "您将购买此商品" + countView.getCurrNum() +
                     "件,商品总价:¥" + normalGoodsInfo.getPrice() * countView.getCurrNum() +
                     ",物流费:¥" + yufei +
@@ -267,11 +267,11 @@ public class NormalGoodsDetailsActivity extends AppCompatActivity implements Vie
         Map<String, Object> map = new HashMap<>();
         map.put(orderType == NormalOrderType.GOLD ? "goodsjf_id" : "goods_id", String.valueOf(goodsId)); // goods_id:产品ID
         map.put("num", String.valueOf(countView.getCurrNum())); // num:数量
-        map.put("title", MyApplication.userInfo.getWl_title()); // title:收货人 张三
-        map.put("phone", MyApplication.userInfo.getWl_phone()); // phone：电话 18614221874
-        map.put("pca", MyApplication.userInfo.getWl_pca()); // pca：收货地区 湖北省武汉市江夏区
-        map.put("address", MyApplication.userInfo.getWl_address()); // address:详细地址 武大科技园
-        map.put("contents", MyApplication.userInfo.getWl_content()); // contents：备注
+        map.put("title", MyApplication.getUserInfo().getWl_title()); // title:收货人 张三
+        map.put("phone", MyApplication.getUserInfo().getWl_phone()); // phone：电话 18614221874
+        map.put("pca", MyApplication.getUserInfo().getWl_pca()); // pca：收货地区 湖北省武汉市江夏区
+        map.put("address", MyApplication.getUserInfo().getWl_address()); // address:详细地址 武大科技园
+        map.put("contents", MyApplication.getUserInfo().getWl_content()); // contents：备注
         if (orderType == NormalOrderType.ORIGINAL) {
             int[] array = new int[checkYhq.size()];
             for (int i = 0; i < checkYhq.size(); i++) {
@@ -319,7 +319,7 @@ public class NormalGoodsDetailsActivity extends AppCompatActivity implements Vie
                         if (interResult.isSuccessed()) {
                             UserInfo_Sup userInfo_sup =
                                     (UserInfo_Sup) JsonUtil.stringToObject(response.toString(), UserInfo_Sup.class);
-                            MyApplication.userInfo = userInfo_sup.getRetRes();
+                            MyApplication.setUserInfo(userInfo_sup.getRetRes());
                             setBalance();
                         } else {
                             DialogUtil.showErrorMessage(thisContext, interResult.getRetErr());

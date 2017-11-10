@@ -98,7 +98,7 @@ public class GoodsDetailsActivity extends AppCompatActivity implements View.OnCl
                         "(运费首件" + upgradeGoods.getYf() + "元，此后每件依次加" + upgradeGoods.getYf_one() + "元)");
             }
         });
-        balance.setText("余额:" + MyApplication.userInfo.getYe_price());
+        balance.setText("余额:" + MyApplication.getUserInfo().getYe_price());
         if (goodsId > 0) {
             getGoodsDetails(goodsId);
         }
@@ -164,7 +164,7 @@ public class GoodsDetailsActivity extends AppCompatActivity implements View.OnCl
 
     private void buyPay() {
         if (upgradeGoods.getPrice() * countView.getCurrNum() +
-                upgradeGoods.getYf() + 5 * countView.getCurrNum() <= MyApplication.userInfo.getYe_price()) {
+                upgradeGoods.getYf() + 5 * countView.getCurrNum() <= MyApplication.getUserInfo().getYe_price()) {
             DialogUtil.showAskMessage(thisContext, "确定要购买吗?", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
@@ -253,8 +253,8 @@ public class GoodsDetailsActivity extends AppCompatActivity implements View.OnCl
                         if (interResult.isSuccessed()) {
                             UserInfo_Sup userInfo_sup =
                                     (UserInfo_Sup) JsonUtil.stringToObject(response.toString(), UserInfo_Sup.class);
-                            MyApplication.userInfo = userInfo_sup.getRetRes();
-                            balance.setText("余额:" + MyApplication.userInfo.getYe_price());
+                            MyApplication.setUserInfo(userInfo_sup.getRetRes());
+                            balance.setText("余额:" + MyApplication.getUserInfo().getYe_price());
                         } else {
                             DialogUtil.showErrorMessage(thisContext, interResult.getRetErr());
                         }
@@ -272,11 +272,11 @@ public class GoodsDetailsActivity extends AppCompatActivity implements View.OnCl
     private void pickUp() {
         Map<String, String> map = new HashMap<>();
         map.put("orderssj_id", String.valueOf(upgradeGoods.getId()));
-        map.put("title", MyApplication.userInfo.getWl_title());
-        map.put("phone", MyApplication.userInfo.getWl_phone());
-        map.put("pca", MyApplication.userInfo.getWl_pca());
-        map.put("address", MyApplication.userInfo.getWl_address());
-        map.put("contents", MyApplication.userInfo.getWl_content());
+        map.put("title", MyApplication.getUserInfo().getWl_title());
+        map.put("phone", MyApplication.getUserInfo().getWl_phone());
+        map.put("pca", MyApplication.getUserInfo().getWl_pca());
+        map.put("address", MyApplication.getUserInfo().getWl_address());
+        map.put("contents", MyApplication.getUserInfo().getWl_content());
         VolleyUtil volleyUtil = VolleyUtil.getInstance(thisContext);
         JsonObjectRequest request = RequestUtil.createPostJsonRequest(InternetUtil.sjtihuo(),
                 JsonUtil.objectToString(map),

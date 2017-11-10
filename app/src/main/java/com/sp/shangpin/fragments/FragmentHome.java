@@ -99,8 +99,6 @@ public class FragmentHome extends BaseFragment implements View.OnClickListener {
         initListView();
         getHomeInfo();
         getNotification();
-        timer = new Timer();
-        timer.schedule(new MyTimerTask(), 5000, 5000);
     }
 
     private void getNotification() {
@@ -137,9 +135,16 @@ public class FragmentHome extends BaseFragment implements View.OnClickListener {
     }
 
     @Override
-    public void onDestroy() {
+    public void onResume() {
+        super.onResume();
+        timer = new Timer();
+        timer.schedule(new MyTimerTask(), 5000, 5000);
+    }
+
+    @Override
+    public void onStop() {
         timer.cancel();
-        super.onDestroy();
+        super.onStop();
     }
 
     private Handler handler = new Handler() {

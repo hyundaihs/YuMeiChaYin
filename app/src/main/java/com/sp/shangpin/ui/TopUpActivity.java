@@ -175,7 +175,7 @@ public class TopUpActivity extends AppCompatActivity implements View.OnClickList
         request.nonceStr= wxPayOrder.getNoncestr();
         request.timeStamp= wxPayOrder.getTimestamp();
         request.sign= wxPayOrder.getSign();
-        MyApplication.api.sendReq(request);
+        MyApplication.getApi().sendReq(request);
     }
 
     @Override

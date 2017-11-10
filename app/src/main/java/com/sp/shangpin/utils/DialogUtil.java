@@ -4,15 +4,14 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.text.Layout;
+import android.content.Intent;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.sp.shangpin.MainActivity;
 import com.sp.shangpin.R;
 
 /**
@@ -37,11 +36,22 @@ public class DialogUtil {
     }
 
     public static AlertDialog showErrorMessage(Context context, String message) {
-        return createDialog(context, "错误", message, "确定", null, null, null);
+        return showErrorMessage(context, "错误", null);
     }
 
-    public static AlertDialog showErrorMessage(Context context, String message, DialogInterface.OnClickListener positiveListener) {
-        return createDialog(context, "错误", message, "确定", positiveListener, null, null);
+    public static AlertDialog showErrorMessage(final Context context, String message, DialogInterface.OnClickListener positiveListener) {
+        AlertDialog dialog;
+        if (message.contains("loginerr")) {
+            dialog = createDialog(context, "错误", message, "确定", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    context.startActivity(new Intent(context, MainActivity.class));
+                }
+            }, null, null);
+        } else {
+            dialog = createDialog(context, "错误", message, "确定", positiveListener, null, null);
+        }
+        return dialog;
     }
 
 
@@ -70,9 +80,9 @@ public class DialogUtil {
         return alertDialog;
     }
 
-    public static void createShareDialog(final Context context, final View.OnClickListener onClickListener){
+    public static void createShareDialog(final Context context, final View.OnClickListener onClickListener) {
         View view = LayoutInflater.from(context).inflate(R.layout.bottom_dialog, null);
-        TextView friendArea =  view.findViewById(R.id.share_friend_are);
+        TextView friendArea = view.findViewById(R.id.share_friend_are);
         TextView wxFriend = view.findViewById(R.id.share_wx_friend);
         TextView weiBo = view.findViewById(R.id.share_weibo);
 
