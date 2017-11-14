@@ -90,7 +90,7 @@
             android:name=".ui.BindPhoneActivity"
             android:launchMode="singleTop" />
         <activity
-            android:name=".TestActivity"
+            android:name=".ui.GetCashLogActivity"
             android:launchMode="singleTop" />
         <activity
             android:name=".wxapi.WXPayEntryActivity"

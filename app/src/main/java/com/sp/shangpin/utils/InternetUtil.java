@@ -350,4 +350,10 @@ public class InternetUtil {
      * @return
      */
     public static native String sjdata();
+
+    /**
+     * 余额提现记录
+     * @return
+     */
+    public static native String txlists();
 }

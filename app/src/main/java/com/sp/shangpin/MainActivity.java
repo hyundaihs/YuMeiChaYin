@@ -21,20 +21,16 @@ import com.sp.shangpin.ui.LoginActivity;
 import com.sp.shangpin.ui.RegisterActivity;
 import com.sp.shangpin.utils.DialogUtil;
 import com.sp.shangpin.utils.InternetUtil;
-import com.sp.shangpin.utils.JsonObjectPostRequest;
 import com.sp.shangpin.utils.JsonUtil;
 import com.sp.shangpin.utils.LoginUtil;
 import com.sp.shangpin.utils.RequestUtil;
 import com.sp.shangpin.utils.SharedPreferencesUtil;
 import com.sp.shangpin.utils.VolleyUtil;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
-import com.tencent.mm.opensdk.openapi.IWXAPI;
-import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
 import org.json.JSONObject;
 
 import java.util.HashMap;
-import java.util.Map;
 
 /**
  * ShangPin
