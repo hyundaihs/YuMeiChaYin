@@ -71,9 +71,9 @@ public class NormalOrdersAdapter extends RecyclerView.Adapter<NormalOrdersAdapte
         holder.orderId.setText("订单:" + normalOrderInfo.getNumbers());
         volleyUtil.getImage(holder.image, normalOrderInfo.getGoods_lists().get(0).getGoods_file_url());
         holder.name.setText(normalOrderInfo.getGoods_lists().get(0).getGoods_title());
-        holder.number.setText("x" + normalOrderInfo.getGoods_lists().get(0).getNum());
+        holder.number.setText("¥" + normalOrderInfo.getGoods_lists().get(0).getPrice() + "x" + normalOrderInfo.getGoods_lists().get(0).getNum());
         holder.status.setText(NormalOrderStatus.STRINGS[normalOrderInfo.getStatus()]);
-        holder.price.setText("¥" + normalOrderInfo.getGoods_lists().get(0).getPrice());
+        holder.price.setText("¥" + normalOrderInfo.getYf());
         holder.totalPrice.setText("¥" + normalOrderInfo.getPrice());
         holder.returnG.setOnClickListener(new NormalOrdersAdapter.MyOnClickListener(position));
         holder.goodsFlag.setVisibility(normalOrderInfo.getCx() == 1 ? View.VISIBLE : View.GONE);

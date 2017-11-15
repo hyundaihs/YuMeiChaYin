@@ -29,6 +29,7 @@ public class GetCashInfo_Sup extends InterResult {
     @Override
     public String toString() {
         return "GetCashInfo_Sup{" +
+                super.toString() +
                 "retRes=" + retRes +
                 '}';
     }

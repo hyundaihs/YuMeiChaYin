@@ -65,19 +65,6 @@ public class LoginActivity extends AppCompatActivity {
     private void init() {
         initActionBar();
         content = findViewById(R.id.login_content);
-        VolleyUtil volleyUtil = VolleyUtil.getInstance(this);
-        volleyUtil.getBitmap(MyApplication.getSystemInfo().getDl_file_url(), new ImageLoader.ImageListener() {
-            @Override
-            public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
-                BitmapDrawable bitmapDrawable = new BitmapDrawable(response.getBitmap());
-                content.setBackground(bitmapDrawable);
-            }
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-            }
-        });
         phone = (AutoCompleteTextView) findViewById(R.id.login_phone_num);
         password = (AutoCompleteTextView) findViewById(R.id.login_password_input);
         login = (Button) findViewById(R.id.login_login);
@@ -94,6 +81,19 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(thisContext, FindPasswordActivity.class));
+            }
+        });
+        VolleyUtil volleyUtil = VolleyUtil.getInstance(this);
+        volleyUtil.getBitmap(MyApplication.getSystemInfo().getDl_file_url(), new ImageLoader.ImageListener() {
+            @Override
+            public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
+                BitmapDrawable bitmapDrawable = new BitmapDrawable(response.getBitmap());
+                content.setBackground(bitmapDrawable);
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
             }
         });
     }

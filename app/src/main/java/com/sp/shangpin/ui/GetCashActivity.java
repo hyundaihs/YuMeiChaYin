@@ -1,10 +1,8 @@
 package com.sp.shangpin.ui;
 
 import android.content.Context;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
+import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -130,9 +128,14 @@ public class GetCashActivity extends AppCompatActivity implements View.OnClickLi
                     public void onResponse(JSONObject response) {
                         InterResult interResult = (InterResult) JsonUtil.stringToObject(response.toString(), InterResult.class);
                         if (interResult.isSuccessed()) {
-                            Log.d(TAG, response.toString());
-                            DialogUtil.showAskMessage(thisContext, "提交成功");
+                            DialogUtil.showAskMessage(thisContext, "提交成功", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    finish();
+                                }
+                            });
                         } else {
+                            Log.d(TAG, interResult.toString());
                             DialogUtil.showErrorMessage(thisContext, interResult.getRetErr());
                         }
                     }
