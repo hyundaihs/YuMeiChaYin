@@ -18,7 +18,6 @@
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:contentDescription="@null"
-                android:src="@drawable/bbb"
                 app:layout_constraintDimensionRatio="H,1:1"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent" />

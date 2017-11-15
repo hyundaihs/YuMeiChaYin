@@ -32,6 +32,7 @@ public class OrderInfo {
     private String goodssj_file_url_2; //  产品图片（升级后）
     private double goodssj_price_2; //  单价（升级后）
     private double price_2; //  总价（升级后）
+    private double yf;
 
     public OrderInfo() {
         super();
@@ -249,6 +250,14 @@ public class OrderInfo {
         this.price_2 = price_2;
     }
 
+    public double getYf() {
+        return yf;
+    }
+
+    public void setYf(double yf) {
+        this.yf = yf;
+    }
+
     @Override
     public String toString() {
         return "OrderInfo{" +
@@ -278,6 +287,7 @@ public class OrderInfo {
                 ", goodssj_file_url_2='" + goodssj_file_url_2 + '\'' +
                 ", goodssj_price_2=" + goodssj_price_2 +
                 ", price_2=" + price_2 +
+                ", yf=" + yf +
                 '}';
     }
 }

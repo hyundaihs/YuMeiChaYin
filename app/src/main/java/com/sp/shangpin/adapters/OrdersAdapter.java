@@ -17,13 +17,13 @@ import com.sp.shangpin.R;
 import com.sp.shangpin.entity.InterResult;
 import com.sp.shangpin.entity.OrderInfo;
 import com.sp.shangpin.entity.OrderStatus;
-import com.sp.shangpin.utils.IntentUtil;
 import com.sp.shangpin.entity.UpgradeStatus;
 import com.sp.shangpin.fragments.BaseFragment;
 import com.sp.shangpin.ui.InputAddrActivity;
 import com.sp.shangpin.ui.LotteryActivity;
 import com.sp.shangpin.utils.CalendarUtil;
 import com.sp.shangpin.utils.DialogUtil;
+import com.sp.shangpin.utils.IntentUtil;
 import com.sp.shangpin.utils.InternetUtil;
 import com.sp.shangpin.utils.JsonUtil;
 import com.sp.shangpin.utils.RequestUtil;
@@ -76,20 +76,22 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.MyViewHold
             volleyUtil.getImage(holder.image, orderInfo.getGoodssj_file_url_2());
             holder.orderId.setText("订单:" + orderInfo.getNumbers());
             holder.name.setText(orderInfo.getGoodssj_title_2());
-            holder.number.setText("x" + orderInfo.getNum());
+            holder.number.setText("¥" + orderInfo.getGoodssj_price_2() + " x " + orderInfo.getNum());
             holder.status.setText(OrderStatus.STRINGS[orderInfo.getStatus()] + "(" + UpgradeStatus.STRINGS[orderInfo.getSj_status()] + ")");
-            holder.price.setText("¥" + orderInfo.getGoodssj_price_2());
+            holder.price.setText("¥" + orderInfo.getYf());
             holder.totalPrice.setText("¥" + orderInfo.getPrice_2());
         } else {
             holder.orderTime.setText("下单时间:" + new CalendarUtil(orderInfo.getCreate_time(), true).format(CalendarUtil.STANDARD));
             volleyUtil.getImage(holder.image, orderInfo.getGoodssj_file_url());
             holder.orderId.setText("订单:" + orderInfo.getNumbers());
             holder.name.setText(orderInfo.getGoodssj_title());
-            holder.number.setText("x" + orderInfo.getNum());
+            holder.number.setText("¥" + orderInfo.getDanjia() + " x " + orderInfo.getNum());
             holder.status.setText(OrderStatus.STRINGS[orderInfo.getStatus()] + "(" + UpgradeStatus.STRINGS[orderInfo.getSj_status()] + ")");
-            holder.price.setText("¥" + orderInfo.getDanjia());
+            holder.price.setText("¥" + orderInfo.getYf());
             holder.totalPrice.setText("¥" + orderInfo.getPrice());
         }
+        holder.jiou.setText(orderInfo.getSj_jo() == 1 ? "奇" : "偶");
+        holder.jiou.setBackgroundResource(orderInfo.getSj_jo() == 1 ? R.drawable.ji_bg : R.drawable.ou_bg);
         holder.goldCoin.setOnClickListener(new MyOnClickListener(position));
         holder.returnG.setOnClickListener(new MyOnClickListener(position));
         holder.pickUp.setOnClickListener(new MyOnClickListener(position));
@@ -107,6 +109,12 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.MyViewHold
                 holder.pickUp.setVisibility(View.VISIBLE);
                 holder.upgrade.setVisibility(View.VISIBLE);
                 holder.addrLayout.setVisibility(View.GONE);
+                holder.price.setVisibility(View.GONE);
+                holder.priceTitle.setVisibility(View.GONE);
+                holder.jiou.setVisibility(View.GONE);
+                holder.buttonsLayout.setVisibility(View.VISIBLE);
+                holder.buttonsLayoutLine.setVisibility(View.VISIBLE);
+                holder.totalPriceTitle.setText("总价:");
                 break;
             case 1:
                 holder.goldCoin.setVisibility(View.VISIBLE);
@@ -115,22 +123,40 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.MyViewHold
                 holder.pickUp.setVisibility(View.VISIBLE);
                 holder.upgrade.setVisibility(View.GONE);
                 holder.addrLayout.setVisibility(View.GONE);
+                holder.price.setVisibility(View.GONE);
+                holder.priceTitle.setVisibility(View.GONE);
+                holder.jiou.setVisibility(View.VISIBLE);
+                holder.buttonsLayout.setVisibility(View.VISIBLE);
+                holder.buttonsLayoutLine.setVisibility(View.VISIBLE);
+                holder.totalPriceTitle.setText("总价:");
                 break;
             case 2:
-                holder.goldCoin.setVisibility(View.GONE);
-                holder.returnG.setVisibility(View.GONE);
-                holder.lotteryTime.setText("");
-                holder.pickUp.setVisibility(View.GONE);
-                holder.upgrade.setVisibility(View.GONE);
+//                holder.goldCoin.setVisibility(View.GONE);
+//                holder.returnG.setVisibility(View.GONE);
+//                holder.lotteryTime.setText("");
+//                holder.pickUp.setVisibility(View.GONE);
+//                holder.upgrade.setVisibility(View.GONE);
                 holder.addrLayout.setVisibility(View.GONE);
+                holder.price.setVisibility(View.GONE);
+                holder.jiou.setVisibility(View.VISIBLE);
+                holder.priceTitle.setVisibility(View.GONE);
+                holder.buttonsLayout.setVisibility(View.GONE);
+                holder.buttonsLayoutLine.setVisibility(View.GONE);
+                holder.totalPriceTitle.setText("总价:");
                 break;
             case 3:
-                holder.goldCoin.setVisibility(View.GONE);
-                holder.returnG.setVisibility(View.GONE);
-                holder.lotteryTime.setText("");
-                holder.pickUp.setVisibility(View.GONE);
-                holder.upgrade.setVisibility(View.GONE);
+//                holder.goldCoin.setVisibility(View.GONE);
+//                holder.returnG.setVisibility(View.GONE);
+//                holder.lotteryTime.setText("");
+//                holder.pickUp.setVisibility(View.GONE);
+//                holder.upgrade.setVisibility(View.GONE);
                 holder.addrLayout.setVisibility(View.VISIBLE);
+                holder.price.setVisibility(View.VISIBLE);
+                holder.jiou.setVisibility(View.VISIBLE);
+                holder.priceTitle.setVisibility(View.VISIBLE);
+                holder.buttonsLayout.setVisibility(View.GONE);
+                holder.buttonsLayoutLine.setVisibility(View.GONE);
+                holder.totalPriceTitle.setText("实付:");
                 break;
             default:
                 holder.goldCoin.setVisibility(View.GONE);
@@ -138,6 +164,11 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.MyViewHold
                 holder.lotteryTime.setText("");
                 holder.pickUp.setVisibility(View.GONE);
                 holder.upgrade.setVisibility(View.GONE);
+                holder.jiou.setVisibility(View.GONE);
+                holder.price.setVisibility(View.GONE);
+                holder.priceTitle.setVisibility(View.GONE);
+                holder.buttonsLayout.setVisibility(View.GONE);
+                holder.buttonsLayoutLine.setVisibility(View.GONE);
                 break;
         }
 
@@ -230,11 +261,12 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.MyViewHold
 
     class MyViewHolder extends RecyclerView.ViewHolder {
 
-        View rootView,addrLayout;
+        View rootView, addrLayout;
         ImageView image;
         TextView orderTime, orderId, name, number, status, lotteryTime,
-                goldCoin, returnG, pickUp, upgrade, price, totalPrice,
-                addrName, addrPhone, addrArea, addrAddr, addrContent;
+                goldCoin, returnG, pickUp, upgrade, price, totalPrice, totalPriceTitle,
+                addrName, addrPhone, addrArea, addrAddr, addrContent, jiou, priceTitle;
+        View buttonsLayout, buttonsLayoutLine;
 
         MyViewHolder(View view) {
             super(view);
@@ -258,6 +290,11 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.MyViewHold
             addrAddr = view.findViewById(R.id.orders_list_item_addr_addr);
             addrContent = view.findViewById(R.id.orders_list_item_addr_content);
             addrLayout = view.findViewById(R.id.orders_list_item_addr_layout);
+            jiou = view.findViewById(R.id.orders_list_item_jiou);
+            priceTitle = view.findViewById(R.id.orders_list_item_price_title);
+            buttonsLayout = view.findViewById(R.id.buttons_layout);
+            buttonsLayoutLine = view.findViewById(R.id.buttons_layout_line);
+            totalPriceTitle = view.findViewById(R.id.orders_list_item_total_price_title);
         }
     }
 }
