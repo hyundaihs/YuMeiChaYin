@@ -92,11 +92,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     SharedPreferencesUtil.setParam(thisContext, SharedKey.IS_REMEMBER, false);
                 }
             }
-        }, new Response.ErrorListener() {
+        },new RequestUtil.MyErrorListener(){
+
             @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e(TAG, error.toString());
-                DialogUtil.showErrorMessage(thisContext, error.toString(), new DialogInterface.OnClickListener() {
+            public void onErrorResponse(String error) {
+                Log.e(TAG, error);
+                DialogUtil.showErrorMessage(thisContext, error, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         finish();
@@ -129,9 +130,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             });
                         }
                     }
-                }, new Response.ErrorListener() {
+                }, new RequestUtil.MyErrorListener() {
                     @Override
-                    public void onErrorResponse(VolleyError error) {
+                    public void onErrorResponse(String error) {
                         Log.e(TAG, error.toString());
                         DialogUtil.showErrorMessage(thisContext, error.toString(), new DialogInterface.OnClickListener() {
                             @Override

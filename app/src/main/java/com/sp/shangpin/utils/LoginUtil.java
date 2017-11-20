@@ -30,7 +30,7 @@ import java.util.Map;
 public class LoginUtil {
 
     public static void login(Context context, final String account, final String password,
-                             Response.Listener<JSONObject> listener, Response.ErrorListener errorListener) {
+                             Response.Listener<JSONObject> listener, RequestUtil.MyErrorListener errorListener) {
         Map<String, String> map = new HashMap<>();
         map.put("account", account);
         map.put("password", password);
@@ -42,7 +42,7 @@ public class LoginUtil {
     }
 
     public static void verfLogin(Context context, boolean isWx, final String string
-            , Response.Listener<JSONObject> listener, Response.ErrorListener errorListener) {
+            , Response.Listener<JSONObject> listener, RequestUtil.MyErrorListener errorListener) {
         Map<String, String> map = new HashMap<>();
         if (isWx) {
             map.put("openid", string);

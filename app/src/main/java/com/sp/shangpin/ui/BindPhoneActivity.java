@@ -141,9 +141,9 @@ public class BindPhoneActivity extends AppCompatActivity implements View.OnClick
                             DialogUtil.showErrorMessage(thisContext, interResult.getRetErr());
                         }
                     }
-                }, new Response.ErrorListener() {
+                }, new RequestUtil.MyErrorListener() {
                     @Override
-                    public void onErrorResponse(VolleyError error) {
+                    public void onErrorResponse(String error) {
                         DialogUtil.showErrorMessage(thisContext, error.toString());
                     }
                 });
@@ -171,9 +171,9 @@ public class BindPhoneActivity extends AppCompatActivity implements View.OnClick
                             DialogUtil.showErrorMessage(thisContext, interResult.getRetErr());
                         }
                     }
-                }, new Response.ErrorListener() {
+                }, new RequestUtil.MyErrorListener() {
                     @Override
-                    public void onErrorResponse(VolleyError error) {
+                    public void onErrorResponse(String error) {
                         DialogUtil.showErrorMessage(thisContext, error.toString());
                     }
                 });
@@ -197,9 +197,9 @@ public class BindPhoneActivity extends AppCompatActivity implements View.OnClick
                     SharedPreferencesUtil.setParam(thisContext, SharedKey.IS_REMEMBER, false);
                 }
             }
-        }, new Response.ErrorListener() {
+        }, new RequestUtil.MyErrorListener() {
             @Override
-            public void onErrorResponse(VolleyError error) {
+            public void onErrorResponse(String error) {
                 DialogUtil.showErrorMessage(thisContext, error.toString());
             }
         });

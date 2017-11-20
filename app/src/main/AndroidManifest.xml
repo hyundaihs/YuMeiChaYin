@@ -96,11 +96,17 @@
             android:name=".ui.TopUpLogActivity"
             android:launchMode="singleTop" />
         <activity
+            android:name=".ui.DialogActivity"
+            android:launchMode="singleTop"
+            android:theme="@android:style/Theme.Dialog" />
+        <activity
             android:name=".wxapi.WXPayEntryActivity"
-            android:exported="true" />
+            android:exported="true"
+            android:theme="@android:style/Theme.Dialog" />
         <activity
             android:name=".wxapi.WXEntryActivity"
-            android:exported="true" />
+            android:exported="true"
+            android:theme="@android:style/Theme.Dialog" />
     </application>
 
 </manifest>

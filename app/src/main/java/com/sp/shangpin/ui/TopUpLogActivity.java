@@ -129,9 +129,9 @@ public class TopUpLogActivity extends AppCompatActivity {
                             DialogUtil.showErrorMessage(TopUpLogActivity.this, interResult.getRetErr());
                         }
                     }
-                }, new Response.ErrorListener() {
+                }, new RequestUtil.MyErrorListener() {
                     @Override
-                    public void onErrorResponse(VolleyError error) {
+                    public void onErrorResponse(String error) {
                         DialogUtil.showErrorMessage(TopUpLogActivity.this, error.toString());
                         swipeRefreshLayout.setRefreshing(false);
                     }

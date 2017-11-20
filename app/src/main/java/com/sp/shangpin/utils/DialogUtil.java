@@ -29,8 +29,8 @@ public class DialogUtil {
         return createDialog(context, "提示", message, "确定", positiveListener, "取消", null);
     }
 
-    public static AlertDialog showAskMessage(Context context, String message) {
-        return createDialog(context, "提示", message, "确定", null, null, null);
+    public static void showAskMessage(Context context, String message) {
+        ToastUtil.show(context, message);
     }
 
     public static AlertDialog showAskMessage(Context context, String message, String ok,
@@ -51,15 +51,13 @@ public class DialogUtil {
                     context.startActivity(new Intent(context, MainActivity.class));
                 }
             }, null, null);
+            return dialog;
         } else {
-            dialog = createDialog(context, "错误", message, "确定", positiveListener, null, null);
+            ToastUtil.show(context, message);
+            //dialog = createDialog(context, "错误", message, "确定", positiveListener, null, null);
+            return null;
         }
-        return dialog;
-    }
 
-
-    public static AlertDialog showTipMessage(Context context, String message, DialogInterface.OnClickListener positiveListener) {
-        return createDialog(context, "提示", message, "确定", positiveListener, null, null);
     }
 
     public static AlertDialog createDialog(Context context, String title, String message,
@@ -79,11 +77,12 @@ public class DialogUtil {
             builder.setNegativeButton(negativeStr, negativeListener);
         }
         AlertDialog alertDialog = builder.create();
-        alertDialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
-        alertDialog.setCanceledOnTouchOutside(false);//点击屏幕不消失
-        if (!alertDialog.isShowing()){//此时提示框未显示
-            alertDialog.show();
-        }
+        alertDialog.show();
+//        alertDialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+//        alertDialog.setCanceledOnTouchOutside(false);//点击屏幕不消失
+//        if (!alertDialog.isShowing()){//此时提示框未显示
+//            alertDialog.show();
+//        }
         return alertDialog;
     }
 

@@ -163,9 +163,9 @@ public class FindPasswordActivity extends AppCompatActivity implements View.OnCl
                             DialogUtil.showErrorMessage(thisContext, interResult.getRetErr());
                         }
                     }
-                }, new Response.ErrorListener() {
+                }, new RequestUtil.MyErrorListener() {
                     @Override
-                    public void onErrorResponse(VolleyError error) {
+                    public void onErrorResponse(String error) {
                         DialogUtil.showErrorMessage(thisContext, error.toString());
                     }
                 });
@@ -193,9 +193,9 @@ public class FindPasswordActivity extends AppCompatActivity implements View.OnCl
                             DialogUtil.showErrorMessage(thisContext, interResult.getRetErr());
                         }
                     }
-                }, new Response.ErrorListener() {
+                }, new RequestUtil.MyErrorListener() {
                     @Override
-                    public void onErrorResponse(VolleyError error) {
+                    public void onErrorResponse(String error) {
 //                        showProgress(false);
                         DialogUtil.showErrorMessage(thisContext, error.toString());
                     }

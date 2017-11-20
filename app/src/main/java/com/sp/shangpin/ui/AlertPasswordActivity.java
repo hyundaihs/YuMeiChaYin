@@ -134,9 +134,9 @@ public class AlertPasswordActivity extends AppCompatActivity implements View.OnC
                             DialogUtil.showErrorMessage(thisContext, interResult.getRetErr());
                         }
                     }
-                }, new Response.ErrorListener() {
+                }, new RequestUtil.MyErrorListener() {
                     @Override
-                    public void onErrorResponse(VolleyError error) {
+                    public void onErrorResponse(String error) {
                         showProgress(false);
                         DialogUtil.showErrorMessage(thisContext, error.toString());
                     }

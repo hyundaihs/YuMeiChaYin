@@ -25,11 +25,15 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.sp.shangpin.MyApplication;
 import com.sp.shangpin.R;
 import com.sp.shangpin.entity.InterResult;
+import com.sp.shangpin.entity.LoginInfo_Sup;
+import com.sp.shangpin.entity.SharedKey;
 import com.sp.shangpin.utils.DialogUtil;
 import com.sp.shangpin.utils.InternetUtil;
 import com.sp.shangpin.utils.JsonUtil;
+import com.sp.shangpin.utils.LoginUtil;
 import com.sp.shangpin.utils.ReExpressUtil;
 import com.sp.shangpin.utils.RequestUtil;
+import com.sp.shangpin.utils.SharedPreferencesUtil;
 import com.sp.shangpin.utils.VolleyUtil;
 import com.sp.shangpin.widget.SecurityCodeView;
 
@@ -170,9 +174,9 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                             DialogUtil.showErrorMessage(thisContext, interResult.getRetErr());
                         }
                     }
-                }, new Response.ErrorListener() {
+                }, new RequestUtil.MyErrorListener() {
                     @Override
-                    public void onErrorResponse(VolleyError error) {
+                    public void onErrorResponse(String error) {
                         DialogUtil.showErrorMessage(thisContext, error.toString());
                     }
                 });
@@ -180,7 +184,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     }
 
     private void register() {
-        Map<String, String> map = new HashMap<>();
+        final Map<String, String> map = new HashMap<>();
         map.put("account", phone.getText().toString());
         map.put("password", password.getText().toString());
         map.put("verf", securityCode.getText().toString());
@@ -195,20 +199,47 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                     public void onResponse(JSONObject response) {
                         InterResult interResult = (InterResult) JsonUtil.stringToObject(response.toString(), InterResult.class);
                         if (interResult.isSuccessed()) {
-                            DialogUtil.showAskMessage(thisContext, "注册成功");
-                            finish();
+                            login(map.get("account"),map.get("password"));
                         } else {
                             DialogUtil.showErrorMessage(thisContext, interResult.getRetErr());
                         }
                     }
-                }, new Response.ErrorListener() {
+                }, new RequestUtil.MyErrorListener() {
                     @Override
-                    public void onErrorResponse(VolleyError error) {
+                    public void onErrorResponse(String error) {
                         DialogUtil.showErrorMessage(thisContext, error.toString());
                     }
                 });
         volleyUtil.addToRequestQueue(request, InternetUtil.reg());
 
+    }
+
+    private void login(final String account, final String password) {
+        LoginUtil.login(thisContext,account,password,new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                //从服务器响应response中的jsonObject中取出cookie的值，存到本地sharePreference
+                InterResult interResult =
+                        (InterResult) JsonUtil.stringToObject(response.toString(), InterResult.class);
+                if (interResult.isSuccessed()) {
+                    LoginInfo_Sup loginInfo_sup = (LoginInfo_Sup) JsonUtil.stringToObject(response.toString(), LoginInfo_Sup.class);
+                    DialogUtil.showAskMessage(thisContext, "登录成功");
+                    SharedPreferencesUtil.setParam(thisContext, SharedKey.IS_REMEMBER, true);
+                    SharedPreferencesUtil.setParam(thisContext, SharedKey.ISWX_LOGIN, false);
+                    SharedPreferencesUtil.setParam(thisContext, SharedKey.LOGIN_VERF, loginInfo_sup.getRetRes().getLogin_verf());
+                    startActivity(new Intent(thisContext, HomeActivity.class));
+                    MyApplication.cleanAllActivitys();
+                } else {
+                    SharedPreferencesUtil.setParam(thisContext, SharedKey.IS_REMEMBER, false);
+                    DialogUtil.showErrorMessage(thisContext, interResult.getRetErr());
+                }
+            }
+        }, new RequestUtil.MyErrorListener() {
+            @Override
+            public void onErrorResponse(String error) {
+                DialogUtil.showErrorMessage(thisContext, error.toString());
+            }
+        });
     }
 
 }

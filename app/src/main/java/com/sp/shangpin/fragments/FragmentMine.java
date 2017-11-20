@@ -284,9 +284,9 @@ public class FragmentMine extends BaseFragment {
                             DialogUtil.showErrorMessage(getActivity(), interResult.getRetErr());
                         }
                     }
-                }, new Response.ErrorListener() {
+                }, new RequestUtil.MyErrorListener() {
                     @Override
-                    public void onErrorResponse(VolleyError error) {
+                    public void onErrorResponse(String error) {
                         DialogUtil.showErrorMessage(getActivity(), error.toString());
                     }
                 });
@@ -327,9 +327,9 @@ public class FragmentMine extends BaseFragment {
                             });
                         }
                     }
-                }, new Response.ErrorListener() {
+                }, new RequestUtil.MyErrorListener() {
                     @Override
-                    public void onErrorResponse(VolleyError error) {
+                    public void onErrorResponse(String error) {
                         DialogUtil.showErrorMessage(getActivity(), error.toString());
                     }
                 });
@@ -354,9 +354,9 @@ public class FragmentMine extends BaseFragment {
                             DialogUtil.showErrorMessage(getActivity(), interResult.getRetErr());
                         }
                     }
-                }, new Response.ErrorListener() {
+                }, new RequestUtil.MyErrorListener() {
                     @Override
-                    public void onErrorResponse(VolleyError error) {
+                    public void onErrorResponse(String error) {
                         DialogUtil.showErrorMessage(getActivity(), error.toString());
                     }
                 });

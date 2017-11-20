@@ -15,6 +15,7 @@ import com.sp.shangpin.ui.HomeActivity;
 import com.sp.shangpin.utils.InternetUtil;
 import com.sp.shangpin.utils.JsonUtil;
 import com.sp.shangpin.utils.LoginUtil;
+import com.sp.shangpin.utils.RequestUtil;
 import com.sp.shangpin.utils.SharedPreferencesUtil;
 import com.sp.shangpin.utils.SnackbarUtil;
 import com.sp.shangpin.utils.ToastUtil;
@@ -74,10 +75,10 @@ public class WXEntryActivity extends AppCompatActivity implements IWXAPIEventHan
         switch (errorCode) {
             case BaseResp.ErrCode.ERR_OK:
                 //用户同意
-                if(resp.getType()==ConstantsAPI.COMMAND_SENDMESSAGE_TO_WX){//分享
-                    ToastUtil.show(this,"分享成功");
+                if (resp.getType() == ConstantsAPI.COMMAND_SENDMESSAGE_TO_WX) {//分享
+                    ToastUtil.show(this, "分享成功");
                     finish();
-                }else if(resp.getType()==ConstantsAPI.COMMAND_SENDAUTH){//登录
+                } else if (resp.getType() == ConstantsAPI.COMMAND_SENDAUTH) {//登录
                     String code = ((SendAuth.Resp) resp).code;
                     String openId = (String) SharedPreferencesUtil.getParam(thisContext, SharedKey.ACCESS_TOKEN, "");
                     access_token(code);
@@ -86,12 +87,12 @@ public class WXEntryActivity extends AppCompatActivity implements IWXAPIEventHan
                 break;
             case BaseResp.ErrCode.ERR_AUTH_DENIED:
                 //用户拒绝
-                ToastUtil.show(this,"用户拒绝");
+                ToastUtil.show(this, "用户拒绝");
                 finish();
                 break;
             case BaseResp.ErrCode.ERR_USER_CANCEL:
                 //用户取消
-                ToastUtil.show(this,"用户取消");
+                ToastUtil.show(this, "用户取消");
                 finish();
                 break;
             default:
@@ -131,14 +132,13 @@ public class WXEntryActivity extends AppCompatActivity implements IWXAPIEventHan
                         if (accessToken.getErrcode() == 0) {
                             login(accessToken.getAccess_token(), accessToken.getOpenid());
                         } else {
-                            ToastUtil.show(thisContext,accessToken.getErrmsg());
+                            ToastUtil.show(thisContext, accessToken.getErrmsg());
                             finish();
                         }
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                ToastUtil.show(thisContext,error.toString());
                 finish();
             }
         });
@@ -161,27 +161,26 @@ public class WXEntryActivity extends AppCompatActivity implements IWXAPIEventHan
                             startActivity(intent);
                             finish();
                         } else {
-                            ToastUtil.show(thisContext,"用户信息获取失败");
+                            ToastUtil.show(thisContext, "用户信息获取失败");
                             finish();
                         }
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                ToastUtil.show(thisContext,error.toString());
                 finish();
             }
         });
         volleyUtil.addToRequestQueue(request, InternetUtil.login());
     }
 
-    private void login(final String token,final String openid) {
+    private void login(final String token, final String openid) {
         LoginUtil.verfLogin(thisContext, true, openid, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 InterResult interResult = (InterResult) JsonUtil.stringToObject(response.toString(), InterResult.class);
                 if (interResult.isSuccessed()) {
-                    ToastUtil.show(thisContext,"登录成功");
+                    ToastUtil.show(thisContext, "登录成功");
                     SharedPreferencesUtil.setParam(thisContext, SharedKey.IS_REMEMBER, true);
                     SharedPreferencesUtil.setParam(thisContext, SharedKey.ISWX_LOGIN, true);
                     SharedPreferencesUtil.setParam(thisContext, SharedKey.OPENID, openid);
@@ -190,13 +189,13 @@ public class WXEntryActivity extends AppCompatActivity implements IWXAPIEventHan
                     finish();
                 } else {
                     SharedPreferencesUtil.setParam(thisContext, SharedKey.IS_REMEMBER, false);
-                    getUserInfo(token,openid);
+                    getUserInfo(token, openid);
                 }
             }
-        }, new Response.ErrorListener() {
+        }, new RequestUtil.MyErrorListener() {
             @Override
-            public void onErrorResponse(VolleyError error) {
-                ToastUtil.show(thisContext,error.toString());
+            public void onErrorResponse(String error) {
+                ToastUtil.show(thisContext, error);
                 finish();
             }
         });

@@ -127,9 +127,9 @@ public class FragmentUpgrade extends BaseFragment {
                             DialogUtil.showErrorMessage(getActivity(), interResult.getRetErr());
                         }
                     }
-                }, new Response.ErrorListener() {
+                }, new RequestUtil.MyErrorListener() {
                     @Override
-                    public void onErrorResponse(VolleyError error) {
+                    public void onErrorResponse(String error) {
                         DialogUtil.showErrorMessage(getActivity(), error.toString());
                     }
                 });
@@ -170,9 +170,9 @@ public class FragmentUpgrade extends BaseFragment {
                             DialogUtil.showErrorMessage(getActivity(), interResult.getRetErr());
                         }
                     }
-                }, new Response.ErrorListener() {
+                }, new RequestUtil.MyErrorListener() {
                     @Override
-                    public void onErrorResponse(VolleyError error) {
+                    public void onErrorResponse(String error) {
                         DialogUtil.showErrorMessage(getActivity(), error.toString());
                     }
                 });

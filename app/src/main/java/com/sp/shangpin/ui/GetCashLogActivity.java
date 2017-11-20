@@ -133,9 +133,9 @@ public class GetCashLogActivity extends AppCompatActivity {
                             DialogUtil.showErrorMessage(GetCashLogActivity.this, interResult.getRetErr());
                         }
                     }
-                }, new Response.ErrorListener() {
+                }, new RequestUtil.MyErrorListener() {
                     @Override
-                    public void onErrorResponse(VolleyError error) {
+                    public void onErrorResponse(String error) {
                         DialogUtil.showErrorMessage(GetCashLogActivity.this, error.toString());
                         swipeRefreshLayout.setRefreshing(false);
                     }
