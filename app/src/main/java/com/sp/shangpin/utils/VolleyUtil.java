@@ -3,6 +3,7 @@ package com.sp.shangpin.utils;
 import android.content.Context;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.util.Log;
 import android.widget.ImageView;
 
 import com.android.volley.Request;

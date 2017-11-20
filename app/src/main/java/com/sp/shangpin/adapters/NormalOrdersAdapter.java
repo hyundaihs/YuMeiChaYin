@@ -76,16 +76,34 @@ public class NormalOrdersAdapter extends RecyclerView.Adapter<NormalOrdersAdapte
         holder.price.setText("¥" + normalOrderInfo.getYf());
         holder.totalPrice.setText("¥" + normalOrderInfo.getPrice());
         holder.returnG.setOnClickListener(new NormalOrdersAdapter.MyOnClickListener(position));
-        holder.goodsFlag.setVisibility(normalOrderInfo.getCx() == 1 ? View.VISIBLE : View.GONE);
         holder.addrName.setText("收货人:" + normalOrderInfo.getTitle());
         holder.addrPhone.setText("手机:" + normalOrderInfo.getPhone());
         holder.addrArea.setText("收货地址" + normalOrderInfo.getPca());
         holder.addrAddr.setText("详细地址" + normalOrderInfo.getAddress());
         holder.addrContent.setText("备注:" + normalOrderInfo.getContents());
+        switch (orderType) {
+            case NormalOrderType.GOLD:
+                holder.goodsFlag.setVisibility(View.VISIBLE);
+                holder.youhui.setVisibility(View.GONE);
+                holder.goodsFlag.setText("金");
+                holder.goodsFlag.setBackgroundResource(R.drawable.jin_bg);
+                break;
+            case NormalOrderType.ORIGINAL:
+                holder.goodsFlag.setVisibility(View.GONE);
+                holder.youhui.setVisibility(View.VISIBLE);
+                holder.youhui.setText("优惠:¥" + normalOrderInfo.getYhq_price());
+                break;
+            case NormalOrderType.ON_SALE:
+            default:
+                holder.goodsFlag.setVisibility(View.VISIBLE);
+                holder.youhui.setVisibility(View.GONE);
+                holder.goodsFlag.setText("促");
+                holder.goodsFlag.setBackgroundResource(R.drawable.cu_bg);
+                break;
+        }
         switch (index) {
             case 0:
                 holder.returnG.setText("退款");
-                holder.returnG.setVisibility(orderType == NormalOrderType.GOLD ? View.GONE : View.VISIBLE);
                 break;
             case 1:
                 holder.returnG.setVisibility(View.GONE);
@@ -143,7 +161,8 @@ public class NormalOrdersAdapter extends RecyclerView.Adapter<NormalOrdersAdapte
         Map<String, String> map = new HashMap<>();
         map.put("orders_id", String.valueOf(mDatas.get(position).getId()));
         VolleyUtil volleyUtil = VolleyUtil.getInstance(mContext);
-        JsonObjectRequest request = RequestUtil.createPostJsonRequest(InternetUtil.unsetorders(),
+        JsonObjectRequest request = RequestUtil.createPostJsonRequest(orderType == NormalOrderType.GOLD
+                        ? InternetUtil.unsetordersjf() : InternetUtil.unsetorders(),
                 JsonUtil.objectToString(map),
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -207,9 +226,9 @@ public class NormalOrdersAdapter extends RecyclerView.Adapter<NormalOrdersAdapte
     class MyViewHolder extends RecyclerView.ViewHolder {
 
         View rootView, addrLayout;
-        ImageView image, goodsFlag;
-        TextView orderTime, orderId, name, number, status, returnG, price, totalPrice,
-                addrName, addrPhone, addrArea, addrAddr, addrContent;
+        ImageView image;
+        TextView goodsFlag, orderTime, orderId, name, number, status, returnG, price, totalPrice,
+                addrName, addrPhone, addrArea, addrAddr, addrContent, youhui;
 
         MyViewHolder(View view) {
             super(view);
@@ -230,6 +249,7 @@ public class NormalOrdersAdapter extends RecyclerView.Adapter<NormalOrdersAdapte
             addrAddr = view.findViewById(R.id.normal_orders_list_item_addr_addr);
             addrContent = view.findViewById(R.id.normal_orders_list_item_addr_content);
             addrLayout = view.findViewById(R.id.normal_orders_list_item_addr_layout);
+            youhui = view.findViewById(R.id.normal_orders_list_item_goods_youhui);
         }
     }
 }

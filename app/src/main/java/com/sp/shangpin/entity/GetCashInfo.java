@@ -14,14 +14,14 @@ public class GetCashInfo {
     private String bank_name; //  开户行
     private String card_numbers; //  银行卡号
     private int status; //  状态（1：未处理，2：已打款，3：拒绝打款）
-    private String update_time; //  更新时间（时间戳）
-    private String create_time; //  申请时间（时间戳）
+    private long update_time; //  更新时间（时间戳）
+    private long create_time; //  申请时间（时间戳）
 
     public GetCashInfo() {
         super();
     }
 
-    public GetCashInfo(int type_id, double price, String contents, String title, String phone, String bank_name, String card_numbers, int status, String update_time, String create_time) {
+    public GetCashInfo(int type_id, double price, String contents, String title, String phone, String bank_name, String card_numbers, int status, long update_time, long create_time) {
         this.type_id = type_id;
         this.price = price;
         this.contents = contents;
@@ -98,19 +98,19 @@ public class GetCashInfo {
         this.status = status;
     }
 
-    public String getUpdate_time() {
+    public long getUpdate_time() {
         return update_time;
     }
 
-    public void setUpdate_time(String update_time) {
+    public void setUpdate_time(long update_time) {
         this.update_time = update_time;
     }
 
-    public String getCreate_time() {
+    public long getCreate_time() {
         return create_time;
     }
 
-    public void setCreate_time(String create_time) {
+    public void setCreate_time(long create_time) {
         this.create_time = create_time;
     }
 

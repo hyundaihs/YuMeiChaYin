@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.sp.shangpin.R;
 import com.sp.shangpin.entity.GetCashInfo;
+import com.sp.shangpin.utils.CalendarUtil;
 
 import java.util.List;
 
@@ -44,7 +45,8 @@ public class GetCashLogAdapter extends RecyclerView.Adapter<GetCashLogAdapter.My
     @Override
     public void onBindViewHolder(GetCashLogAdapter.MyViewHolder holder, final int position) {
         GetCashInfo getCashInfo = mDatas.get(position);
-        holder.time.setText("时间：" + getCashInfo.getUpdate_time());
+        CalendarUtil calendarUtil = new CalendarUtil(getCashInfo.getCreate_time(),true);
+        holder.time.setText("时间：" + calendarUtil.format(CalendarUtil.STANDARD));
         holder.type.setText("提现类型：" + (getCashInfo.getType_id() == 1 ? "银行卡" : "微信"));
         holder.money.setText("金额：" + getCashInfo.getPrice());
         holder.name.setText("姓名：" + getCashInfo.getTitle());

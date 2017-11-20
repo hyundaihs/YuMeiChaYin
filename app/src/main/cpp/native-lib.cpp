@@ -1,6 +1,7 @@
 #include <jni.h>
 #include <string>
 
+
 extern "C"
 {
 JNIEXPORT jstring JNICALL
@@ -299,6 +300,13 @@ Java_com_sp_shangpin_utils_InternetUtil_sjdata(JNIEnv *env, jclass type) {
 JNIEXPORT jstring JNICALL
 Java_com_sp_shangpin_utils_InternetUtil_txlists(JNIEnv *env, jclass type) {
     std::string text = "txlists";
+    return env->NewStringUTF(text.c_str());
+}
+
+
+JNIEXPORT jstring JNICALL
+Java_com_sp_shangpin_utils_InternetUtil_unsetordersjf(JNIEnv *env, jclass type) {
+    std::string text = "unsetordersjf";
     return env->NewStringUTF(text.c_str());
 }
 

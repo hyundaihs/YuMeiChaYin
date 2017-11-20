@@ -17,6 +17,7 @@ public class CalendarUtil {
      */
     private Time time;
     public static final String STANDARD = "yyyy-MM-dd HH:mm:ss";
+    public static final String STANDARD_ = "yyyy-MM-dd\nHH:mm:ss";
     public static final String YYYY_MM = "yyyy-MM";
     public static final String YYYYMMDDHHMMSS = "yyyyMMddHHmmss";
     public static final String YYYY_MM_DD = "yyyy-MM-dd";

@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -77,8 +78,12 @@ public class DialogUtil {
         if (null != negativeStr) {
             builder.setNegativeButton(negativeStr, negativeListener);
         }
-        builder.create();
-        AlertDialog alertDialog = builder.show();
+        AlertDialog alertDialog = builder.create();
+        alertDialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+        alertDialog.setCanceledOnTouchOutside(false);//点击屏幕不消失
+        if (!alertDialog.isShowing()){//此时提示框未显示
+            alertDialog.show();
+        }
         return alertDialog;
     }
 

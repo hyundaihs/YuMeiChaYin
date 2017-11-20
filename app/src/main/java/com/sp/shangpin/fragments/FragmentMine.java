@@ -6,7 +6,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
@@ -43,6 +42,7 @@ import com.sp.shangpin.ui.NormalOrdersActivity;
 import com.sp.shangpin.ui.OrdersActivity;
 import com.sp.shangpin.ui.RealNameActivity;
 import com.sp.shangpin.ui.TopUpActivity;
+import com.sp.shangpin.ui.TopUpLogActivity;
 import com.sp.shangpin.ui.YhqActivity;
 import com.sp.shangpin.utils.DialogUtil;
 import com.sp.shangpin.utils.IntentUtil;
@@ -54,7 +54,6 @@ import com.sp.shangpin.utils.ToastUtil;
 import com.sp.shangpin.utils.VolleyUtil;
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
 import com.tencent.mm.opensdk.modelmsg.WXMediaMessage;
-import com.tencent.mm.opensdk.modelmsg.WXTextObject;
 import com.tencent.mm.opensdk.modelmsg.WXWebpageObject;
 
 import org.json.JSONObject;
@@ -75,11 +74,11 @@ public class FragmentMine extends BaseFragment {
     private TextView balance;
     private RecyclerView recyclerView;
     private FragmentMineAdapter adapter;
-    private String[] MENUS = {"充值", "提现", "提现记录","升级产品订单",
+    private String[] MENUS = {"充值", "充值记录", "提现", "提现记录", "升级产品订单",
             "金币商品订单", "精品商品订单", "促销商品订单", "修改密码", "我的代金券", "实名认证", "升级方式",
 //            "我的返佣提现",
             "分享"};
-    private int[] IDS = {R.mipmap.ids_top_up, R.mipmap.ids_get_cash,R.mipmap.tx_list, R.mipmap.ids_upgrade_orders, R.mipmap.ids_gold_orders,
+    private int[] IDS = {R.mipmap.ids_top_up, R.mipmap.ids_top_up, R.mipmap.ids_get_cash, R.mipmap.tx_list, R.mipmap.ids_upgrade_orders, R.mipmap.ids_gold_orders,
             R.mipmap.ids_well_orders, R.mipmap.ids_on_sale_orders, R.mipmap.ids_alert_password, R.mipmap.ids_my_yhq,
             R.mipmap.ids_real_name, R.mipmap.ids_upgrade_type,
 //            R.mipmap.ids_my_get_cash,
@@ -134,47 +133,50 @@ public class FragmentMine extends BaseFragment {
                         startActivityForResult(new Intent(getActivity(), TopUpActivity.class),
                                 IntentUtil.REQUEST_FROM_FRAGMENT_MINE);
                         break;
-                    case 1://提现
+                    case 1://充值记录
+                        startActivity(new Intent(getActivity(), TopUpLogActivity.class));
+                        break;
+                    case 2://提现
                         startActivity(new Intent(getActivity(), GetCashActivity.class));
                         break;
-                    case 2://提现记录
+                    case 3://提现记录
                         startActivity(new Intent(getActivity(), GetCashLogActivity.class));
                         break;
-                    case 3://升级产品订单
+                    case 4://升级产品订单
                         startActivity(new Intent(getActivity(), OrdersActivity.class));
                         break;
-                    case 4://金币商品订单
+                    case 5://金币商品订单
                         Intent intent = new Intent(getActivity(), NormalOrdersActivity.class);
                         intent.putExtra(NormalOrderType.KEY, NormalOrderType.GOLD);
                         startActivity(intent);
                         break;
-                    case 5://精品商品订单
+                    case 6://精品商品订单
                         intent = new Intent(getActivity(), NormalOrdersActivity.class);
                         intent.putExtra(NormalOrderType.KEY, NormalOrderType.ORIGINAL);
                         startActivity(intent);
                         break;
-                    case 6://促销商品订单
+                    case 7://促销商品订单
                         intent = new Intent(getActivity(), NormalOrdersActivity.class);
                         intent.putExtra(NormalOrderType.KEY, NormalOrderType.ON_SALE);
                         startActivity(intent);
                         break;
-                    case 7://修改密码
+                    case 8://修改密码
                         intent = new Intent(getActivity(), AlertPasswordActivity.class);
                         startActivityForResult(intent, IntentUtil.REQUEST_FROM_MINE_TO_ALERT_PASS);
                         break;
-                    case 8://我的代金券
+                    case 9://我的代金券
                         startActivity(new Intent(getActivity(), YhqActivity.class));
                         break;
-                    case 9://实名认证
+                    case 10://实名认证
                         getRealNameStatus();
                         break;
-                    case 10://升级方式
+                    case 11://升级方式
 
                         break;
-//                    case 11://返佣提现
+//                    case 12://返佣提现
 //
 //                        break;
-                    case 11://分享
+                    case 12://分享
                         DialogUtil.createShareDialog(getActivity(), new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {

@@ -70,21 +70,21 @@ public class FragmentStore extends BaseFragment implements View.OnClickListener 
 
             }
         });
-        Toolbar toolbar = getView().findViewById(R.id.toolbar);
-        TextView title = getView().findViewById(R.id.toolbar_title);
-        TextView btn = getView().findViewById(R.id.toolbar_btn);
-        title.setText("商城");
-        btn.setText("规则");
-        btn.setVisibility(View.VISIBLE);
-        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        toolbar.setTitle("");
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(getActivity(), RuleActivity.class));
-            }
-        });
+//        Toolbar toolbar = getView().findViewById(R.id.toolbar);
+//        TextView title = getView().findViewById(R.id.toolbar_title);
+//        TextView btn = getView().findViewById(R.id.toolbar_btn);
+//        title.setText("商城");
+//        btn.setText("规则");
+//        btn.setVisibility(View.VISIBLE);
+//        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+//        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+//        toolbar.setTitle("");
+//        btn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                startActivity(new Intent(getActivity(), RuleActivity.class));
+//            }
+//        });
     }
 
     @Override

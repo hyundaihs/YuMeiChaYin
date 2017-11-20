@@ -93,6 +93,9 @@
             android:name=".ui.GetCashLogActivity"
             android:launchMode="singleTop" />
         <activity
+            android:name=".ui.TopUpLogActivity"
+            android:launchMode="singleTop" />
+        <activity
             android:name=".wxapi.WXPayEntryActivity"
             android:exported="true" />
         <activity

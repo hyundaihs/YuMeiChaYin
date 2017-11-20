@@ -34,4 +34,5 @@
     <!--奇偶的背景颜色-->
     <color name="ou_bg">#3EB7FE</color>
     <color name="ji_bg">#FB0601</color>
+    <color name="jin_bg">#FFDC3B</color>
 </resources>

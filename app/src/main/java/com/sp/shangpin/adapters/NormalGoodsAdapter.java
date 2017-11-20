@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.android.volley.toolbox.NetworkImageView;
 import com.sp.shangpin.R;
 import com.sp.shangpin.entity.NormalGoodsInfo;
+import com.sp.shangpin.entity.NormalOrderType;
 import com.sp.shangpin.utils.VolleyUtil;
 
 import java.util.List;
@@ -25,11 +26,13 @@ public class NormalGoodsAdapter extends RecyclerView.Adapter<NormalGoodsAdapter.
     private Context mContext;
     private LayoutInflater inflater;
     private FragmentHomeAdapter.OnItemClickListener onItemClickListener;
+    private int orderType;
 
-    public NormalGoodsAdapter(Context context, List<NormalGoodsInfo> datas) {
+    public NormalGoodsAdapter(Context context, List<NormalGoodsInfo> datas, int orderType) {
         this.mContext = context;
         this.mDatas = datas;
         inflater = LayoutInflater.from(mContext);
+        this.orderType = orderType;
     }
 
     public void setOnItemClickListener(FragmentHomeAdapter.OnItemClickListener onItemClickListener) {
@@ -47,8 +50,33 @@ public class NormalGoodsAdapter extends RecyclerView.Adapter<NormalGoodsAdapter.
         VolleyUtil volleyUtil = VolleyUtil.getInstance(mContext);
         volleyUtil.getImageByNetwork(holder.image, mDatas.get(position).getFile_url());
         holder.name.setText(mDatas.get(position).getTitle());
-        holder.oPrice.setText(mDatas.get(position).getYuanjia() + "");
-        holder.price.setText(mDatas.get(position).getPrice() + "");
+
+        switch (orderType) {
+            case NormalOrderType.ORIGINAL:
+                holder.price.setText("商城价:¥" + mDatas.get(position).getPrice());
+                holder.price.setTextColor(mContext.getResources().getColor(R.color.colorPrimary));
+                holder.oPriceTitle.setVisibility(View.GONE);
+                holder.oPrice.setVisibility(View.GONE);
+                holder.priceTitle.setVisibility(View.GONE);
+                break;
+            case NormalOrderType.GOLD:
+                holder.price.setText(mDatas.get(position).getPrice() + "金币");
+                holder.price.setTextColor(mContext.getResources().getColor(R.color.colorPrimary));
+                holder.oPriceTitle.setVisibility(View.GONE);
+                holder.oPrice.setVisibility(View.GONE);
+                holder.priceTitle.setVisibility(View.GONE);
+                break;
+            case NormalOrderType.ON_SALE:
+                holder.oPrice.setText(mDatas.get(position).getYuanjia() + "");
+                holder.price.setText(mDatas.get(position).getPrice() + "");
+                holder.price.setTextColor(mContext.getResources().getColor(android.R.color.holo_red_light));
+                holder.oPriceTitle.setVisibility(View.VISIBLE);
+                holder.oPrice.setVisibility(View.VISIBLE);
+                holder.priceTitle.setVisibility(View.VISIBLE);
+                break;
+        }
+
+
         holder.rootView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -69,7 +97,7 @@ public class NormalGoodsAdapter extends RecyclerView.Adapter<NormalGoodsAdapter.
     class MyViewHolder extends RecyclerView.ViewHolder {
 
         NetworkImageView image;
-        TextView name, oPrice, price;
+        TextView name, oPrice, oPriceTitle, price, priceTitle;
         View rootView;
 
         MyViewHolder(View view) {
@@ -79,6 +107,8 @@ public class NormalGoodsAdapter extends RecyclerView.Adapter<NormalGoodsAdapter.
             name = view.findViewById(R.id.fragment_home_list_item_name);
             oPrice = view.findViewById(R.id.fragment_home_list_item_oPrice);
             price = view.findViewById(R.id.fragment_home_list_item_price);
+            oPriceTitle = view.findViewById(R.id.fragment_home_list_item_oPrice_title);
+            priceTitle = view.findViewById(R.id.fragment_home_list_item_price_title);
         }
     }
 }

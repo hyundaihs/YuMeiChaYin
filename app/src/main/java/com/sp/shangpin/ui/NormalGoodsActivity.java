@@ -121,7 +121,7 @@ public class NormalGoodsActivity extends AppCompatActivity implements PopupMenu.
         GridLayoutManager layoutManager = new GridLayoutManager(thisContext, 2);
         recyclerView.setLayoutManager(layoutManager);
         layoutManager.setOrientation(OrientationHelper.VERTICAL);
-        adapter = new NormalGoodsAdapter(thisContext, data);
+        adapter = new NormalGoodsAdapter(thisContext, data, orderType);
         recyclerView.setAdapter(adapter);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.addItemDecoration(new SpacesItemDecoration(DisplayUtil.dp2px(this, 5), 2));

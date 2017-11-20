@@ -105,14 +105,31 @@
                 android:paddingLeft="20dp"
                 android:paddingRight="20dp">
 
-                <ImageView
+                <TextView
                     android:id="@+id/normal_orders_list_item_goods_flag"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:background="@drawable/cu_bg"
                     android:contentDescription="@null"
-                    android:src="@mipmap/ic_launcher"
-                    android:textColor="@android:color/black"
-                    android:textSize="12sp" />
+                    android:gravity="center"
+                    android:text="促"
+                    android:textColor="@android:color/white"
+                    android:textSize="12sp"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/normal_orders_list_item_goods_youhui"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/youhui_bg"
+                    android:contentDescription="@null"
+                    android:gravity="center"
+                    android:maxLines="1"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:textColor="@android:color/white"
+                    android:textSize="12sp"
+                    android:visibility="gone" />
 
                 <View
                     android:layout_width="0dp"
@@ -176,14 +193,14 @@
                     android:textSize="12sp" />
 
                 <!--<TextView-->
-                    <!--android:id="@+id/normal_orders_list_item_details"-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:background="@android:color/holo_orange_dark"-->
-                    <!--android:padding="5dp"-->
-                    <!--android:text="详情"-->
-                    <!--android:textColor="@android:color/white"-->
-                    <!--android:textSize="12sp" />-->
+                <!--android:id="@+id/normal_orders_list_item_details"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:background="@android:color/holo_orange_dark"-->
+                <!--android:padding="5dp"-->
+                <!--android:text="详情"-->
+                <!--android:textColor="@android:color/white"-->
+                <!--android:textSize="12sp" />-->
 
             </LinearLayout>
 

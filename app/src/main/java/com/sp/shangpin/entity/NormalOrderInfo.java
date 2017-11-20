@@ -23,13 +23,15 @@ public class NormalOrderInfo {
     private String wl_numbers; //  物流编号
     private int status; //  订单状态（1:待支付 2:待发货 3:待收货 4:已取消 5:已完成 6:退款中 7:已退款）
     private long create_time; //  创建时间（时间戳）
+    private int yhq_num; // 使用的优惠券数量
+    private double yhq_price; // 使用的优惠券金额
     private List<NormalOrderGoodsInfo> goods_lists; //  Array（产品列表）
 
     public NormalOrderInfo() {
         super();
     }
 
-    public NormalOrderInfo(int id, int cx, String numbers, double price, double yf, double goods_price, String title, String phone, String pca, String address, String wl_title, String contents, String wl_numbers, int status, long create_time, List<NormalOrderGoodsInfo> goods_lists) {
+    public NormalOrderInfo(int id, int cx, String numbers, double price, double yf, double goods_price, String title, String phone, String pca, String address, String contents, String wl_title, String wl_numbers, int status, long create_time, int yhq_num, double yhq_price, List<NormalOrderGoodsInfo> goods_lists) {
         this.id = id;
         this.cx = cx;
         this.numbers = numbers;
@@ -40,11 +42,13 @@ public class NormalOrderInfo {
         this.phone = phone;
         this.pca = pca;
         this.address = address;
-        this.wl_title = wl_title;
         this.contents = contents;
+        this.wl_title = wl_title;
         this.wl_numbers = wl_numbers;
         this.status = status;
         this.create_time = create_time;
+        this.yhq_num = yhq_num;
+        this.yhq_price = yhq_price;
         this.goods_lists = goods_lists;
     }
 
@@ -176,6 +180,22 @@ public class NormalOrderInfo {
         this.contents = contents;
     }
 
+    public int getYhq_num() {
+        return yhq_num;
+    }
+
+    public void setYhq_num(int yhq_num) {
+        this.yhq_num = yhq_num;
+    }
+
+    public double getYhq_price() {
+        return yhq_price;
+    }
+
+    public void setYhq_price(double yhq_price) {
+        this.yhq_price = yhq_price;
+    }
+
     @Override
     public String toString() {
         return "NormalOrderInfo{" +
@@ -189,11 +209,13 @@ public class NormalOrderInfo {
                 ", phone='" + phone + '\'' +
                 ", pca='" + pca + '\'' +
                 ", address='" + address + '\'' +
-                ", wl_title='" + wl_title + '\'' +
                 ", contents='" + contents + '\'' +
+                ", wl_title='" + wl_title + '\'' +
                 ", wl_numbers='" + wl_numbers + '\'' +
                 ", status=" + status +
                 ", create_time=" + create_time +
+                ", yhq_num=" + yhq_num +
+                ", yhq_price=" + yhq_price +
                 ", goods_lists=" + goods_lists +
                 '}';
     }

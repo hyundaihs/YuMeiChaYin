@@ -356,4 +356,10 @@ public class InternetUtil {
      * @return
      */
     public static native String txlists();
+
+    /**
+     * 取消金币订单(退款)
+     * @return
+     */
+    public static native String unsetordersjf();
 }

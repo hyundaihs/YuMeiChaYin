@@ -3,13 +3,9 @@ package com.sp.shangpin.ui;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.Html;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebView;
@@ -25,10 +21,11 @@ import com.sp.shangpin.entity.GoodsDetails_Sup;
 import com.sp.shangpin.entity.InterResult;
 import com.sp.shangpin.entity.OrderInfo;
 import com.sp.shangpin.entity.OrderInfo_Sup;
-import com.sp.shangpin.utils.IntentUtil;
 import com.sp.shangpin.entity.UpgradeGoods;
 import com.sp.shangpin.entity.UserInfo_Sup;
 import com.sp.shangpin.utils.DialogUtil;
+import com.sp.shangpin.utils.HtmlUtil;
+import com.sp.shangpin.utils.IntentUtil;
 import com.sp.shangpin.utils.InternetUtil;
 import com.sp.shangpin.utils.JsonUtil;
 import com.sp.shangpin.utils.RequestUtil;
@@ -94,8 +91,10 @@ public class GoodsDetailsActivity extends AppCompatActivity implements View.OnCl
         countView.setOnNumberChangerListener(new CountNumberView.OnNumberChangerListener() {
             @Override
             public void onNumberChange(int curr) {
-                goodsFreight.setText("邮费：¥" + String.valueOf(upgradeGoods.getYf() + 5 * curr) +
-                        "(运费首件" + upgradeGoods.getYf() + "元，此后每件依次加" + upgradeGoods.getYf_one() + "元)");
+                if (upgradeGoods.getYf() > 0) {
+                    goodsFreight.setText("邮费：¥" + String.valueOf(upgradeGoods.getYf() + 5 * curr) +
+                            "(运费首件" + upgradeGoods.getYf() + "元，此后每件依次加" + upgradeGoods.getYf_one() + "元)");
+                }
             }
         });
         balance.setText("余额:" + MyApplication.getUserInfo().getYe_price());
@@ -109,9 +108,13 @@ public class GoodsDetailsActivity extends AppCompatActivity implements View.OnCl
         volleyUtil.getImage(goodsImage, upgradeGoods.getInfo_file_url());
         goodsName.setText(upgradeGoods.getTitle());
         goodsPrice.setText("单价：¥" + upgradeGoods.getPrice());
-        goodsFreight.setText("邮费：¥" + upgradeGoods.getYf() +
-                "(运费首件" + upgradeGoods.getYf() + "元，此后每件依次加" + upgradeGoods.getYf_one() + "元)");
-        goodsIntroduce.loadData(upgradeGoods.getApp_contents(), "text/html; charset=UTF-8", null);
+        if (upgradeGoods.getYf() <= 0) {
+            goodsFreight.setText("免费");
+        } else {
+            goodsFreight.setText("邮费：¥" + upgradeGoods.getYf() +
+                    "(运费首件" + upgradeGoods.getYf() + "元，此后每件依次加" + upgradeGoods.getYf_one() + "元)");
+        }
+        goodsIntroduce.loadData(HtmlUtil.getNewContent(upgradeGoods.getApp_contents()), "text/html; charset=UTF-8", null);
     }
 
     @Override
@@ -164,7 +167,8 @@ public class GoodsDetailsActivity extends AppCompatActivity implements View.OnCl
 
     private void buyPay() {
         if (upgradeGoods.getPrice() * countView.getCurrNum() +
-                upgradeGoods.getYf() + 5 * countView.getCurrNum() <= MyApplication.getUserInfo().getYe_price()) {
+                (upgradeGoods.getYf() <= 0 ? upgradeGoods.getYf() : upgradeGoods.getYf() + 5 * countView.getCurrNum())
+                <= MyApplication.getUserInfo().getYe_price()) {
             DialogUtil.showAskMessage(thisContext, "确定要购买吗?", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
@@ -189,7 +193,7 @@ public class GoodsDetailsActivity extends AppCompatActivity implements View.OnCl
         if (requestCode == IntentUtil.REQUEST_FROM_GOODS_DETAILS
                 && resultCode == IntentUtil.RESULT_OK) {
             getUserInfo();
-        }else if (requestCode == IntentUtil.REQUEST_FROM_GOODS_DETAILS_INPUT
+        } else if (requestCode == IntentUtil.REQUEST_FROM_GOODS_DETAILS_INPUT
                 && resultCode == IntentUtil.RESULT_OK) {
             pickUp();
         }
@@ -211,20 +215,20 @@ public class GoodsDetailsActivity extends AppCompatActivity implements View.OnCl
                             OrderInfo_Sup orderInfo_sup =
                                     (OrderInfo_Sup) JsonUtil.stringToObject(response.toString(), OrderInfo_Sup.class);
                             final OrderInfo orderInfo = orderInfo_sup.getRetRes();
-                            DialogUtil.createDialog(thisContext, "下单成功", "你需要升级商品吗?", "猜奇偶", new DialogInterface.OnClickListener() {
+                            DialogUtil.createDialog(thisContext, "下单成功", "你需要升级商品吗?", "去提货", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    Intent intent = new Intent(thisContext, InputAddrActivity.class);
+                                    intent.putExtra("position", i);
+                                    startActivityForResult(intent, IntentUtil.REQUEST_FROM_GOODS_DETAILS_INPUT);
+                                }
+                            }, "猜奇偶", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
                                     Intent intent = new Intent(thisContext, LotteryActivity.class);
                                     intent.putExtra("order_id", orderInfo.getOrders_id());
                                     startActivity(intent);
                                     finish();
-                                }
-                            }, "去提货", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    Intent intent = new Intent(thisContext, InputAddrActivity.class);
-                                    intent.putExtra("position", i);
-                                    startActivityForResult(intent, IntentUtil.REQUEST_FROM_GOODS_DETAILS_INPUT);
                                 }
                             });
                         } else {

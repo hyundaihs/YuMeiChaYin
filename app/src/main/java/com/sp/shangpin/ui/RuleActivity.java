@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.sp.shangpin.MyApplication;
 import com.sp.shangpin.R;
+import com.sp.shangpin.utils.HtmlUtil;
 
 /**
  * ChaYin
@@ -26,7 +27,7 @@ public class RuleActivity extends AppCompatActivity {
         setContentView(R.layout.activity_rule);
         initActionBar();
         ruleContent = (WebView) findViewById(R.id.rule_content);
-        ruleContent.loadData(MyApplication.getSystemInfo().getGz_contents(), "text/html; charset=UTF-8", null);
+        ruleContent.loadData(HtmlUtil.getNewContent(MyApplication.getSystemInfo().getGz_contents()), "text/html; charset=UTF-8", null);
     }
 
     public void initActionBar() {
