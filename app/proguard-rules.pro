@@ -56,4 +56,6 @@
 -keepclassmembers class android.support.design.internal.BottomNavigationMenuView {
     boolean mShiftingMode;
 }
+-dontwarn org.jsoup.**
+-keep class org.jsoup.**{*;}
 
