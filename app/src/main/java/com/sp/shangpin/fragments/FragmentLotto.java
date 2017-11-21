@@ -63,6 +63,7 @@ public class FragmentLotto extends BaseFragment {
         list.add(FragmentLottoContent.getInstance(3));
         ViewPager viewPager = view.findViewById(R.id.orders_content);
         bang = view.findViewById(R.id.orders_float_button);
+        bang.setVisibility(View.VISIBLE);
         TabLayout tabLayout = view.findViewById(R.id.orders_model_tab_layout);
         //ViewPager的适配器
         FragmentsAdapter adapter = new FragmentsAdapter(getChildFragmentManager(), list, titles);

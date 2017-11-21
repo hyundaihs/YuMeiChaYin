@@ -37,6 +37,7 @@
         android:background="@drawable/bang_bg"
         android:gravity="center"
         android:text="榜"
+        android:visibility="gone"
         android:textColor="@android:color/white"
         android:textSize="16sp" />
 </RelativeLayout>

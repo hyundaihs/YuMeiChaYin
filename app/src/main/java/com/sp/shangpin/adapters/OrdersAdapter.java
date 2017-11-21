@@ -79,7 +79,6 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.MyViewHold
             holder.price.setText("¥" + orderInfo.getYf());
             holder.totalPrice.setText("¥" + orderInfo.getPrice_2());
         } else {
-            //holder.orderTime.setText("下单时间:" + new CalendarUtil(orderInfo.getCreate_time(), true).format(CalendarUtil.STANDARD));
             volleyUtil.getImage(holder.image, orderInfo.getGoodssj_file_url());
             holder.orderId.setText("订单:" + orderInfo.getNumbers());
             holder.name.setText(orderInfo.getGoodssj_title());
@@ -88,7 +87,11 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.MyViewHold
             holder.price.setText("¥" + orderInfo.getYf());
             holder.totalPrice.setText("¥" + orderInfo.getPrice());
         }
-        holder.orderTime.setText("升级时间:" + new CalendarUtil(orderInfo.getSj_time(), true).format(CalendarUtil.STANDARD));
+        if (orderInfo.getSj_status() == 0) {
+            holder.orderTime.setText("下单时间:" + new CalendarUtil(orderInfo.getCreate_time(), true).format(CalendarUtil.STANDARD));
+        } else {
+            holder.orderTime.setText("升级时间:" + new CalendarUtil(orderInfo.getSj_time(), true).format(CalendarUtil.STANDARD));
+        }
         holder.jiou.setText(orderInfo.getSj_jo() == 1 ? "奇" : "偶");
         holder.jiou.setBackgroundResource(orderInfo.getSj_jo() == 1 ? R.drawable.ji_bg : R.drawable.ou_bg);
         holder.goldCoin.setOnClickListener(new MyOnClickListener(position));

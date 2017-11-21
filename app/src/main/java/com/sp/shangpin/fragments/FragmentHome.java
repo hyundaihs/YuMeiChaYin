@@ -109,6 +109,7 @@ public class FragmentHome extends BaseFragment implements View.OnClickListener {
         recyclerView = view.findViewById(R.id.fragment_home_recyclerView);
         recyclerView.setNestedScrollingEnabled(false);
         bang = view.findViewById(R.id.fragment_home_float_button);
+        bang.setVisibility(View.VISIBLE);
         return view;
     }
 
