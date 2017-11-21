@@ -13,6 +13,7 @@ public class SharedKey {
     public static final String WEIXIN = "weixin"; // 微信
     public static final String ALIPAY = "alipay"; // 微信
     public static final String BANK = "bank"; // 微信
+    public static final String YOUHUI = "youhui"; // 微信
 
     /**
      * 微信通过code获取access_token返回的数据

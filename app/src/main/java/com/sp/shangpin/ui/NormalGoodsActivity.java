@@ -17,9 +17,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.sp.shangpin.MyApplication;
 import com.sp.shangpin.R;
 import com.sp.shangpin.adapters.FragmentHomeAdapter;
 import com.sp.shangpin.adapters.NormalGoodsAdapter;
@@ -71,12 +69,12 @@ public class NormalGoodsActivity extends AppCompatActivity implements PopupMenu.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_normal_goods);
         orderType = getIntent().getIntExtra(NormalOrderType.KEY, NormalOrderType.ORIGINAL);
-        int max = MyApplication.getSystemInfo().getYhq_max();
-        if (max <= 0) {
-            yhq = new int[4];
-        } else {
-            yhq = new int[max];
-        }
+//        int max = MyApplication.getSystemInfo().getYhq_max();
+//        if (max <= 0) {
+//            yhq = new int[4];
+//        } else {
+//            yhq = new int[max];
+//        }
         initActionBar();
         initViews();
     }
@@ -90,11 +88,12 @@ public class NormalGoodsActivity extends AppCompatActivity implements PopupMenu.
             case NormalOrderType.ORIGINAL:
                 title.setText("精品商城");
                 btn.setVisibility(View.VISIBLE);
-                initMenu(btn);
+//                initMenu(btn);
                 btn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        showMenu();
+                        startActivityForResult(new Intent(thisContext, ChooseYouhuiActivity.class), 11);
+//                        showMenu();
                     }
                 });
                 break;
@@ -107,8 +106,18 @@ public class NormalGoodsActivity extends AppCompatActivity implements PopupMenu.
         }
         setSupportActionBar(toolbar);
         setTitle("");
+    }
 
-
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 11 && resultCode == 0) {
+            int choose = data.getIntExtra("choose", 1);
+            Log.d("Activity", choose + "");
+            currentYhq = choose;
+            btn.setText("优惠券(" + currentYhq + ")");
+            getGoodsInfo();
+        }
     }
 
     private void initViews() {

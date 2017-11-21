@@ -53,6 +53,9 @@
 -keep class com.android.support.** {
     *;
 }
+-keep class com.yanzhenjie.** {
+    *;
+}
 -keepclassmembers class android.support.design.internal.BottomNavigationMenuView {
     boolean mShiftingMode;
 }

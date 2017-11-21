@@ -96,6 +96,9 @@
             android:name=".ui.TopUpLogActivity"
             android:launchMode="singleTop" />
         <activity
+            android:name=".ui.ChooseYouhuiActivity"
+            android:launchMode="singleTop" />
+        <activity
             android:name=".ui.DialogActivity"
             android:launchMode="singleTop"
             android:theme="@android:style/Theme.Dialog" />
