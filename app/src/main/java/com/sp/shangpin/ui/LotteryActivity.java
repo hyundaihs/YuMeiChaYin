@@ -3,17 +3,13 @@ package com.sp.shangpin.ui;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.IdRes;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -22,15 +18,13 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.sp.shangpin.R;
-import com.sp.shangpin.adapters.EndLessOnScrollListener;
 import com.sp.shangpin.adapters.LineDecoration;
 import com.sp.shangpin.adapters.LotteryAdapter;
 import com.sp.shangpin.entity.InterResult;
 import com.sp.shangpin.entity.LotteryInfo;
-import com.sp.shangpin.entity.SystemInfo;
+import com.sp.shangpin.entity.LotteryInfo_Sup;
 import com.sp.shangpin.entity.UpgradeOrderInfo;
 import com.sp.shangpin.entity.UpgradeOrderPageInfo;
 import com.sp.shangpin.entity.UpgradeOrderPageInfo_Sup;
@@ -75,21 +69,14 @@ public class LotteryActivity extends AppCompatActivity {
     private UpgradeOrderInfo upgradeOrderInfo;
     private TextView nextTime;
     private Timer timer;
+    private View bgView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lottery);
-        orderId = getIntent().getIntExtra("order_id", 0);
+        orderId = getIntent().getIntExtra("order_id", -1);
         init();
-    }
-
-    private class MyTimerTask extends TimerTask {
-
-        @Override
-        public void run() {
-            getLotteryInfos();
-        }
     }
 
     private void init() {
@@ -111,6 +98,18 @@ public class LotteryActivity extends AppCompatActivity {
     private void initViews() {
         jiAndOu = (RadioGroup) findViewById(R.id.lottery_ji_ou);
         goodsInfo = findViewById(R.id.lottery_goods_info);
+        bgView = findViewById(R.id.lottery_ji_ou_bg);
+        if (orderId == -1) {
+            goodsInfo.setVisibility(View.GONE);
+            bgView.setVisibility(View.GONE);
+        } else {
+            goodsInfo.setVisibility(View.VISIBLE);
+            bgView.setVisibility(View.VISIBLE);
+            initJiOu();
+        }
+    }
+
+    private void initJiOu() {
         submit = (Button) findViewById(R.id.lottery_submit);
         nextTime = (TextView) findViewById(R.id.lottery_next_time);
         notUpgradeImage = (ImageView) findViewById(R.id.fragment_lotto_list_item_not_upgrade_image);
@@ -119,14 +118,6 @@ public class LotteryActivity extends AppCompatActivity {
         upgradeName = (TextView) findViewById(R.id.fragment_lotto_list_item_upgrade_name);
         notUpgradePrice = (TextView) findViewById(R.id.fragment_lotto_list_item_not_upgrade_price);
         upgradePrice = (TextView) findViewById(R.id.fragment_lotto_list_item_upgrade_price);
-//        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.lottery_swipe_layout);
-        recyclerView = (RecyclerView) findViewById(R.id.lottery_list);
-        recyclerView.setNestedScrollingEnabled(false);
-//        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-//            public void onRefresh() {
-//                getLotteryInfos();
-//            }
-//        });
         jiAndOu.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, @IdRes int i) {
@@ -148,6 +139,14 @@ public class LotteryActivity extends AppCompatActivity {
     }
 
     private void initListViews() {
+        //        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.lottery_swipe_layout);
+        recyclerView = (RecyclerView) findViewById(R.id.lottery_list);
+        recyclerView.setNestedScrollingEnabled(false);
+//        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+//            public void onRefresh() {
+//                getLotteryInfosById();
+//            }
+//        });
         LinearLayoutManager layoutManager = new LinearLayoutManager(thisContext);
         recyclerView.setLayoutManager(layoutManager);
         layoutManager.setOrientation(OrientationHelper.VERTICAL);
@@ -168,18 +167,19 @@ public class LotteryActivity extends AppCompatActivity {
 
     private void refresh() {
         adapter.notifyDataSetChanged();
-        VolleyUtil volleyUtil = VolleyUtil.getInstance(this);
-        volleyUtil.getImage(notUpgradeImage, upgradeOrderInfo.getGoodssj_file_url());
-        volleyUtil.getImage(upgradeImage, upgradeOrderInfo.getGoodssj_file_url_2());
-        notUpgradeName.setText(upgradeOrderInfo.getGoodssj_title());
-        upgradeName.setText(upgradeOrderInfo.getGoodssj_title_2());
-        notUpgradePrice.setText("¥" + upgradeOrderInfo.getDanjia());
-        upgradePrice.setText("¥" + upgradeOrderInfo.getGoodssj_price_2());
-        goodsInfo.setVisibility(View.VISIBLE);
-        nextTime.setText("下次开奖时间:" + new CalendarUtil(upgradeOrderPageInfo.getNext_time(), true).format(CalendarUtil.YYYY_MM_DD_HH_MM));
-        nextTime.setVisibility(View.VISIBLE);
+        if (orderId > -1) {
+            VolleyUtil volleyUtil = VolleyUtil.getInstance(this);
+            volleyUtil.getImage(notUpgradeImage, upgradeOrderInfo.getGoodssj_file_url());
+            volleyUtil.getImage(upgradeImage, upgradeOrderInfo.getGoodssj_file_url_2());
+            notUpgradeName.setText(upgradeOrderInfo.getGoodssj_title());
+            upgradeName.setText(upgradeOrderInfo.getGoodssj_title_2());
+            notUpgradePrice.setText("¥" + upgradeOrderInfo.getDanjia());
+            upgradePrice.setText("¥" + upgradeOrderInfo.getGoodssj_price_2());
+            goodsInfo.setVisibility(View.VISIBLE);
+            nextTime.setText("下次开奖时间:" + new CalendarUtil(upgradeOrderPageInfo.getNext_time(), true).format(CalendarUtil.YYYY_MM_DD_HH_MM));
+            nextTime.setVisibility(View.VISIBLE);
+        }
     }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -233,7 +233,7 @@ public class LotteryActivity extends AppCompatActivity {
 
     }
 
-    private void getLotteryInfos() {
+    private void getLotteryInfosById() {
         Map<String, String> map = new HashMap<>();
         map.put("orderssj_id", String.valueOf(orderId));
         VolleyUtil volleyUtil = VolleyUtil.getInstance(this);
@@ -268,6 +268,52 @@ public class LotteryActivity extends AppCompatActivity {
         volleyUtil.addToRequestQueue(request, InternetUtil.cpkj());
 
     }
+
+    private void getLotteryInfos() {
+        Map<String, String> map = new HashMap<>();
+        VolleyUtil volleyUtil = VolleyUtil.getInstance(this);
+        JsonObjectRequest request = RequestUtil.createPostJsonRequest(InternetUtil.cpkj(),
+                JsonUtil.objectToString(map),
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        InterResult interResult =
+                                (InterResult) JsonUtil.stringToObject(response.toString(), InterResult.class);
+                        if (interResult.isSuccessed()) {
+                            LotteryInfo_Sup lotteryInfo_sup = (LotteryInfo_Sup)
+                                    JsonUtil.stringToObject(response.toString(), LotteryInfo_Sup.class);
+                            data.clear();
+                            data.addAll(lotteryInfo_sup.getRetRes());
+                            refresh();
+//                            swipeRefreshLayout.setRefreshing(false);
+                        } else {
+                            DialogUtil.showErrorMessage(thisContext, interResult.getRetErr());
+//                            swipeRefreshLayout.setRefreshing(false);
+                        }
+                    }
+                }, new RequestUtil.MyErrorListener() {
+                    @Override
+                    public void onErrorResponse(String error) {
+                        DialogUtil.showErrorMessage(thisContext, error.toString());
+//                        swipeRefreshLayout.setRefreshing(false);
+                    }
+                });
+        volleyUtil.addToRequestQueue(request, InternetUtil.cpkj());
+
+    }
+
+    private class MyTimerTask extends TimerTask {
+
+        @Override
+        public void run() {
+            if (orderId == -1) {
+                getLotteryInfos();
+            } else {
+                getLotteryInfosById();
+            }
+        }
+    }
+
 
 }
 

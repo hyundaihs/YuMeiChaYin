@@ -11,7 +11,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.sp.shangpin.R;
 import com.sp.shangpin.entity.InterResult;
@@ -72,7 +71,6 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.MyViewHold
         OrderInfo orderInfo = mDatas.get(position);
         VolleyUtil volleyUtil = VolleyUtil.getInstance(mContext);
         if (orderInfo.getSj_status() == UpgradeStatus.UPGRADE_SUCCESS) {
-            holder.orderTime.setText("升级时间:" + new CalendarUtil(orderInfo.getSj_time(), true).format(CalendarUtil.STANDARD));
             volleyUtil.getImage(holder.image, orderInfo.getGoodssj_file_url_2());
             holder.orderId.setText("订单:" + orderInfo.getNumbers());
             holder.name.setText(orderInfo.getGoodssj_title_2());
@@ -81,7 +79,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.MyViewHold
             holder.price.setText("¥" + orderInfo.getYf());
             holder.totalPrice.setText("¥" + orderInfo.getPrice_2());
         } else {
-            holder.orderTime.setText("下单时间:" + new CalendarUtil(orderInfo.getCreate_time(), true).format(CalendarUtil.STANDARD));
+            //holder.orderTime.setText("下单时间:" + new CalendarUtil(orderInfo.getCreate_time(), true).format(CalendarUtil.STANDARD));
             volleyUtil.getImage(holder.image, orderInfo.getGoodssj_file_url());
             holder.orderId.setText("订单:" + orderInfo.getNumbers());
             holder.name.setText(orderInfo.getGoodssj_title());
@@ -90,6 +88,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.MyViewHold
             holder.price.setText("¥" + orderInfo.getYf());
             holder.totalPrice.setText("¥" + orderInfo.getPrice());
         }
+        holder.orderTime.setText("升级时间:" + new CalendarUtil(orderInfo.getSj_time(), true).format(CalendarUtil.STANDARD));
         holder.jiou.setText(orderInfo.getSj_jo() == 1 ? "奇" : "偶");
         holder.jiou.setBackgroundResource(orderInfo.getSj_jo() == 1 ? R.drawable.ji_bg : R.drawable.ou_bg);
         holder.goldCoin.setOnClickListener(new MyOnClickListener(position));

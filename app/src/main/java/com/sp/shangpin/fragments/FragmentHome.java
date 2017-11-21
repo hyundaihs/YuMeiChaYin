@@ -18,7 +18,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.sp.shangpin.R;
 import com.sp.shangpin.adapters.FragmentHomeAdapter;
@@ -31,6 +30,7 @@ import com.sp.shangpin.entity.NotificationInfo_Sup;
 import com.sp.shangpin.entity.UpgradeGoods;
 import com.sp.shangpin.ui.GoodsDetailsActivity;
 import com.sp.shangpin.ui.HomeActivity;
+import com.sp.shangpin.ui.LotteryActivity;
 import com.sp.shangpin.ui.RuleActivity;
 import com.sp.shangpin.utils.DialogUtil;
 import com.sp.shangpin.utils.DisplayUtil;
@@ -71,6 +71,25 @@ public class FragmentHome extends BaseFragment implements View.OnClickListener {
     private List<NotificationInfo> notificationInfo = new ArrayList<>();
     private int index = 0;
     private Timer timer;
+    private TextView bang;
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            if (index == notificationInfo.size()) {
+                index = 0;
+                if (null != notificationInfo_sup.getRetRes()) {
+                    notificationInfo = notificationInfo_sup.getRetRes();
+                }
+            }
+            if (notificationInfo.size() > 0 && index < notificationInfo.size()) {
+                ToastUtil.show(getActivity(), notificationInfo.get(index).getTitle(), notificationInfo.get(index).getFile_url(), 1);
+                index++;
+                if (index == notificationInfo.size() - 2) {
+                    getNotification();
+                }
+            }
+        }
+    };
 
     public static BaseFragment getInstance() {
         if (null == baseFragment) {
@@ -89,6 +108,7 @@ public class FragmentHome extends BaseFragment implements View.OnClickListener {
         view.findViewById(R.id.fragment_home_upgrade3).setOnClickListener(this);
         recyclerView = view.findViewById(R.id.fragment_home_recyclerView);
         recyclerView.setNestedScrollingEnabled(false);
+        bang = view.findViewById(R.id.fragment_home_float_button);
         return view;
     }
 
@@ -126,14 +146,6 @@ public class FragmentHome extends BaseFragment implements View.OnClickListener {
         volleyUtil.addToRequestQueue(request, InternetUtil.indexdata());
     }
 
-    private class MyTimerTask extends TimerTask {
-
-        @Override
-        public void run() {
-            handler.sendEmptyMessage(0);
-        }
-    }
-
     @Override
     public void onResume() {
         super.onResume();
@@ -146,25 +158,6 @@ public class FragmentHome extends BaseFragment implements View.OnClickListener {
         timer.cancel();
         super.onStop();
     }
-
-    private Handler handler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            if (index == notificationInfo.size()) {
-                index = 0;
-                if (null != notificationInfo_sup.getRetRes()) {
-                    notificationInfo = notificationInfo_sup.getRetRes();
-                }
-            }
-            if (notificationInfo.size() > 0 && index < notificationInfo.size()) {
-                ToastUtil.show(getActivity(), notificationInfo.get(index).getTitle(), notificationInfo.get(index).getFile_url(), 1);
-                index++;
-                if (index == notificationInfo.size() - 2) {
-                    getNotification();
-                }
-            }
-        }
-    };
 
     private void getHomeInfo() {
         Map<String, String> map = new HashMap<>();
@@ -214,21 +207,6 @@ public class FragmentHome extends BaseFragment implements View.OnClickListener {
         }
     }
 
-//    private void initViews() {
-//        if (null != homeInfo && null != homeInfo.getSjfl()) {
-//            for (int i = 0; i < homeInfo.getSjfl().size(); i++) {
-//                if (i >= imageViews.length) {
-//                    continue;
-//                }
-//                UpgradeGoodsType upgradeGoodsType = homeInfo.getSjfl().get(i);
-//                VolleyUtil volleyUtil = VolleyUtil.getInstance(getActivity());
-//                volleyUtil.getImage(imageViews[i], upgradeGoodsType.getFile_url());
-//                textViews[i].setText(upgradeGoodsType.getTitle());
-//                imageViews[i].setOnClickListener(this);
-//            }
-//        }
-//    }
-
     private void initListView() {
         data = new ArrayList<>();
         GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), 2);
@@ -246,7 +224,28 @@ public class FragmentHome extends BaseFragment implements View.OnClickListener {
                 startActivity(intent);
             }
         });
+        bang.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), LotteryActivity.class));
+            }
+        });
     }
+
+//    private void initViews() {
+//        if (null != homeInfo && null != homeInfo.getSjfl()) {
+//            for (int i = 0; i < homeInfo.getSjfl().size(); i++) {
+//                if (i >= imageViews.length) {
+//                    continue;
+//                }
+//                UpgradeGoodsType upgradeGoodsType = homeInfo.getSjfl().get(i);
+//                VolleyUtil volleyUtil = VolleyUtil.getInstance(getActivity());
+//                volleyUtil.getImage(imageViews[i], upgradeGoodsType.getFile_url());
+//                textViews[i].setText(upgradeGoodsType.getTitle());
+//                imageViews[i].setOnClickListener(this);
+//            }
+//        }
+//    }
 
     public void initActionBar() {
         Toolbar toolbar = getView().findViewById(R.id.toolbar);
@@ -278,6 +277,14 @@ public class FragmentHome extends BaseFragment implements View.OnClickListener {
             case R.id.fragment_home_upgrade3:
                 ((HomeActivity) getActivity()).checkTab(1, 2);
                 break;
+        }
+    }
+
+    private class MyTimerTask extends TimerTask {
+
+        @Override
+        public void run() {
+            handler.sendEmptyMessage(0);
         }
     }
 }

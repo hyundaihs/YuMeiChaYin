@@ -6,7 +6,7 @@ package com.sp.shangpin.entity;
  */
 
 public class OrderStatus {
-    public static final String[] STRINGS = {"", "待支付", "已支付", "升级中", "升级完毕", "退货中", "已退货", "提货中", "已发货", "提货成功", "取消"};
+    public static final String[] STRINGS = {"", "待支付", "已支付", "升级中", "升级完毕", "退货中", "已兑金币", "提货中", "已发货", "提货成功", "取消"};
     public static final int NOT_PAID = 1;
     public static final int PAID = 2;
     public static final int UPGRADING = 3;

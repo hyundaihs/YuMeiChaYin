@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.sp.shangpin.R;
 import com.sp.shangpin.adapters.FragmentsAdapter;
+import com.sp.shangpin.ui.LotteryActivity;
 import com.sp.shangpin.ui.RuleActivity;
 
 import java.util.ArrayList;
@@ -32,6 +33,7 @@ public class FragmentLotto extends BaseFragment {
     private List<BaseFragment> list;
     private String[] titles = {"茶类型", "红酒类型", "精品类型"};
     private int index;
+    private TextView bang;
 
     public static BaseFragment getInstance(int index) {
         if (index >= 0) {
@@ -60,6 +62,7 @@ public class FragmentLotto extends BaseFragment {
         list.add(FragmentLottoContent.getInstance(2));
         list.add(FragmentLottoContent.getInstance(3));
         ViewPager viewPager = view.findViewById(R.id.orders_content);
+        bang = view.findViewById(R.id.orders_float_button);
         TabLayout tabLayout = view.findViewById(R.id.orders_model_tab_layout);
         //ViewPager的适配器
         FragmentsAdapter adapter = new FragmentsAdapter(getChildFragmentManager(), list, titles);
@@ -68,6 +71,12 @@ public class FragmentLotto extends BaseFragment {
         tabLayout.setupWithViewPager(viewPager);
         tabLayout.getTabAt(index).select();
         //viewPager.setCurrentItem(index);
+        bang.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), LotteryActivity.class));
+            }
+        });
     }
 
     public void initActionBar(View view) {

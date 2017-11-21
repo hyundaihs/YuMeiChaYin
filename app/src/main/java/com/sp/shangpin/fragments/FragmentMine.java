@@ -22,7 +22,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.sp.shangpin.MainActivity;
 import com.sp.shangpin.MyApplication;
@@ -41,6 +40,7 @@ import com.sp.shangpin.ui.GetCashLogActivity;
 import com.sp.shangpin.ui.NormalOrdersActivity;
 import com.sp.shangpin.ui.OrdersActivity;
 import com.sp.shangpin.ui.RealNameActivity;
+import com.sp.shangpin.ui.RuleActivity;
 import com.sp.shangpin.ui.TopUpActivity;
 import com.sp.shangpin.ui.TopUpLogActivity;
 import com.sp.shangpin.ui.YhqActivity;
@@ -171,7 +171,7 @@ public class FragmentMine extends BaseFragment {
                         getRealNameStatus();
                         break;
                     case 11://升级方式
-
+                        startActivity(new Intent(getActivity(), RuleActivity.class));
                         break;
 //                    case 12://返佣提现
 //
