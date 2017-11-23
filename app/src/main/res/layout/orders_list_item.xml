@@ -225,13 +225,18 @@
 
                 <TextView
                     android:id="@+id/orders_list_item_jiou"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:text="奇"
                     android:gravity="center"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingTop="5dp"
+                    android:textStyle="bold"
+                    android:paddingBottom="5dp"
                     android:background="@drawable/ji_bg"
                     android:textColor="@android:color/white"
-                    android:textSize="12sp" />
+                    android:textSize="18sp" />
 
             </LinearLayout>
 

@@ -1,5 +1,6 @@
 package com.sp.shangpin.wxapi;
 
+import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -24,7 +25,7 @@ import static android.content.ContentValues.TAG;
  * Created by ${蔡雨峰} on 2017/10/28/028.
  */
 
-public class WXPayEntryActivity extends AppCompatActivity implements IWXAPIEventHandler {
+public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

@@ -26,6 +26,7 @@ import com.tencent.mm.opensdk.modelbase.BaseResp;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -37,7 +38,7 @@ import android.widget.TextView;
 
 import org.json.JSONObject;
 
-public class WXEntryActivity extends AppCompatActivity implements IWXAPIEventHandler {
+public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
     private final String TAG = getClass().getSimpleName();
     private final Context thisContext = this;
 

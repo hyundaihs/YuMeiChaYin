@@ -75,17 +75,18 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.MyViewHold
             holder.orderId.setText("订单:" + orderInfo.getNumbers());
             holder.name.setText(orderInfo.getGoodssj_title_2());
             holder.number.setText("¥" + orderInfo.getGoodssj_price_2() + " x " + orderInfo.getNum());
-            holder.status.setText(OrderStatus.STRINGS[orderInfo.getStatus()] + "(" + UpgradeStatus.STRINGS[orderInfo.getSj_status()] + ")");
             holder.price.setText("¥" + orderInfo.getYf());
             holder.totalPrice.setText("¥" + orderInfo.getPrice_2());
+            holder.status.setText(OrderStatus.STRINGS[orderInfo.getStatus()] + "(" + UpgradeStatus.STRINGS[orderInfo.getSj_status()] + ")");
         } else {
             volleyUtil.getImage(holder.image, orderInfo.getGoodssj_file_url());
             holder.orderId.setText("订单:" + orderInfo.getNumbers());
             holder.name.setText(orderInfo.getGoodssj_title());
             holder.number.setText("¥" + orderInfo.getDanjia() + " x " + orderInfo.getNum());
-            holder.status.setText(OrderStatus.STRINGS[orderInfo.getStatus()] + "(" + UpgradeStatus.STRINGS[orderInfo.getSj_status()] + ")");
             holder.price.setText("¥" + orderInfo.getYf());
             holder.totalPrice.setText("¥" + orderInfo.getPrice());
+            holder.status.setText(OrderStatus.STRINGS[orderInfo.getStatus()] +
+                    (orderInfo.getStatus() == 3 ? "" : "(" + UpgradeStatus.STRINGS[orderInfo.getSj_status()] + ")"));
         }
         if (orderInfo.getSj_status() == 0) {
             holder.orderTime.setText("下单时间:" + new CalendarUtil(orderInfo.getCreate_time(), true).format(CalendarUtil.STANDARD));
@@ -119,18 +120,23 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.MyViewHold
                 holder.totalPriceTitle.setText("总价:");
                 break;
             case 1:
-                holder.goldCoin.setVisibility(View.VISIBLE);
-                holder.lotteryTime.setText("开奖时间:" + orderInfo.getKj_dates());
-                holder.returnG.setVisibility(View.GONE);
-                holder.pickUp.setVisibility(View.VISIBLE);
-                holder.upgrade.setVisibility(View.GONE);
-                holder.addrLayout.setVisibility(View.GONE);
-                holder.price.setVisibility(View.GONE);
-                holder.priceTitle.setVisibility(View.GONE);
-                holder.jiou.setVisibility(View.VISIBLE);
-                holder.buttonsLayout.setVisibility(View.VISIBLE);
-                holder.buttonsLayoutLine.setVisibility(View.VISIBLE);
-                holder.totalPriceTitle.setText("总价:");
+                if (orderInfo.getStatus() == 3) {
+                    holder.buttonsLayout.setVisibility(View.GONE);
+                    holder.buttonsLayoutLine.setVisibility(View.GONE);
+                } else {
+                    holder.goldCoin.setVisibility(View.VISIBLE);
+                    holder.lotteryTime.setText("开奖时间:" + orderInfo.getKj_dates());
+                    holder.returnG.setVisibility(View.GONE);
+                    holder.pickUp.setVisibility(View.VISIBLE);
+                    holder.upgrade.setVisibility(View.GONE);
+                    holder.addrLayout.setVisibility(View.GONE);
+                    holder.price.setVisibility(View.GONE);
+                    holder.priceTitle.setVisibility(View.GONE);
+                    holder.jiou.setVisibility(View.VISIBLE);
+                    holder.buttonsLayout.setVisibility(View.VISIBLE);
+                    holder.buttonsLayoutLine.setVisibility(View.VISIBLE);
+                    holder.totalPriceTitle.setText("总价:");
+                }
                 break;
             case 2:
 //                holder.goldCoin.setVisibility(View.GONE);
