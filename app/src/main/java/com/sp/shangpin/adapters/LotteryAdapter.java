@@ -47,7 +47,7 @@ public class LotteryAdapter extends RecyclerView.Adapter<LotteryAdapter.MyViewHo
         holder.date.setText(lotteryInfo.getDates());
         holder.numbers.setText(lotteryInfo.getNumbers());
         holder.codes.setText(lotteryInfo.getCodes());
-        holder.jiou.setText(lotteryInfo.getJo() == 1 ? "奇" : "偶");
+        holder.jiou.setText(lotteryInfo.getJo() == 1 ? "鸡" : "藕");
         holder.jiou.setBackgroundResource(lotteryInfo.getJo() == 1 ? R.drawable.maroon_corner : R.drawable.orange_corner);
         holder.rootView.setBackgroundResource(lotteryInfo.getJo() == 1 ? R.color.fragment_content_bg : android.R.color.white);
         if (null != onItemClickListener) {

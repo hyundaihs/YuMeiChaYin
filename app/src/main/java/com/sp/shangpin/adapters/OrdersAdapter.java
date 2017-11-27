@@ -93,7 +93,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.MyViewHold
         } else {
             holder.orderTime.setText("升级时间:" + new CalendarUtil(orderInfo.getSj_time(), true).format(CalendarUtil.STANDARD));
         }
-        holder.jiou.setText(orderInfo.getSj_jo() == 1 ? "奇" : "偶");
+        holder.jiou.setText(orderInfo.getSj_jo() == 1 ? "鸡" : "藕");
         holder.jiou.setBackgroundResource(orderInfo.getSj_jo() == 1 ? R.drawable.ji_bg : R.drawable.ou_bg);
         holder.goldCoin.setOnClickListener(new MyOnClickListener(position));
         holder.returnG.setOnClickListener(new MyOnClickListener(position));

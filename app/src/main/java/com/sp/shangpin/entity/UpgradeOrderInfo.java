@@ -17,7 +17,7 @@ public class UpgradeOrderInfo {
     private int num; //  数量
     private int sj_numbers; //  升级彩票期数
     private int sj_status; //  升级状态（0：未升级，1：升级成功，2：升级失败）
-    private int sj_jo; //  用户猜的奇偶（1奇，2偶）
+    private int sj_jo; //  用户猜的鸡藕（1鸡，2藕）
     private long sj_time; //  升级时间（时间戳）
 
     public UpgradeOrderInfo() {

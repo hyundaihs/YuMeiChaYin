@@ -227,7 +227,7 @@ public class InternetUtil {
     public static native String sjlists();
 
     /**
-     * 升级订单(猜奇偶)
+     * 升级订单(猜鸡藕)
      *
      * @return
      */

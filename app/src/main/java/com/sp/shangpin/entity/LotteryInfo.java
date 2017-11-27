@@ -9,7 +9,7 @@ public class LotteryInfo {
     private String dates; //  开奖时间
     private String numbers; //  编号
     private String codes; //  开奖号码
-    private int jo; //  奇偶（1奇，2偶）
+    private int jo; //  鸡藕（1鸡，2藕）
 
     public LotteryInfo() {
         super();

@@ -222,7 +222,7 @@ public class GoodsDetailsActivity extends AppCompatActivity implements View.OnCl
                                     intent.putExtra("position", i);
                                     startActivityForResult(intent, IntentUtil.REQUEST_FROM_GOODS_DETAILS_INPUT);
                                 }
-                            }, "猜奇偶", new DialogInterface.OnClickListener() {
+                            }, "猜鸡藕", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
                                     Intent intent = new Intent(thisContext, LotteryActivity.class);
