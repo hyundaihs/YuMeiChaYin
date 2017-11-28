@@ -1,7 +1,6 @@
 #include <jni.h>
 #include <string>
 
-
 extern "C"
 {
 JNIEXPORT jstring JNICALL
@@ -158,6 +157,12 @@ Java_com_sp_shangpin_utils_InternetUtil_cz(JNIEnv *env, jclass type) {
 JNIEXPORT jstring JNICALL
 Java_com_sp_shangpin_utils_InternetUtil_pay(JNIEnv *env, jclass type) {
     std::string text = "pay";
+    return env->NewStringUTF(text.c_str());
+}
+
+JNIEXPORT jstring JNICALL
+Java_com_sp_shangpin_utils_InternetUtil_alipay(JNIEnv *env, jclass type) {
+    std::string text = "alipay";
     return env->NewStringUTF(text.c_str());
 }
 

@@ -199,6 +199,12 @@ public class InternetUtil {
     public static native String pay();
 
     /**
+     * 支付宝支付	
+     * @return
+     */
+    public static native String alipay();
+
+    /**
      * 充值记录
      *
      * @return

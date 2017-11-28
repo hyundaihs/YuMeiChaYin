@@ -30,14 +30,16 @@ public class FragmentYhqAdapter extends RecyclerView.Adapter<FragmentYhqAdapter.
     private List<Integer> checked;
     private boolean isCheck;
     private int maxNum;
+    private int sta;
 
-    public FragmentYhqAdapter(Context context, List<YHQ> datas, boolean check, int max) {
+    public FragmentYhqAdapter(Context context, List<YHQ> datas, boolean check, int max, int status) {
         this.mContext = context;
         this.mDatas = datas;
         inflater = LayoutInflater.from(mContext);
         checked = new ArrayList<>();
         isCheck = check;
         maxNum = max;
+        sta = status;
     }
 
     public void setOnItemClickListener(FragmentHomeAdapter.OnItemClickListener onItemClickListener) {
@@ -66,6 +68,7 @@ public class FragmentYhqAdapter extends RecyclerView.Adapter<FragmentYhqAdapter.
     public void onBindViewHolder(FragmentYhqAdapter.MyViewHolder holder, final int position) {
         holder.price.setText(mDatas.get(position).getPrice() + "");
         holder.name.setText(mDatas.get(position).getTitle());
+        holder.bg.setBackgroundResource(sta == 2 ? R.mipmap.yhq_pic_used : R.mipmap.yhq_pic_unused);
         if (isCheck) {
             holder.check.setVisibility(checked.contains(Integer.valueOf(position)) ? View.VISIBLE : View.GONE);
             holder.rootView.setOnClickListener(new View.OnClickListener() {
@@ -106,6 +109,7 @@ public class FragmentYhqAdapter extends RecyclerView.Adapter<FragmentYhqAdapter.
         ImageView check;
         CardView rootView;
         TextView name;
+        View bg;
 
         MyViewHolder(View view) {
             super(view);
@@ -113,6 +117,7 @@ public class FragmentYhqAdapter extends RecyclerView.Adapter<FragmentYhqAdapter.
             name = view.findViewById(R.id.fragment_yhq_item_1);
             price = view.findViewById(R.id.fragment_yhq_item_price);
             check = view.findViewById(R.id.fragment_yhq_check);
+            bg = view.findViewById(R.id.fragment_yhq_item_price_layout);
         }
     }
 }

@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
  */
 
 public class ReExpressUtil {
-    public static final String PHONE = "^(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$";
+    public static final String PHONE = "0?(13|14|15|18)[0-9]{9}";
 
     public static boolean isMatcher(String express, String text) {
         Pattern pattern = Pattern.compile(express);

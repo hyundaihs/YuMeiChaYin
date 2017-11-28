@@ -2,11 +2,8 @@ package com.sp.shangpin.ui;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.PorterDuff;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -14,20 +11,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.sp.shangpin.MyApplication;
 import com.sp.shangpin.R;
 import com.sp.shangpin.entity.InterResult;
 import com.sp.shangpin.entity.LoginInfo_Sup;
 import com.sp.shangpin.entity.SharedKey;
 import com.sp.shangpin.utils.DialogUtil;
-import com.sp.shangpin.utils.InternetUtil;
 import com.sp.shangpin.utils.JsonUtil;
 import com.sp.shangpin.utils.LoginUtil;
 import com.sp.shangpin.utils.ReExpressUtil;
@@ -36,9 +30,6 @@ import com.sp.shangpin.utils.SharedPreferencesUtil;
 import com.sp.shangpin.utils.VolleyUtil;
 
 import org.json.JSONObject;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * ShangPin
@@ -83,19 +74,22 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(new Intent(thisContext, FindPasswordActivity.class));
             }
         });
-        VolleyUtil volleyUtil = VolleyUtil.getInstance(this);
-        volleyUtil.getBitmap(MyApplication.getSystemInfo().getDl_file_url(), new ImageLoader.ImageListener() {
-            @Override
-            public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
-                BitmapDrawable bitmapDrawable = new BitmapDrawable(response.getBitmap());
-                content.setBackground(bitmapDrawable);
-            }
+        if (null != MyApplication.getSystemInfo()) {
+            String url = MyApplication.getSystemInfo().getDl_file_url();
+            VolleyUtil volleyUtil = VolleyUtil.getInstance(this);
+            volleyUtil.getBitmap(url, new ImageLoader.ImageListener() {
+                @Override
+                public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
+                    BitmapDrawable bitmapDrawable = new BitmapDrawable(response.getBitmap());
+                    content.setBackground(bitmapDrawable);
+                }
 
-            @Override
-            public void onErrorResponse(VolleyError error) {
+                @Override
+                public void onErrorResponse(VolleyError error) {
 
-            }
-        });
+                }
+            });
+        }
     }
 
     public void initActionBar() {
@@ -119,12 +113,12 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private boolean attemptLogin() {
-        if (TextUtils.isEmpty(phone.getText())) {
+        if (TextUtils.isEmpty(phone.getText().toString())) {
             phone.setError("手机号不能为空");
-        } else if (TextUtils.isEmpty(password.getText())) {
+        } else if (TextUtils.isEmpty(password.getText().toString())) {
             password.setError("密码不能为空");
         } else if (!ReExpressUtil.isMatcher(ReExpressUtil.PHONE, phone.getText().toString())) {
-            password.setError("密码不能为空");
+            phone.setError("手机格式不对");
         } else {
             return true;
         }
@@ -133,7 +127,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
     private void login(final String account, final String password) {
-        LoginUtil.login(thisContext,account,password,new Response.Listener<JSONObject>() {
+        LoginUtil.login(thisContext, account, password, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 //从服务器响应response中的jsonObject中取出cookie的值，存到本地sharePreference

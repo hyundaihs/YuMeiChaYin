@@ -80,7 +80,7 @@ public class FragmentYhq extends BaseFragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
         layoutManager.setOrientation(OrientationHelper.VERTICAL);
-        adapter = new FragmentYhqAdapter(getActivity(), data, isCheck, maxNum);
+        adapter = new FragmentYhqAdapter(getActivity(), data, isCheck, maxNum,status);
         recyclerView.setAdapter(adapter);
         recyclerView.addItemDecoration(new SpacesItemDecoration(DisplayUtil.dp2px(getActivity(), 10), 1));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
