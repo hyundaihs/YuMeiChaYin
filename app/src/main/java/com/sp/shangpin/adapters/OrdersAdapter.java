@@ -126,7 +126,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.MyViewHold
                 } else {
                     holder.goldCoin.setVisibility((orderInfo.getSj_status() == UpgradeStatus.UPGRADE_FAILED && orderInfo.getYhqcp() == 0)
                             ? View.VISIBLE : View.GONE);
-                    holder.lotteryTime.setText("开奖时间:" + orderInfo.getKj_dates());
+                    holder.lotteryTime.setText(orderInfo.getStatus() == 3 ? "开奖期数:" + orderInfo.getSj_numbers() : "开奖时间:" + orderInfo.getKj_dates());
                     holder.returnG.setVisibility(orderInfo.getSj_status() == UpgradeStatus.UPGRADE_FAILED ? View.GONE : View.VISIBLE);
                     holder.pickUp.setVisibility(View.VISIBLE);
                     holder.upgrade.setVisibility(View.GONE);

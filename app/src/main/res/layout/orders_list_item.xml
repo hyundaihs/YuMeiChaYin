@@ -134,7 +134,7 @@
                     android:visibility="gone" />
 
                 <TextView
-                    android:id="@+id/orders_list_item_pick_up"
+                    android:id="@+id/orders_list_item_return"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
@@ -143,12 +143,12 @@
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
                     android:paddingTop="5dp"
-                    android:text="提货"
+                    android:text="退货"
                     android:textColor="@android:color/white"
                     android:textSize="12sp" />
 
                 <TextView
-                    android:id="@+id/orders_list_item_return"
+                    android:id="@+id/orders_list_item_pick_up"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
@@ -157,10 +157,9 @@
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
                     android:paddingTop="5dp"
-                    android:text="退货"
+                    android:text="提货"
                     android:textColor="@android:color/white"
                     android:textSize="12sp" />
-
 
                 <TextView
                     android:id="@+id/orders_list_item_upgrade"
@@ -227,16 +226,16 @@
                     android:id="@+id/orders_list_item_jiou"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="鸡"
+                    android:background="@drawable/ji_bg"
                     android:gravity="center"
+                    android:paddingBottom="5dp"
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
                     android:paddingTop="5dp"
-                    android:textStyle="bold"
-                    android:paddingBottom="5dp"
-                    android:background="@drawable/ji_bg"
+                    android:text="鸡"
                     android:textColor="@android:color/white"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
             </LinearLayout>
 
