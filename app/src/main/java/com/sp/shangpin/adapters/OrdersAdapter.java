@@ -124,10 +124,10 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.MyViewHold
                     holder.buttonsLayout.setVisibility(View.GONE);
                     holder.buttonsLayoutLine.setVisibility(View.GONE);
                 } else {
-                    holder.goldCoin.setVisibility((orderInfo.getSj_status() == UpgradeStatus.UPGRADE_FAILED && orderInfo.getYhqcp() == 1)
-                            ? View.GONE : View.VISIBLE);
+                    holder.goldCoin.setVisibility((orderInfo.getSj_status() == UpgradeStatus.UPGRADE_FAILED && orderInfo.getYhqcp() == 0)
+                            ? View.VISIBLE : View.GONE);
                     holder.lotteryTime.setText("开奖时间:" + orderInfo.getKj_dates());
-                    holder.returnG.setVisibility(View.GONE);
+                    holder.returnG.setVisibility(orderInfo.getSj_status() == UpgradeStatus.UPGRADE_FAILED ? View.GONE : View.VISIBLE);
                     holder.pickUp.setVisibility(View.VISIBLE);
                     holder.upgrade.setVisibility(View.GONE);
                     holder.addrLayout.setVisibility(View.GONE);
@@ -249,6 +249,12 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.MyViewHold
         public void onClick(View view) {
             switch (view.getId()) {
                 case R.id.orders_list_item_gold_coin:
+                    DialogUtil.showAskMessage(mContext, "确定要退换金币吗？", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            returnGoods(position);
+                        }
+                    });
                     break;
                 case R.id.orders_list_item_return:
                     DialogUtil.showAskMessage(mContext, "确定要退款吗？", new DialogInterface.OnClickListener() {

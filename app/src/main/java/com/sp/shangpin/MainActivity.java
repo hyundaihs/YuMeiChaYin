@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -20,21 +19,25 @@ import com.sp.shangpin.entity.SystemInfo_Sup;
 import com.sp.shangpin.ui.HomeActivity;
 import com.sp.shangpin.ui.LoginActivity;
 import com.sp.shangpin.ui.RegisterActivity;
+import com.sp.shangpin.utils.DefaultRationale;
 import com.sp.shangpin.utils.DialogUtil;
 import com.sp.shangpin.utils.InternetUtil;
 import com.sp.shangpin.utils.JsonUtil;
 import com.sp.shangpin.utils.LoginUtil;
+import com.sp.shangpin.utils.PermissionSetting;
 import com.sp.shangpin.utils.RequestUtil;
 import com.sp.shangpin.utils.SharedPreferencesUtil;
+import com.sp.shangpin.utils.ToastUtil;
 import com.sp.shangpin.utils.VolleyUtil;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
+import com.yanzhenjie.permission.Action;
+import com.yanzhenjie.permission.AndPermission;
+import com.yanzhenjie.permission.Permission;
 
 import org.json.JSONObject;
 
 import java.util.HashMap;
-
-import de.keyboardsurfer.android.widget.crouton.Crouton;
-import de.keyboardsurfer.android.widget.crouton.Style;
+import java.util.List;
 
 /**
  * ShangPin
@@ -46,13 +49,52 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private final String TAG = getClass().getSimpleName();
     private final Context thisContext = this;
 
+    String[] mPermissions = {
+            Permission.READ_EXTERNAL_STORAGE,
+            Permission.WRITE_EXTERNAL_STORAGE,
+            Permission.READ_PHONE_STATE,
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         MyApplication.addActivity(this);
         setContentView(R.layout.activity_main);
+        requestPermission();
         getSystemInfo();
         init();
+    }
+
+    private void requestPermission() {
+        DefaultRationale mRationale = new DefaultRationale();
+        final PermissionSetting mSetting = new PermissionSetting(this);
+        AndPermission.with(this)
+                .permission(mPermissions)
+                .rationale(mRationale)
+                .onGranted(new Action() {
+                    @Override
+                    public void onAction(List<String> permissions) {
+                        ToastUtil.show(thisContext, "权限获取成功");
+                    }
+                }).onDenied(new Action() {
+
+            @Override
+            public void onAction(List<String> permissions) {
+                if (AndPermission.hasAlwaysDeniedPermission(thisContext, permissions)) {
+                    mSetting.showSetting(permissions, new DialogInterface.OnClickListener() {
+
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            ToastUtil.show(thisContext, "权限获取失败");
+                            finish();
+                        }
+                    });
+                } else {
+                    ToastUtil.show(thisContext, "权限获取失败");
+                    finish();
+                }
+            }
+        }).start();
     }
 
     private void isRemember() {
@@ -92,7 +134,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     SharedPreferencesUtil.setParam(thisContext, SharedKey.IS_REMEMBER, false);
                 }
             }
-        },new RequestUtil.MyErrorListener(){
+        }, new RequestUtil.MyErrorListener() {
 
             @Override
             public void onErrorResponse(String error) {
@@ -149,7 +191,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         findViewById(R.id.main_login).setOnClickListener(this);
         findViewById(R.id.main_register).setOnClickListener(this);
         findViewById(R.id.main_wchat_login_btn).setOnClickListener(this);
-
     }
 
     @Override

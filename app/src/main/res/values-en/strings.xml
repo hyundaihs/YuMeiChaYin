@@ -29,4 +29,24 @@
     <string name="goods_details">Goods Details</string>
     <string name="top_up">Top Up</string>
     <string name="lottery">Lottery</string>
+
+    <string name="setting">Setting</string>
+
+    <string name="resume">Continue</string>
+
+    <string name="cancel">Cancel</string>
+
+    <string name="ok">OK</string>
+
+    <string name="no">NO</string>
+
+    <string name="successfully">Get Permission Successfully</string>
+
+    <string name="failure">Get Permission Failure</string>
+
+    <string name="title_dialog">Title</string>
+
+    <string name="message_permission_rationale">Message Permission Rationale:\n\n%1$s</string>
+
+    <string name="message_permission_always_failed">We need this permission,Please agreed:\n\n%1$s</string>
 </resources>
