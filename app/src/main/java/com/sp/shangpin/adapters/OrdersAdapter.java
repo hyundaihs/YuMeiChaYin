@@ -121,12 +121,16 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.MyViewHold
                 break;
             case 1:
                 if (orderInfo.getStatus() == 3) {
-                    holder.buttonsLayout.setVisibility(View.GONE);
-                    holder.buttonsLayoutLine.setVisibility(View.GONE);
+                    holder.goldCoin.setVisibility(View.GONE);
+                    holder.returnG.setVisibility(View.GONE);
+                    holder.pickUp.setVisibility(View.GONE);
+                    holder.upgrade.setVisibility(View.GONE);
+                    holder.addrLayout.setVisibility(View.GONE);
+                    holder.lotteryTime.setText("开奖期数:" + orderInfo.getSj_numbers());
                 } else {
                     holder.goldCoin.setVisibility((orderInfo.getSj_status() == UpgradeStatus.UPGRADE_FAILED && orderInfo.getYhqcp() == 0)
                             ? View.VISIBLE : View.GONE);
-                    holder.lotteryTime.setText(orderInfo.getStatus() == 3 ? "开奖期数:" + orderInfo.getSj_numbers() : "开奖时间:" + orderInfo.getKj_dates());
+                    holder.lotteryTime.setText("开奖时间:" + orderInfo.getKj_dates());
                     holder.returnG.setVisibility(orderInfo.getSj_status() == UpgradeStatus.UPGRADE_FAILED ? View.GONE : View.VISIBLE);
                     holder.pickUp.setVisibility(View.VISIBLE);
                     holder.upgrade.setVisibility(View.GONE);
@@ -134,8 +138,6 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.MyViewHold
                     holder.price.setVisibility(View.GONE);
                     holder.priceTitle.setVisibility(View.GONE);
                     holder.jiou.setVisibility(View.VISIBLE);
-                    holder.buttonsLayout.setVisibility(View.VISIBLE);
-                    holder.buttonsLayoutLine.setVisibility(View.VISIBLE);
                     holder.totalPriceTitle.setText("总价:");
                 }
                 break;
@@ -175,6 +177,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.MyViewHold
                 holder.upgrade.setVisibility(View.GONE);
                 holder.jiou.setVisibility(View.GONE);
                 holder.price.setVisibility(View.GONE);
+                holder.addrLayout.setVisibility(View.GONE);
                 holder.priceTitle.setVisibility(View.GONE);
                 holder.buttonsLayout.setVisibility(View.GONE);
                 holder.buttonsLayoutLine.setVisibility(View.GONE);
